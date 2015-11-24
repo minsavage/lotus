@@ -1,13 +1,21 @@
 /**
  * Created by danney on 15/11/23.
  */
-var mustache = require('mustache');
-var tpl = require('./template');
+//var ejs = require('ejs');
+//var mustache = require('mustache');
+//var tpl = require('./template');
+
+var x = "<{{{typeName}}} {{{namespace}}} {{{properties}}}> {{{units}}} </{{{typeName}}}>";
+var tpl = {};
+tpl.type = x;
+
+
+
 
 var LayoutBuilder = function() {
     this._propertyBuilderMap = {
         'id': this._idBuilder,
-        'layout': this._layoutPropertyBuilder,
+        //'layout': this._unitsBuilder,
         'units': this._unitsBuilder
     }
 }
@@ -20,8 +28,9 @@ LayoutBuilder.prototype.parse = function(model) {
     }
 
     var ret = this._typeBuilder(model, true);
-
-    return mustache.render(tpl.xmlRoot, {content: ret});
+    //console.log('-------------final------------');
+    //console.log(ret);
+    return ret;
 }
 
 LayoutBuilder.prototype._typeBuilder = function(model, isRoot) {
@@ -53,7 +62,7 @@ LayoutBuilder.prototype._typeBuilder = function(model, isRoot) {
             unitsStr = ret;
         }
         else {
-            propertiesStr += ret + ' \r';
+            propertiesStr += ret + '\r';
         }
     }
 
@@ -68,7 +77,7 @@ LayoutBuilder.prototype._typeBuilder = function(model, isRoot) {
 
     console.log(tpl.type);
 
-    var renderResult = mustache.render(tpl.type, {
+    var renderResult = Mustache.render(tpl.type, {
         typeName: typeName,
         namespace: namespace,
         properties: propertiesStr,
@@ -95,15 +104,6 @@ LayoutBuilder.prototype._unitsBuilder = function(self, model) {
     return units;
 }
 
-LayoutBuilder.prototype._layoutPropertyBuilder = function(self, model) {
-    var prefix = 'android:layout_';
-    var ret = '';
-    for(var key in model) {
-        ret += prefix + key + '="' + model[key] + '" \r'
-    }
-    return ret;
-}
 
 
-
-module.exports = LayoutBuilder;
+//module.exports = LayoutBuilder;

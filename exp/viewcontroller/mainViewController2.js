@@ -20,10 +20,6 @@ var mainViewController = {
     'type': 'RelativeLayout',
     'id': 'rootLayout',
     'viewModel': 'mainViewModel',
-    'layout': {
-        'width': 'match_parent',
-        'height': 'match_parent'
-    },
     'event': {
         'onStart': function(){
             mainViewModel.query(function(){
@@ -35,33 +31,32 @@ var mainViewController = {
             loadingView.startAnimation();
         }
     },
-    'units': [{
-        'id': 'xxxx',
-        'type': 'com.facebook.drawee.view.SimpleDraweeView',
-        layout: {
-            'width': 'match_parent',
-            'height': 'match_parent'
-        },
-        'fresco:actualImageScaleType': 'fixXY',
-        'bind': {
-            uri: 'mainViewModel.picAudioBkg'
-        }
-    }, {
-        'type': 'FrameLayout',
-        'id': 'frameLayout_backgroundMask',
-        'layout': {
-            'width': 'match_parent',
-            'height': 'match_parent'
-        },
-        'background': '#000000'
-    }, {
+
+    'units': [
+    //    {
+    //    'id': 'xxxx',
+    //    'type': 'com.facebook.drawee.view.SimpleDraweeView',
+    //    'width': 'match_parent',
+    //    'height': 'match_parent',
+    //    'fresco:actualImageScaleType': 'fixXY',
+    //    'bind': {
+    //        uri: 'mainViewModel.picAudioBkg'
+    //    }
+    //}, {
+    //    'type': 'frameLayout',
+    //    'id': 'frameLayout_backgroundMask',
+    //    'width': 'match_parent',
+    //    'height': 'match_parent',
+    //    'background': '#000000'
+    //},
+        {
         type: 'RelativeLayout',
         layout: {
             width: 'match_parent',
             height: 'match_parent'
         },
         units: [{
-            type: 'TextView',
+            type: 'textView',
             id: 'textView_time',
             layout: {
                 width: 'wrap_content',
@@ -72,7 +67,7 @@ var mainViewController = {
             textColor: '#000000',
             textSize: '20dp'
         }, {
-            type: 'ViewController',
+            type: 'viewController',
             id: 'playerViewController',
             layout: {
                 width: '151dp',
@@ -195,7 +190,7 @@ var mainViewController = {
                 //}
             }
         }, {
-            type: 'RelativeLayout',
+            type: 'relativeLayout',
             id: 'bottomBar',
             layout: {
                 width: 'match_parent',
@@ -207,8 +202,7 @@ var mainViewController = {
                 type: 'ImageView',
                 id: 'settingBtn',
                 layout: {
-                    width: 'wrap_content',
-                    height: 'wrap_content'
+
                 },
                 event: {
                     'onClick': function(){
@@ -219,18 +213,16 @@ var mainViewController = {
                 type: 'ImageView',
                 id: 'shopBtn',
                 layout: {
-                    width: 'wrap_content',
-                    height: 'wrap_content'
+
                 },
                 event: {
 
                 }
             }, {
-                type: 'TextView',
+                type: 'textView',
                 id: 'textView_currentAudioName',
                 layout: {
-                    width: 'wrap_content',
-                    height: 'wrap_content'
+
                 },
                 bind: {
                     text: 'mainViewModel.audioName'

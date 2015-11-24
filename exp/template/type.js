@@ -1,7 +1,7 @@
-<<%= typeName%> xmlns:android="http://schemas.android.com/apk/res/android"
+<<%- typeName%>  <%- namespace%>
 <%- properties%>
 >
 
-    <%= units%>
+    <%- units%>
 
-</<%= typeName%>>
+</<%- typeName%>>
