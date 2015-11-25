@@ -1,0 +1,1 @@
+{{objName}} = ({{className}})view.findViewById(R.id.{{objName}});

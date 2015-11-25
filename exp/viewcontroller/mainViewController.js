@@ -17,13 +17,8 @@
 
 
 var mainViewController = {
-    'type': 'RelativeLayout',
-    'id': 'rootLayout',
-    'viewModel': 'mainViewModel',
-    'layout': {
-        'width': 'match_parent',
-        'height': 'match_parent'
-    },
+    'name': 'MainViewController',
+    'viewModel': 'MainViewModel',
     'event': {
         'onStart': function(){
             mainViewModel.query(function(){
@@ -35,213 +30,219 @@ var mainViewController = {
             loadingView.startAnimation();
         }
     },
-    'units': [{
-        'id': 'xxxx',
-        'type': 'com.facebook.drawee.view.SimpleDraweeView',
-        layout: {
-            'width': 'match_parent',
-            'height': 'match_parent'
-        },
-        'fresco:actualImageScaleType': 'fixXY',
-        'bind': {
-            uri: 'mainViewModel.picAudioBkg'
-        }
-    }, {
-        'type': 'FrameLayout',
-        'id': 'frameLayout_backgroundMask',
+
+    'content': {
+        'type': 'RelativeLayout',
+        'id': 'rootLayout',
         'layout': {
             'width': 'match_parent',
             'height': 'match_parent'
         },
-        'background': '#000000'
-    }, {
-        type: 'RelativeLayout',
-        layout: {
-            width: 'match_parent',
-            height: 'match_parent'
-        },
-        units: [{
-            type: 'TextView',
-            id: 'textView_time',
+        'units': [{
+            'id': 'xxxx',
+            'type': 'com.facebook.drawee.view.SimpleDraweeView',
             layout: {
-                width: 'wrap_content',
-                height: 'wrap_content',
-                marginTop: '20dp'
+                'width': 'match_parent',
+                'height': 'match_parent'
             },
-            text: '12:00',
-            textColor: '#000000',
-            textSize: '20dp'
+            'fresco:actualImageScaleType': 'fixXY',
+            'bind': {
+                uri: 'mainViewModel.picAudioBkg'
+            }
         }, {
-            type: 'ViewController',
-            id: 'playerViewController',
-            layout: {
-                width: '151dp',
-                height: '151dp',
-                below: 'textView_time',
-                centerHorizontal: true
+            'type': 'FrameLayout',
+            'id': 'frameLayout_backgroundMask',
+            'layout': {
+                'width': 'match_parent',
+                'height': 'match_parent'
             },
-            name: 'playerViewController'
+            'background': '#000000'
         }, {
-            type: 'com.soundario.dreamcloud.widget.SlideSwitch',
-            id: 'slideSwitch',
+            type: 'RelativeLayout',
             layout: {
-                width: '150dp',
-                height: '150dp',
-                below: 'playerViewController',
-                centerHorizontal: true,
-                marginTop: '71dp'
+                width: 'match_parent',
+                height: 'match_parent'
             },
-            bind: {
-                'switch:isOpen': 'mainViewModel.alarmActive',
-                //'switch:time': stringFomart('HH:MM', mainViewModel.alarmHour, mainViewModel.alarmMinute)
-            },
-            event: {
-                //onSwitchChange: function(enable) {
-                //    mainViewModel.alarmActive = enable;
-                //},
-                //
-                //onSwitchClick: function() {
-                //    modelDialog.show({
-                //        'viewController': 'alarmSettingViewController',
-                //        'layout': {
-                //            width: 'wrap_content',
-                //            heigth: 'wrap_content',
-                //            above: 'mainViewController.slideSwitch'
-                //        }
-                //    });
-                //
-                //    playerViewController.visible = 'hide';
-                //},
-
-                onSwitchChange: {
-                    argument: [{
-                        type: 'bool',
-                        name: 'enable'
-                    }],
-                    action: {
-                        'mainViewModel.alarmActive': 'enable'
-                    }
+            units: [{
+                type: 'TextView',
+                id: 'textView_time',
+                layout: {
+                    width: 'wrap_content',
+                    height: 'wrap_content',
+                    marginTop: '20dp'
                 },
+                text: '12:00',
+                textColor: '#000000',
+                textSize: '20dp'
+            }, {
+                type: 'ViewController',
+                id: 'playerViewController',
+                layout: {
+                    width: '151dp',
+                    height: '151dp',
+                    below: 'textView_time',
+                    centerHorizontal: true
+                },
+                name: 'PlayerViewController'
+            }, {
+                type: 'com.soundario.dreamcloud.widget.SlideSwitch',
+                id: 'slideSwitch',
+                layout: {
+                    width: '150dp',
+                    height: '150dp',
+                    below: 'playerViewController',
+                    centerHorizontal: true,
+                    marginTop: '71dp'
+                },
+                bind: {
+                    'switch:isOpen': 'mainViewModel.alarmActive'
+                    //'switch:time': stringFomart('HH:MM', mainViewModel.alarmHour, mainViewModel.alarmMinute)
+                },
+                event: {
+                    //onSwitchChange: function(enable) {
+                    //    mainViewModel.alarmActive = enable;
+                    //},
+                    //
+                    //onSwitchClick: function() {
+                    //    modelDialog.show({
+                    //        'viewController': 'alarmSettingViewController',
+                    //        'layout': {
+                    //            width: 'wrap_content',
+                    //            heigth: 'wrap_content',
+                    //            above: 'mainViewController.slideSwitch'
+                    //        }
+                    //    });
+                    //
+                    //    playerViewController.visible = 'hide';
+                    //},
 
-                onSwitchClick: {
-                    action: {
-                        'playerViewController.visible': 'gone',
-                        'modelDialog.show': {
-                            'config': {
-                                'viewController': 'alarmSettingViewController',
-                                'layout': {
-                                    width: 'wrap_content',
-                                    heigth: 'wrap_content',
-                                    above: 'mainViewController.slideSwitch'
+                    onSwitchChange: {
+                        argument: [{
+                            type: 'bool',
+                            name: 'enable'
+                        }],
+                        action: {
+                            'mainViewModel.alarmActive': 'enable'
+                        }
+                    },
+
+                    onSwitchClick: {
+                        action: {
+                            'playerViewController.visible': 'gone',
+                            'modelDialog.show': {
+                                'config': {
+                                    'viewController': 'alarmSettingViewController',
+                                    'layout': {
+                                        width: 'wrap_content',
+                                        heigth: 'wrap_content',
+                                        above: 'mainViewController.slideSwitch'
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-        }, {
-            type: 'ImageView',
-            id: 'imageView_MixerButton',
-            layout: {
-                width: 'wrap_content',
-                height: 'wrap_content',
-                alignParentBottom: 'true',
-                centerHorizontal: 'true',
-                marginBottom: '15dp'
-            },
-            src: '....', // todo: 配置一个xml的selector， 怎么兼容ios ？
-            visibility: 'gone',
-            event: {
-                'onClick': {
-                    'playerViewController.visible': 'gone',
-                    'modelDialog.show': {
-                        'config': {
-                            'viewController': 'mixerViewController',
-                            'layout': {
-                                width: 'wrap_content',
-                                heigth: 'wrap_content',
-                                above: 'mainViewController.imageView_MixerButton'
+            }, {
+                type: 'ImageView',
+                id: 'imageView_MixerButton',
+                layout: {
+                    width: 'wrap_content',
+                    height: 'wrap_content',
+                    alignParentBottom: 'true',
+                    centerHorizontal: 'true',
+                    marginBottom: '15dp'
+                },
+                src: '....', // todo: 配置一个xml的selector， 怎么兼容ios ？
+                visibility: 'gone',
+                event: {
+                    'onClick': {
+                        'playerViewController.visible': 'gone',
+                        'modelDialog.show': {
+                            'config': {
+                                'viewController': 'mixerViewController',
+                                'layout': {
+                                    width: 'wrap_content',
+                                    heigth: 'wrap_content',
+                                    above: 'mainViewController.imageView_MixerButton'
+                                }
                             }
                         }
                     }
-                }
 
-                //'onClick': function(){
-                //    playerViewController.visible = 'gone';
-                //    if(existLocalMusic(mainViewModel.audio)) {
-                //        modelDialog.show({
-                //            'config': {
-                //                'viewController': 'mixerViewController',
-                //                'layout': {
-                //                    width: 'wrap_content',
-                //                    heigth: 'wrap_content',
-                //                    above: 'mainViewController.imageView_MixerButton'
-                //                }
-                //            }
-                //        })
-                //    }
-                //    else {
-                //        modelDialog.show({
-                //            'config': {
-                //                'viewController': 'downloadViewController',
-                //                'layout': {
-                //                    width: 'wrap_content',
-                //                    heigth: 'wrap_content',
-                //                    above: 'mainViewController.imageView_MixerButton'
-                //                }
-                //            }
-                //        })
-                //    }
-                //}
-            }
-        }, {
-            type: 'RelativeLayout',
-            id: 'bottomBar',
-            layout: {
-                width: 'match_parent',
-                height: '20dp',
-                alignParentBottom: true
-            },
-            background: '#80FFFFFF',
-            units:[{
-                type: 'ImageView',
-                id: 'settingBtn',
+                    //'onClick': function(){
+                    //    playerViewController.visible = 'gone';
+                    //    if(existLocalMusic(mainViewModel.audio)) {
+                    //        modelDialog.show({
+                    //            'config': {
+                    //                'viewController': 'mixerViewController',
+                    //                'layout': {
+                    //                    width: 'wrap_content',
+                    //                    heigth: 'wrap_content',
+                    //                    above: 'mainViewController.imageView_MixerButton'
+                    //                }
+                    //            }
+                    //        })
+                    //    }
+                    //    else {
+                    //        modelDialog.show({
+                    //            'config': {
+                    //                'viewController': 'downloadViewController',
+                    //                'layout': {
+                    //                    width: 'wrap_content',
+                    //                    heigth: 'wrap_content',
+                    //                    above: 'mainViewController.imageView_MixerButton'
+                    //                }
+                    //            }
+                    //        })
+                    //    }
+                    //}
+                }
+            }, {
+                type: 'RelativeLayout',
+                id: 'bottomBar',
                 layout: {
-                    width: 'wrap_content',
-                    height: 'wrap_content'
+                    width: 'match_parent',
+                    height: '20dp',
+                    alignParentBottom: true
                 },
-                event: {
-                    'onClick': function(){
-                        settingPage.show();
+                background: '#80FFFFFF',
+                units:[{
+                    type: 'ImageView',
+                    id: 'settingBtn',
+                    layout: {
+                        width: 'wrap_content',
+                        height: 'wrap_content'
+                    },
+                    event: {
+                        'onClick': function(){
+                            settingPage.show();
+                        }
                     }
-                }
-            }, {
-                type: 'ImageView',
-                id: 'shopBtn',
-                layout: {
-                    width: 'wrap_content',
-                    height: 'wrap_content'
-                },
-                event: {
+                }, {
+                    type: 'ImageView',
+                    id: 'shopBtn',
+                    layout: {
+                        width: 'wrap_content',
+                        height: 'wrap_content'
+                    },
+                    event: {
 
-                }
-            }, {
-                type: 'TextView',
-                id: 'textView_currentAudioName',
-                layout: {
-                    width: 'wrap_content',
-                    height: 'wrap_content'
-                },
-                bind: {
-                    text: 'mainViewModel.audioName'
-                }
+                    }
+                }, {
+                    type: 'TextView',
+                    id: 'textView_currentAudioName',
+                    layout: {
+                        width: 'wrap_content',
+                        height: 'wrap_content'
+                    },
+                    bind: {
+                        text: 'mainViewModel.audioName'
+                    }
+                }]
             }]
         }]
-    }]
+    }
 }
-
-
-
 
 
 
