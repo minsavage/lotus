@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5GM-ED-RQr">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <animations/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HI9-gn-PX4">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oyt-wx-PLJ">
+                                        <rect key="frame" x="139" y="30" width="42" height="20.5"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ahK-he-Mhv" userLabel="ClockView" customClass="ClockView">
+                                        <rect key="frame" x="86" y="210" width="148" height="148"/>
+                                        <animations/>
+                                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="148" id="n07-no-qFY"/>
+                                            <constraint firstAttribute="width" constant="148" id="vpR-Rd-Nfg"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Swz-Ek-gC2" customClass="AlarmView">
+                                        <rect key="frame" x="110" y="418" width="100" height="50"/>
+                                        <animations/>
+                                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="53k-zb-uZb"/>
+                                            <constraint firstAttribute="width" constant="100" id="Urf-dO-1QP"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Swz-Ek-gC2" secondAttribute="bottom" constant="100" id="0nj-3x-OCn"/>
+                                    <constraint firstItem="Oyt-wx-PLJ" firstAttribute="centerX" secondItem="HI9-gn-PX4" secondAttribute="centerX" id="7cv-Qf-JjY"/>
+                                    <constraint firstItem="ahK-he-Mhv" firstAttribute="centerX" secondItem="HI9-gn-PX4" secondAttribute="centerX" id="Qki-Rw-8Hk"/>
+                                    <constraint firstItem="Oyt-wx-PLJ" firstAttribute="top" secondItem="HI9-gn-PX4" secondAttribute="top" constant="30" id="Yev-38-fmS"/>
+                                    <constraint firstItem="ahK-he-Mhv" firstAttribute="centerY" secondItem="HI9-gn-PX4" secondAttribute="centerY" id="c0x-wA-eic"/>
+                                    <constraint firstItem="Swz-Ek-gC2" firstAttribute="centerX" secondItem="HI9-gn-PX4" secondAttribute="centerX" id="eCS-bA-B8A"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="5GM-ED-RQr" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="8PT-v9-9YS"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="HI9-gn-PX4" secondAttribute="bottom" id="DNA-rj-yEC"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="5GM-ED-RQr" secondAttribute="bottom" id="DSr-Hd-RHn"/>
+                            <constraint firstItem="HI9-gn-PX4" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="OUC-47-6aZ"/>
+                            <constraint firstAttribute="trailing" secondItem="5GM-ED-RQr" secondAttribute="trailing" id="Rbw-0x-d9i"/>
+                            <constraint firstItem="HI9-gn-PX4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="fVb-81-tUd"/>
+                            <constraint firstAttribute="trailing" secondItem="HI9-gn-PX4" secondAttribute="trailing" id="iI3-Ti-dCQ"/>
+                            <constraint firstItem="5GM-ED-RQr" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="qqF-uN-Ivj"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="alarmSwitcher" destination="Swz-Ek-gC2" id="7rD-Bs-c10"/>
+                        <outlet property="clockView" destination="ahK-he-Mhv" id="hN4-sQ-v3U"/>
+                        <outlet property="timeLabel" destination="Oyt-wx-PLJ" id="Lvo-FC-UD3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
