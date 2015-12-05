@@ -1,0 +1,1 @@
+import {{packageName}}.viewController.{{viewControllerName}};

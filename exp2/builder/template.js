@@ -4,9 +4,13 @@
 var fs = require('fs');
 
 var tpl = {
-    xmlRoot: fs.readFileSync('../template/layout/xmlRoot.js', 'utf-8'),
-    type: fs.readFileSync('../template/layout/type.js', 'utf-8'),
-    namespace: fs.readFileSync('../template/layout/namespace.js', 'utf-8'),
+    layout: {
+        //xmlRoot: fs.readFileSync('../template/layout/xmlRoot.js', 'utf-8'),
+        databinding: fs.readFileSync('../template/layout/databinding.js', 'utf-8'),
+        view: fs.readFileSync('../template/layout/view.js', 'utf-8'),
+        viewGroup: fs.readFileSync('../template/layout/viewGroup.js', 'utf-8')
+        //namespace: fs.readFileSync('../template/layout/namespace.js', 'utf-8')
+    },
 
     viewController: {
         main: fs.readFileSync('../template/viewController/viewControllerMain.js', 'utf-8'),
