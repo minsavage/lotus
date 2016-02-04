@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 
 import com.soundario.base.ViewController;
 import com.soundario.base.ViewModelMgr;
-import com.soundario.dreamcloud.R;
 
 import java.util.Observable;
 import java.util.Observer;

@@ -1,0 +1,1 @@
+{{viewModelObjName}} = ({{viewModelClassName}}) ViewModelMgr.createViewModel({{viewModelClassName}}.class, getContext());

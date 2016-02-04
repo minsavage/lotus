@@ -32,6 +32,13 @@ var tpl = {
         androidWidget: fs.readFileSync('../template/import/androidWidget.js', 'utf-8'),
         viewModel: fs.readFileSync('../template/import/viewModel.js', 'utf-8'),
         viewController: fs.readFileSync('../template/import/viewController.js', 'utf-8')
+    },
+
+    model: {
+        main: fs.readFileSync('../template/model/main.js', 'utf-8'),
+        get: fs.readFileSync('../template/model/get.js', 'utf-8'),
+        set: fs.readFileSync('../template/model/set.js', 'utf-8'),
+        getBoolean: fs.readFileSync('../template/model/getBoolean.js', 'utf-8')
     }
 }
 

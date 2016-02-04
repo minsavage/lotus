@@ -89,7 +89,7 @@ var mainViewController = {
                 },
                 name: 'PlayerViewController'
             }, {
-                type: 'com.soundario.dreamcloud.widget.SlideSwitch',
+                type: 'SlideSwitch',
                 id: 'slideSwitch',
                 layout: {
                     width: '150dp',

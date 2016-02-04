@@ -1,0 +1,1 @@
+{{objName}}.setOnClickListener({{listenerName}});

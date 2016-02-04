@@ -6,6 +6,16 @@ var beautify = require('js-beautify').html_beautify;
 var fs = require('fs');
 
 
+var modelData = require('../project/model/audio');
+var ModelBuilder = require('./ModelBuilder');
+var modelBuilder = new ModelBuilder();
+var ret = modelBuilder.parse(modelData);
+fs.writeFile('../output/audio.java', ret, function (err) {
+    if (err) throw err;
+    console.log('It\'s saved!');
+});
+
+
 //var LayoutBuilder = require('./layoutBuilder')
 //var builder = new LayoutBuilder();
 //var ret = builder.parse(model);
@@ -15,11 +25,11 @@ var fs = require('fs');
 //    console.log('It\'s saved!');
 //});
 
-var ViewControllerBuilder = require('./viewControllerBuilder')
-viewControllerBuilder = new ViewControllerBuilder();
-var ret1 = viewControllerBuilder.parse('com.soundario.dreamcloud', model);
-
-fs.writeFile('../output/MainViewController.java', ret1, function (err) {
-    if (err) throw err;
-    console.log('It\'s saved!');
-});
+//var ViewControllerBuilder = require('./viewControllerBuilder')
+//viewControllerBuilder = new ViewControllerBuilder();
+//var ret1 = viewControllerBuilder.parse('com.soundario.dreamcloud', model);
+//
+//fs.writeFile('../output/MainViewController.java', ret1, function (err) {
+//    if (err) throw err;
+//    console.log('It\'s saved!');
+//});

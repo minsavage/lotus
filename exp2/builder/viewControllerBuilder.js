@@ -51,9 +51,9 @@ ViewControllerBuilder.prototype.parse = function(packageName, model) {
 }
 
 
-ViewControllerBuilder.prototype._buildViewModel = function(className) {
-    var className = nameUtil.formatClassName(className);
-    var objName = nameUtil.formatObjName(className);
+ViewControllerBuilder.prototype._buildViewModel = function(vm) {
+    var className = vm.type;
+    var objName = vm.name;
 
     //变量申明
     var stmt = mustache.render(tpl.viewController.viewModelStmt, {

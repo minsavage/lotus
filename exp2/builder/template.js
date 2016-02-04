@@ -29,7 +29,8 @@ var tpl = {
     },
 
     listener: {
-        onClickListener: fs.readFileSync('../template/listener/onClickListener.js', 'utf-8')
+        onClickListener: fs.readFileSync('../template/listener/onClickListener.js', 'utf-8'),
+        slideListener: fs.readFileSync('../template/listener/slideListener.js', 'utf-8')
     },
 
     import: {

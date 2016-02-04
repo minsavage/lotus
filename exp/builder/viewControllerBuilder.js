@@ -235,4 +235,5 @@ function getListenerVariableName(model, eventMetadata) {
     return model.id + eventMetadata.listenerName;
 }
 
+
 module.exports = ViewControllerBuilder;

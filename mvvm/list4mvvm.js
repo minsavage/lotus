@@ -244,5 +244,37 @@ var mainViewModel = {
         {name: 'lastAlarmTimeExist', type: 'bool'},
         {name: 'playerStatus', type: 'int'},
         {name: 'localAudioFileExist', type: 'bool'},
-    ]
+    ],
+    operator: {
+        'AlarmModelOperator': {
+            model: {
+                type: 'Audio',
+                name: 'audio'
+            },
+
+            query: {
+                success: {
+                    'alarmHour': 'audio.alarmHour',
+                    'alarmMinute': 'audio.alarmMinute',
+                    'alarmEnabled': 'audio.alarmEnabled'
+                },
+                fail: {
+
+                }
+            },
+
+            save: {
+
+            }
+
+            //insert: {
+            //    success: {
+            //
+            //    },
+            //    fail: {
+            //
+            //    }
+            //}
+        }
+    }
 }
