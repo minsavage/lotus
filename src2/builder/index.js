@@ -3,14 +3,20 @@
  */
 module.exports = {
     default: {
-        model: require('model/modelBuilder'),
-        operator: require('model/modelBuilder'),
-        viewModel: require('model/modelBuilder'),
-        viewController: require('model/modelBuilder'),
-        page: require('model/modelBuilder')
+        page: require('./page/pageBuilder'),
+
+        model: require('./model/modelBuilder'),
+        operator: require('./operator/operatorBuilder'),
+        viewModel: require('./viewModel/viewModelBuilder'),
+
+        viewController: require('./viewController/viewControllerBuilder'),
+        layout: require('./viewController/layoutBuilder'),
+
+        widget: require('./widget/widgetBuilder'),
+        widgetLayout: require('./widget/widgetLayoutBuilder')
     },
 
-    operatorService: {
-        operator: require('model/modelBuilder')
+    remoteOperatorService: {
+        operator: require('./operator/remoteOperatorServiceBuilder')
     }
 }

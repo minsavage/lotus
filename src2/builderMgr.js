@@ -1,14 +1,26 @@
 /**
  * Created by danney on 16/2/3.
  */
-util = require('util');
+var util = require('util');
+var fs = require('fs');
 
 var buildersContainer = {
+    page: {},
+
     model: {},
     operator: {},
     viewModel: {},
+
     viewController: {},
-    page: {}
+    layout: {},
+
+    widget: {},
+    widgetLayout: {},
+
+    widgetBuildConfig: {},
+    widgetLayoutBuildConfig: {},
+
+    dependency: {}
 };
 
 var load = function(paths) {
@@ -23,13 +35,15 @@ var load = function(paths) {
 }
 
 var loadInternal = function(path) {
+    var lotus = require('./lotus');
+
     if(!fs.statSync(path).isDirectory()) {
         return null;
     }
 
     var filePath = path + '/index.js';
     if(fs.existsSync(filePath)) {
-        filePath = stringUtil.withoutSuffix(filePath, '.js');
+        filePath = lotus.util.stringUtil.withoutSuffix(filePath, '.js');
         var buildersInfo = require(filePath);
 
         for(var name in buildersInfo) {
@@ -52,31 +66,101 @@ var loadInternal = function(path) {
     }
 }
 
-var queryModelBuilder = function() {
+var queryPageBuilder = function(type) {
+    if(util.isNullOrUndefined(type)) {
+        type = 'default';
+    }
 
+    return buildersContainer.page[type];
 }
 
-var queryOperatorBuilder = function() {
+var queryModelBuilder = function(type) {
+    if(util.isNullOrUndefined(type)) {
+        type = 'default';
+    }
+
+    return buildersContainer.model[type];
 }
 
-var queryViewModelBuilder = function() {
+var queryOperatorBuilder = function(type) {
+    if(util.isNullOrUndefined(type)) {
+        type = 'default';
+    }
 
+    return buildersContainer.operator[type];
 }
 
-var queryViewControllerBuilder = function() {
+var queryViewModelBuilder = function(type) {
+    if(util.isNullOrUndefined(type)) {
+        type = 'default';
+    }
 
+    var builder = buildersContainer.viewModel[type];
+    if(util.isNullOrUndefined(builder)) {
+        throw 'can not find operator builder for ' + type;
+    }
+
+    return builder;
 }
 
-var queryLayoutBuilder = function() {
+var queryViewControllerBuilder = function(type) {
+    if(util.isNullOrUndefined(type)) {
+        type = 'default';
+    }
 
+    var builder = buildersContainer.viewController[type];
+    if(util.isNullOrUndefined(builder)) {
+        throw 'can not find viewController builder for ' + type;
+    }
+
+    return builder;
 }
 
-var queryWidgetBuilder = function() {
+var queryLayoutBuilder = function(type) {
+    if(util.isNullOrUndefined(type)) {
+        type = 'default';
+    }
 
+    var builder = buildersContainer.layout[type];
+    if(util.isNullOrUndefined(builder)) {
+        throw 'can not find layout builder for ' + type;
+    }
+
+    return builder;
 }
 
-var queryWidgetLayoutBuilder = function() {
+var queryWidgetBuilder = function(type) {
+    if(util.isNullOrUndefined(type)) {
+        type = 'default';
+    }
 
+    var builder = buildersContainer.widget[type];
+    if(!util.isNullOrUndefined(builder)) {
+        return builder;
+    }
+
+    builder = buildersContainer.widget['default'];
+    if(util.isNullOrUndefined(builder)) {
+        throw 'can not find widget builder for ' + type;
+    }
+    return builder;
+}
+
+var queryWidgetLayoutBuilder = function(type) {
+    if(util.isNullOrUndefined(type)) {
+        type = 'default';
+    }
+
+    var builder = buildersContainer.widgetLayout[type];
+    if(!util.isNullOrUndefined(builder)) {
+        return builder;
+    }
+
+    builder = buildersContainer.widgetLayout['default'];
+    if(util.isNullOrUndefined(builder)) {
+        throw 'can not find widget layout builder for ' + type;
+    }
+    return builder;
 }
 
 var queryManifestBuilder = function() {
@@ -91,10 +175,26 @@ var queryWidgetBuildConfig = function() {
 
 }
 
-var queryWidgetLayoutBuildConfig = function() {
 
+
+var queryWidgetLayoutBuildConfig = function(type) {
+    var config = buildersContainer.widgetLayoutBuildConfig[type];
+    if(util.isNullOrUndefined(config)) {
+        return buildersContainer.widgetLayoutBuildConfig.View;
+    }
+    return config;
 }
 
+var queryWidgetDependency = function(type) {
+    if(util.isNullOrUndefined(type)) {
+        throw 'queryWidgetDependency, type can not be null';
+    }
+
+    return buildersContainer.dependency[type];
+}
+
+
+exports.queryPageBuilder = queryPageBuilder;
 exports.queryModelBuilder = queryModelBuilder;
 exports.queryOperatorBuilder = queryOperatorBuilder;
 exports.queryViewModelBuilder = queryViewModelBuilder;
@@ -104,4 +204,5 @@ exports.queryWidgetBuilder = queryWidgetBuilder;
 exports.queryWidgetLayoutBuilder = queryWidgetLayoutBuilder;
 exports.queryWidgetBuildConfig = queryWidgetBuildConfig;
 exports.queryWidgetLayoutBuildConfig = queryWidgetLayoutBuildConfig;
+exports.queryWidgetDependency = queryWidgetDependency;
 exports.load = load;

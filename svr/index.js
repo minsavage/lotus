@@ -24,6 +24,8 @@ function createServer() {
     server.use(restify.bodyParser());
 
     server.get('/audios', queryAudio);
+    server.get('/weibos', queryWeibos);
+
 
     server.listen(8081, function() {
         console.log('%s listening at %s', server.name, server.url);
@@ -71,6 +73,29 @@ function queryAudio(req, res, next) {
 
             ret = docs;
 
+            res.send(ret);
+            next();
+        });
+    });
+}
+
+function queryWeibos(req, res, next) {
+    var condition = {};
+
+    var from = req.params['from'];
+    if(!util.isNullOrUndefined(from)) {
+        from = parseInt(from);
+        condition["createTime"] = from;
+    }
+
+    var collection = db.collection('weibos');
+    var cursor = collection.find(condition).sort({createTime:1});
+
+    cursor.count(function(err, count){
+        cursor.limit(30).toArray(function(err, docs){
+            ret = docs;
+            res.charSet('utf-8');
+            res.setHeader('X-Total-Count', count);
             res.send(ret);
             next();
         });

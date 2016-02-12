@@ -1,0 +1,1 @@
+{{name}}.setTag("{{index}}");

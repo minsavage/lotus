@@ -1,0 +1,1 @@
+{{viewModelObjName}}.addOnPropertyChangedCallback({{viewModelObjName}}Observer);

@@ -1,11 +1,13 @@
 /**
  * Created by danney on 16/1/15.
  */
-var mustache = require('mustache');
-var tpl = require('../template')('./template');
-var VariableTypeUtil = require('../util/VariableTypeUtil');
-var stringUtil = require('../util/stringUtil');
-var globalConfig = require('../globalConfig');
+var path = require('path');
+var lotus = require('../../lotus');
+var tpl = lotus.template(path.resolve(__dirname, '../template'));
+var codeGenerateUtil = lotus.util.codeGenerateUtil;
+var projectConfig = lotus.projectConfig;
+var ImportRecorder = lotus.recorder.ImportRecorder;
+var variableTypeUtil = lotus.util.variableTypeUtil;
 
 var ModelBuilder = function() {}
 
@@ -15,7 +17,7 @@ ModelBuilder.prototype.parse = function(model) {
         return;
     }
 
-    var className = stringUtil.firstCharacterToUppercase(model.name);
+    var importRecorder = new ImportRecorder();
     var properties = model.properties;
 
     var result = '';
@@ -24,40 +26,25 @@ ModelBuilder.prototype.parse = function(model) {
         var name = p.name;
         var type = p.type;
 
-        var javaType = VariableTypeUtil.getType(type);
-        var firstCharacterWithUpperCase = stringUtil.firstCharacterToUppercase(name);
+        var ret = '';
+        ret += codeGenerateUtil.generateMemberVariable(type, name) + '\r\r';
+        ret += codeGenerateUtil.generateGetter(type, name) + '\r\r';
+        ret += codeGenerateUtil.generateSetter(type, name) + '\r\r';
 
-
-        var ret = javaType + ' ' + name + ';\r\r';
-
-        var getTpl;
-        if(type == 'bool') {
-            getTpl = tpl.model.getBoolean;
+        if(variableTypeUtil.isModel(type)) {
+            importRecorder.addModel(type);
         }
         else {
-            getTpl = tpl.model.get;
+            var importStr = variableTypeUtil.queryImport(type);
+            if(lotus.util.stringUtil.isNotEmpty(importStr)) {
+                importRecorder.addPlain(importStr);
+            }
         }
-
-        ret += mustache.render(getTpl, {
-            type: javaType,
-            name: name,
-            nameWithFirstUppercase: firstCharacterWithUpperCase
-        }) + '\r\r';
-
-        ret += mustache.render(tpl.model.set, {
-                type: javaType,
-                name: name,
-                nameWithFirstUppercase: firstCharacterWithUpperCase
-        }) + '\r\r';
 
         result += ret;
     }
 
-    return mustache.render(tpl.model.main, {
-        content: result,
-        className: className,
-        packageName: globalConfig.packageName
-    });
+    return codeGenerateUtil.generateClass(projectConfig.getPackageName(), 'model', importRecorder.generate(), model.name, result.trim());
 }
 
 module.exports = ModelBuilder;
