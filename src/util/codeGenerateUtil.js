@@ -7,6 +7,10 @@ var tpl = require('../template')('./template');
 var VariableTypeUtil = require('../util/VariableTypeUtil');
 var stringUtil = require('../util/stringUtil');
 
+var generateVariableDeclare = function(type, name) {
+    return VariableTypeUtil.getType(type) + ' ' + stringUtil.firstCharacterToLowercase(name) + ';';
+}
+
 var generateMemberVariable = function(type, name, isProtected) {
     var privateStr = isProtected ? 'protected': 'private';
     return privateStr + ' ' + VariableTypeUtil.getType(type) + ' ' + stringUtil.firstCharacterToLowercase(name) + ';';
@@ -162,6 +166,7 @@ var generateXml = function(tag, properties, content, hasDeclaration) {
 }
 
 exports.generateClass = generateClass;
+exports.generateVariableDeclare = generateVariableDeclare;
 exports.generateMemberVariable = generateMemberVariable;
 exports.generateGetter = generateGetter;
 exports.generateSetter = generateSetter;

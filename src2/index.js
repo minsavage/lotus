@@ -13,5 +13,8 @@ lotus.projectConfig.setOutputDir(path.resolve(__dirname, '../output'));
 lotus.modelMgr.load(projectPath);
 lotus.builderMgr.load(builderPaths);
 
+var f = require('./builderExtend/widget/xlistview/layoutBuildConfig');
+var c = f();
+
 var androidBuilder = require('./androidBuilder');
 androidBuilder.startBuild();

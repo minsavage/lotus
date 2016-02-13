@@ -61,7 +61,7 @@ ListViewAdapterBuilder.prototype._buildWidget = function(model) {
         this._codeDeclare += codeRecorder.getMemberVariable() + '\r';
         this._codeInit += codeRecorder.getOnCreateView(); + '\r'
         this._codeEvent = codeRecorder.getEventImpl() + '\r\r';
-        this._codeAssignment += codeRecorder.getOnCreate() + '\r';
+        this._codeAssignment += codeRecorder.getAssignment() + '\r';
         this._importReorder.addAll(codeRecorder.getImportRecorder());
     }
 
@@ -78,30 +78,23 @@ ListViewAdapterBuilder.prototype._buildImport = function(model) {
 }
 
 var buildWidget = function(model) {
-    var Builder = AdapterWidgetBuilder;
+    //var Builder = AdapterWidgetBuilder;
+    var Builder = builderMgr.queryWidgetBuilder(model.type);
     var config = builderMgr.queryWidgetBuildConfig(model.type);
+    var strTpl = 'viewHolder.{{id}}.setTag(ref);';
 
     var codeRecorder = null;
     if(Builder != null) {
         var builder = new Builder();
+        builder.setBuildAdapterMode();
         codeRecorder = builder.parse(model, config);
+        if(codeRecorder != null) {
+            var setTag = strTpl.replace('{{id}}', model.id);
+            codeRecorder.addOnCreateView(setTag);
+        }
     }
-
     return codeRecorder;
 }
-
-//var buildWidget = function(model) {
-//    var Builder = builderMgr.queryWidgetBuilder(model.type);
-//    var config = builderMgr.queryWidgetBuildConfig(model.type);
-//
-//    var codeRecorder = null;
-//    if(Builder != null) {
-//        var builder = new Builder();
-//        codeRecorder = builder.parse(model, config);
-//    }
-//
-//    return codeRecorder;
-//}
 
 var getListDataGetter = function(str) {
     var data = str.substring(2, str.length-1);

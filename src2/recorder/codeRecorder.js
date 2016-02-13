@@ -10,6 +10,7 @@ var CodeRecorder = function(){
     this._onCreateView = '';
     this._onDestroy = '';
     this._eventImpl = '';
+    this._assignment = '';
     this._dataBinding = {};
     this._importRecorder = new ImportRecorder();
 }
@@ -32,6 +33,10 @@ CodeRecorder.prototype.addOnDestroy = function(str) {
 
 CodeRecorder.prototype.addEventImpl = function(str) {
     this._eventImpl += str;
+}
+
+CodeRecorder.prototype.addAssignment = function(str) {
+    this._assignment += str;
 }
 
 CodeRecorder.prototype.addDataBinding = function(property, str) {
@@ -62,6 +67,10 @@ CodeRecorder.prototype.getOnDestroy = function() {
 
 CodeRecorder.prototype.getEventImpl = function() {
     return this._eventImpl;
+}
+
+CodeRecorder.prototype.getAssignment = function() {
+    return this._assignment;
 }
 
 CodeRecorder.prototype.getDataBinding = function() {

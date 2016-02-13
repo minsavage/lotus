@@ -26,5 +26,24 @@ var clone = function(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
 
+var combine = function(dest, src) {
+    var destClone = clone(dest);
+    combineInternal(destClone, src);
+    return destClone;
+}
+
+var combineInternal = function(dest, src) {
+    for(var k in src) {
+        if(util.isObject(dest[k])) {
+            combineInternal(dest[k], src[k])
+        }
+        else {
+            dest[k] = src[k];
+        }
+    }
+    return dest;
+}
+
 exports.getSize = getSize;
 exports.clone = clone;
+exports.combine = combine;

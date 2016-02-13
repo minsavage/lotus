@@ -6,20 +6,20 @@ var objUtil = lotus.util.objectUtil;
 var builderMgr = lotus.builderMgr;
 
 module.exports = function() {
-    var view = builderMgr.queryWidgetLayoutBuildConfig('View');  //require('../android/view/layoutBuildConfig')
+    var view = builderMgr.queryWidgetLayoutBuildConfig('View');
 
     return objUtil.combine(view, {
-        namespace: 'PullToRefresh',
+        namespace: 'fresco',
 
-        typeGenerateRules : 'com.handmark.pulltorefresh.library.PullToRefreshListView',
+        typeGenerateRules : 'com.facebook.drawee.view.SimpleDraweeView',
 
         propertyGenerateRules: {
             replace: {
-                ptrMode: 'PullToRefresh:{{key}}="{{value}}"'
+                actualImageScaleType: 'fresco:{{key}}="{{value}}"'
             },
 
             ignore: {
-                adapter: true
+                uri: true
             }
         }
     });

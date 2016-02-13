@@ -21,7 +21,15 @@ module.exports = {
             id: 'tvCreateTime',
             layout_width: 'wrap_content',
             layout_height: 'wrap_content',
-            text: '@{weibo.createTime}'
+            text: '@{weibo.createTime}',
+            event: {
+                onClick: function() {
+                    showPage('DetailPage', function(){
+                        mainVM = getViewModel('MainViewModel');
+                        detailVM.weibo = mainVM.currentClickItem;
+                    })
+                }
+            }
         }]
     }
 }

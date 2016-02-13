@@ -8,6 +8,10 @@ var tpl = require('../template')(path.resolve(__dirname, '../builder/template'))
 var variableTypeUtil = require('./variableTypeUtil');
 var stringUtil = require('./stringUtil');
 
+var generateVariableDeclare = function(type, name) {
+    return variableTypeUtil.getType(type) + ' ' + stringUtil.firstCharacterToLowercase(name) + ';';
+}
+
 var generateMemberVariable = function(type, name, isProtected) {
     var privateStr = isProtected ? 'protected': 'private';
     return privateStr + ' ' + variableTypeUtil.getType(type) + ' ' + stringUtil.firstCharacterToLowercase(name) + ';';
@@ -177,6 +181,7 @@ var generateActivityInManifest = function(name, isEntryPage) {
 }
 
 exports.generateClass = generateClass;
+exports.generateVariableDeclare = generateVariableDeclare;
 exports.generateMemberVariable = generateMemberVariable;
 exports.generateGetter = generateGetter;
 exports.generateSetter = generateSetter;

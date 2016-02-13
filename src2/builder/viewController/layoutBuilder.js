@@ -99,8 +99,10 @@ LayoutBuilder.prototype._buildWithoutDataBinding = function(modelOld) {
 var delDataBindingField = function(model) {
     for(var k in model) {
         var v = model[k];
-        if(v.indexOf('@{') > -1) {
-            delete model[k];
+        if(util.isString(v)) {
+            if(v.indexOf('@{') > -1) {
+                delete model[k];
+            }
         }
     }
 

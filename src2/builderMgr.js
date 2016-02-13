@@ -163,26 +163,21 @@ var queryWidgetLayoutBuilder = function(type) {
     return builder;
 }
 
-var queryManifestBuilder = function() {
-
+var queryWidgetBuildConfig = function(type) {
+    var config = buildersContainer.widgetBuildConfig[type];
+    //if(util.isNullOrUndefined(config)) {
+    //    throw 'can not find widget builder for ' + type;
+    //}
+    return config;
 }
-
-var queryGradleBuilder = function() {
-
-}
-
-var queryWidgetBuildConfig = function() {
-
-}
-
-
 
 var queryWidgetLayoutBuildConfig = function(type) {
     var config = buildersContainer.widgetLayoutBuildConfig[type];
+
     if(util.isNullOrUndefined(config)) {
-        return buildersContainer.widgetLayoutBuildConfig.View;
+        config = buildersContainer.widgetLayoutBuildConfig.View;
     }
-    return config;
+    return config();
 }
 
 var queryWidgetDependency = function(type) {
