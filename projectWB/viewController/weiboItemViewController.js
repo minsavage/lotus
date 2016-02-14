@@ -17,6 +17,12 @@ module.exports = {
         layout_height: '50dp',
         background: '#123456',
         units:[{
+            type: 'XImageView',
+            id: 'imageView',
+            layout_width: '50dp',
+            layout_height: '50dp',
+            uri: '@{weibo.authorAvatarUrl}'
+        },{
             type: 'TextView',
             id: 'tvCreateTime',
             layout_width: 'wrap_content',
@@ -24,9 +30,9 @@ module.exports = {
             text: '@{weibo.createTime}',
             event: {
                 onClick: function() {
-                    showPage('DetailPage', function(){
-                        mainVM = getViewModel('MainViewModel');
-                        detailVM.weibo = mainVM.currentClickItem;
+                    showPage('UserDetailPage', function(){
+                        //mainVM = getViewModel('MainViewModel');
+                        //detailVM.weibo = mainVM.currentClickItem;
                     })
                 }
             }

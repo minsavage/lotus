@@ -20,6 +20,8 @@ var buildersContainer = {
     widgetBuildConfig: {},
     widgetLayoutBuildConfig: {},
 
+    function: {},
+
     dependency: {}
 };
 
@@ -164,11 +166,7 @@ var queryWidgetLayoutBuilder = function(type) {
 }
 
 var queryWidgetBuildConfig = function(type) {
-    var config = buildersContainer.widgetBuildConfig[type];
-    //if(util.isNullOrUndefined(config)) {
-    //    throw 'can not find widget builder for ' + type;
-    //}
-    return config;
+    return buildersContainer.widgetBuildConfig[type];
 }
 
 var queryWidgetLayoutBuildConfig = function(type) {
@@ -178,6 +176,10 @@ var queryWidgetLayoutBuildConfig = function(type) {
         config = buildersContainer.widgetLayoutBuildConfig.View;
     }
     return config();
+}
+
+var queryFunctionBuilder = function() {
+
 }
 
 var queryWidgetDependency = function(type) {

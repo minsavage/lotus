@@ -10,10 +10,11 @@ var ImportRecorder = function() {
     this._operator = {};
     this._other = {};
     this._plain = {};
+    this._activity = {};
 }
 
 ImportRecorder.prototype.addAll = function(importGenerator) {
-    var keys = ['_model', '_viewModel', '_operator', '_other', '_plain'];
+    var keys = ['_model', '_viewModel', '_operator', '_other', '_plain', '_activity'];
 
     for(var i in keys) {
         var k = keys[i];
@@ -38,6 +39,10 @@ ImportRecorder.prototype.addOperator = function(name) {
     this._operator[name] = 1;
 }
 
+ImportRecorder.prototype.addActivity = function(str) {
+    this._activity[str] = 1;
+}
+
 ImportRecorder.prototype.addOther = function(str) {
     this._other[str] = 1;
 }
@@ -58,6 +63,10 @@ ImportRecorder.prototype.generate = function() {
 
     for(var name in this._operator) {
         result += codeGenerateUtil.generateImport(projectConfig.getPackageName(), 'operator.' + name) + '\r';
+    }
+
+    for(var name in this._activity) {
+        result += codeGenerateUtil.generateImport(projectConfig.getPackageName(), 'activity.' + name) + '\r';
     }
 
     for(var str in this._other) {

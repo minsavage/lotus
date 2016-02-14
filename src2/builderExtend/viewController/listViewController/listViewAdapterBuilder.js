@@ -11,8 +11,6 @@ var modelMgr = lotus.modelMgr;
 var builderMgr = lotus.builderMgr;
 var ImportReorder = lotus.recorder.ImportRecorder;
 var CodeRecorder = lotus.recorder.CodeRecorder;
-var AdapterWidgetBuilder = require('./adapterWidgetBuilder');
-
 
 var ListViewAdapterBuilder = function() {
     this._codeInit = '';
@@ -78,7 +76,6 @@ ListViewAdapterBuilder.prototype._buildImport = function(model) {
 }
 
 var buildWidget = function(model) {
-    //var Builder = AdapterWidgetBuilder;
     var Builder = builderMgr.queryWidgetBuilder(model.type);
     var config = builderMgr.queryWidgetBuildConfig(model.type);
     var strTpl = 'viewHolder.{{id}}.setTag(ref);';

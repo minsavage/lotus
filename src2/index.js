@@ -13,8 +13,15 @@ lotus.projectConfig.setOutputDir(path.resolve(__dirname, '../output'));
 lotus.modelMgr.load(projectPath);
 lotus.builderMgr.load(builderPaths);
 
-var f = require('./builderExtend/widget/xlistview/layoutBuildConfig');
-var c = f();
-
 var androidBuilder = require('./androidBuilder');
 androidBuilder.startBuild();
+
+//var x = function() {
+//    showPage('DetailPage', function(){
+//        mainVM = getViewModel('MainViewModel');
+//        detailVM.weibo = mainVM.currentClickItem;
+//    })
+//};
+//
+//var esprima = require('esprima');
+//esprima.parse(x);

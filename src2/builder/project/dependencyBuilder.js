@@ -44,7 +44,9 @@ DependencyBuilder.prototype._handle = function(dep) {
     if(dep.type == 'module') {
         this._handleModuleDependency(dep);
     }
-    console.log(dep);
+    else if(dep.type == 'library') {
+        this._handleLibraryDependency(dep);
+    }
 }
 
 DependencyBuilder.prototype._handleModuleDependency = function(dep) {
@@ -57,6 +59,10 @@ DependencyBuilder.prototype._handleModuleDependency = function(dep) {
 
     this._gradleRecoder.app.dependencies.compile.push(str);
     this._gradleRecoder.setting.include.push('\':' + dep.name + '\'');
+}
+
+DependencyBuilder.prototype._handleLibraryDependency = function(dep) {
+    this._gradleRecoder.app.dependencies.compile.push('\'' + dep.src + '\'');
 }
 
 module.exports = DependencyBuilder;

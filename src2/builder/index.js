@@ -13,7 +13,9 @@ module.exports = {
         layout: require('./viewController/layoutBuilder'),
 
         widget: require('./widget/widgetBuilder'),
-        widgetLayout: require('./widget/widgetLayoutBuilder')
+        widgetLayout: require('./widget/widgetLayoutBuilder'),
+
+        function: require('./function/functionBuilder')
     },
 
     remoteOperatorService: {

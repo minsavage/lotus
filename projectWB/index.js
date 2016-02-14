@@ -5,6 +5,6 @@ module.exports = {
     productName: 'Weibo',
     organizationDomain: 'com.tencent',
     displayName: '微博',
-    serverDomain: 'http://192.168.1.114:8081',
+    serverDomain: 'http://192.168.0.103:8081',
     entryPage: 'WeibosPage'
 }

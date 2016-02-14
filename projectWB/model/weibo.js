@@ -8,7 +8,8 @@ module.exports = {
         {name: 'content', type: 'string'},
         {name: 'createTime', type: 'date'},
         {name: 'authorId', type: 'string'},
+        {name: 'authorAvatarUrl', type: 'string'},
         {name: 'commentCount', type: 'int'},
-        {name: 'likeCount', type: 'int'},
+        {name: 'likeCount', type: 'int'}
     ]
 }
