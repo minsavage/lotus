@@ -34,9 +34,9 @@ LayoutBuilder.prototype._buildRoot = function(model) {
 }
 
 LayoutBuilder.prototype._buildDataBinding = function(model) {
-    var name = 'name="' + model.viewModel.name + '"';
+    var name = 'name="' + model.viewModels.master.name + '"';
 
-    var fullType = projectConfig.getPackageName() + '.viewModel.' + model.viewModel.type;
+    var fullType = projectConfig.getPackageName() + '.viewModel.' + model.viewModels.master.type;
     var type = 'type="' + fullType + '"';
 
     var properties = [name, type];

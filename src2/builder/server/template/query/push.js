@@ -1,0 +1,2 @@
+models.push(model);
+callback();

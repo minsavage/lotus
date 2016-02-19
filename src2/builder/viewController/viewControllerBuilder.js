@@ -15,6 +15,7 @@ var modelMgr = lotus.modelMgr;
 var builderMgr = lotus.builderMgr;
 var ImportRecorder = lotus.recorder.ImportRecorder;
 var actionTranslateUtil = lotus.util.actionTranslateUtil;
+var FunctionBuilder = require('../function/functionBuilder');
 
 var ViewControllerBuilder = function() {
     this._model = null;
@@ -43,9 +44,9 @@ ViewControllerBuilder.prototype._parseInternal = function(model) {
         }
     }
 
-    var v = model['viewModel']
+    var v = model['viewModels']
     if(v == null) {
-        throw 'no "viewModel" field';
+        throw 'no "viewModels" field';
     }
 
     this._model = model;
@@ -57,7 +58,9 @@ ViewControllerBuilder.prototype._parseInternal = function(model) {
 }
 
 ViewControllerBuilder.prototype._render = function() {
-    return mustache.render(this._getTemplate(), this._getRenderData());
+    var result = mustache.render(this._getTemplate(), this._getRenderData());
+    result = onBuildFinished(result);
+    return result;
 }
 
 ViewControllerBuilder.prototype._getTemplate = function() {
@@ -76,42 +79,62 @@ ViewControllerBuilder.prototype._getRenderData = function() {
         viewModelDestroy: this._codeOnDestroy.trim(),
         viewModelObserverStmt: this._codeEventImpl.trim(),
         dataBindingName : nameUtil.vcToBindingName(this._model.name),
-        viewModelObjName: this._model.viewModel.name,
-        viewModelObjNameWithFirstUppercase: stringUtil.firstCharacterToUppercase(this._model.viewModel.name)
+        viewModelObjName: this._model.viewModels.master.name,
+        viewModelObjNameWithFirstUppercase: stringUtil.firstCharacterToUppercase(this._model.viewModels.master.name)
     }
     return data;
 }
 
 ViewControllerBuilder.prototype._buildViewModel = function(model) {
-    var viewModel = model.viewModel;
-    var className = viewModel.type;
-    var objName = viewModel.name;
+    var master = model.viewModels.master;
+    var slaves = model.viewModels.slave;
 
     //变量申明
-    this._codeMemberVariable += codeGenerateUtil.generateMemberVariable(className, objName) + '\r';
+    this._codeMemberVariable += codeGenerateUtil.generateMemberVariable(master.type, master.name) + '\r';
+    for(var k in slaves) {
+        var vm = slaves[k];
+        this._codeMemberVariable += codeGenerateUtil.generateMemberVariable(vm.type, vm.name) + '\r';
+    }
 
     //初始化
     var init = mustache.render(tpl.viewController.viewModelInit, {
-        viewModelClassName: className,
-        viewModelObjName: objName
+        viewModelClassName: master.type,
+        viewModelObjName: master.name
     }) + '\r';
+
+    for(var k in slaves) {
+        var vm = slaves[k];
+        init += mustache.render(tpl.viewController.viewModelInitGet, {
+                viewModelClassName: vm.type,
+                viewModelObjName: vm.name}) + '\r';
+    }
 
     //检测是否需要注册ViewModelPropertyChanged监听
     if(!util.isNullOrUndefined(model.bind) && objectUtil.getSize(model.bind) > 0) {
         init += mustache.render(tpl.viewController.viewModelAddCallback, {
-            viewModelObjName: objName
+            viewModelObjName: master.name
         });
+    }
+
+    if(util.isFunction(model.viewModels.init)) {
+        var builder = new FunctionBuilder();
+        var codeRecorder = builder.parse(model.viewModels.init);
+        init += codeRecorder.getOnCreate();
     }
 
     this._codeOnCreate += init + '\r';
 
     //销毁
     var destroy = mustache.render(tpl.viewController.viewModelDestroy, {
-        viewModelClassName: className,
-        viewModelObjName: objName
-    });
+        viewModelClassName: master.type,
+        viewModelObjName: master.name
+    }) + '\r';
+    for(var k in slaves) {
+        var vm = slaves[k];
+        destroy +=  vm.name + ' = null;\r';
+    }
 
-    this._codeOnDestroy += destroy + '\r';
+    this._codeOnDestroy += destroy;
 
 
     ////注册监听
@@ -120,7 +143,11 @@ ViewControllerBuilder.prototype._buildViewModel = function(model) {
     //    viewModelObjName: objName
     //});
 
-    this._importRecorder.addViewModel(className);
+    this._importRecorder.addViewModel(master.type);
+    for(var k in slaves) {
+        var vm = slaves[k];
+        this._importRecorder.addViewModel(vm.type);
+    }
 }
 
 ViewControllerBuilder.prototype._buildDataBinding = function(model) {
@@ -154,7 +181,7 @@ ViewControllerBuilder.prototype._buildDataBinding = function(model) {
     var content = codeGenerateUtil.generateSwitchCase('propertyId', ids, values);
 
     var result = mustache.render(tpl.viewController.viewModelObserverStmt, {
-        viewModelObjName: model.viewModel.name,
+        viewModelObjName: model.viewModels.master.name,
         content: content
     });
 
@@ -193,5 +220,21 @@ var buildWidget = function(model) {
     return codeRecorder;
 }
 
+var onBuildFinished = function(result) {
+    var index = result.indexOf('SimpleDraweeView');
+    if(index == -1) {
+        return result;
+    }
+
+    var tpl = 'super.onCreate(savedInstanceState);'
+    index = result.indexOf(tpl);
+    if(index == -1) {
+        return result;
+    }
+
+    var code = '\rFresco.initialize(getContext());\r';
+    var point = index + tpl.length;
+    return result.substring(0, point) + code + result.substring(point);
+}
 
 module.exports = ViewControllerBuilder;

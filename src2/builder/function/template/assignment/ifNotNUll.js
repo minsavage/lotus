@@ -1,0 +1,3 @@
+if({{objName}} != null) {
+    [[content]]
+}
