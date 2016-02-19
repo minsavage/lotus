@@ -24,14 +24,15 @@ ListViewControllerBuilder.prototype.parse = function(model) {
     if(util.isNullOrUndefined(model.bind)) {
         model.bind = {};
     }
-    model.bind[model.viewModel.name + '.listViewLoadingStatus'] = function() { setLoadingStatus();}
+
+    model.bind[model.viewModels.master.name + '.listViewLoadingStatus'] = function() { setLoadingStatus();}
+
+    this._buildListView(model);
+    this._buildListViewAdapter(model);
 
     if(!this._parseInternal(model)) {
         return '';
     }
-
-    this._buildListView(model);
-    this._buildListViewAdapter(model);
 
     return this._render();
 }
@@ -43,7 +44,7 @@ ViewControllerBuilder.prototype._getTemplate = function() {
 ListViewControllerBuilder.prototype._buildListView = function(model) {
     var listViewModel = findListViewModel(model.content);
     if(listViewModel == null) {
-        throw 'there is no list view model';
+        throw 'there is no list view widget';
     }
 
     this._codeMemberVariable += codeGenerateUtil.generateMemberVariable('PullToRefreshListView', listViewModel.id) + '\r';
@@ -54,12 +55,12 @@ ListViewControllerBuilder.prototype._buildListView = function(model) {
         className: model.name
     })
 
-    var viewModelOriginal = modelMgr.queryViewModel(model.viewModel.type);
+    var viewModelOriginal = modelMgr.queryViewModel(model.viewModels.master.type);
     var modelName = viewModelOriginal.list.modelType
 
     this._codeEventImpl += mustache.render(tpl.listViewController.event, {
-        viewModelObjName: model.viewModel.name,
-        viewModelClassName: model.viewModel.type,
+        viewModelObjName: model.viewModels.master.name,
+        viewModelClassName: model.viewModels.master.type,
         modelClassName: modelName,
         listViewObjName: listViewModel.id
     })

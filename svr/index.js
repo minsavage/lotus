@@ -5,6 +5,8 @@ var restify = require('restify');
 var MongoClient = require('mongodb').MongoClient;
 var server;
 var util = require('util');
+var async = require('async');
+var ObjectID = require('mongodb').ObjectID;
 
 //createServer();
 
@@ -16,6 +18,9 @@ MongoClient.connect("mongodb://localhost:27017/lotus", function(err, database) {
     createServer();
 });
 
+var weibos = require('./quer3');
+var queryWeibos = weibos.queryWeibos;
+
 
 function createServer() {
     server = restify.createServer();
@@ -25,6 +30,9 @@ function createServer() {
 
     server.get('/audios', queryAudio);
     server.get('/weibos', queryWeibos);
+    server.get('/weibos2', queryWeibos2);
+    server.get('/weibos3', queryWeibos3);
+    server.get('/weibos4', weibos.queryWeibos);
 
 
     server.listen(8081, function() {
@@ -100,4 +108,133 @@ function queryWeibos(req, res, next) {
             next();
         });
     });
+}
+
+function queryWeibos2(req, res, next) {
+    var models = [];
+    var totalCount = 0;
+
+    var q = async.queue(onQueryCallback);
+    q.drain = done;
+
+    startQuery();
+
+    function startQuery() {
+        var condition = {};
+
+        var from = req.params['from'];
+        if(!util.isNullOrUndefined(from)) {
+            from = parseInt(from);
+            condition["createTime"] = from;
+        }
+
+        var weiboFields = {
+            _id: true,
+            createTime: true,
+            updateTime: true,
+            content: true,
+            authorId: true
+        }
+
+        var cursor = db.collection('weibos').find(condition, weiboFields).sort({createTime:1});
+
+        cursor.count(function(err, count){
+            totalCount = count;
+            cursor.limit(30).each(function(err, item){
+                if(item != null) {
+                    q.push(item);
+                }
+            });
+        });
+    }
+
+    function onQueryCallback(item, callback) {
+        var model = {};
+        model.objectId = item._id;
+        model.createTime = item.createTime;
+        model.updateTime = item.updateTime;
+        model.content = item.content;
+        model.authorId = item.authorId;
+
+        var userFields = {
+            name: true,
+            avatarUrl: true
+        };
+
+        var objectId = new ObjectID(model.authorId);
+
+        db.collection('users').findOne({_id: objectId}, userFields, function(err, user){
+            model.authorName = user.name;
+            model.authorAvatarUrl = user.avatarUrl;
+
+            models.push(model);
+            callback();
+        })
+    }
+
+    function done() {
+        res.charSet('utf-8');
+        res.setHeader('X-Total-Count', totalCount);
+        res.send(models);
+        next();
+    }
+}
+
+function queryWeibos3(req, res, next) {
+    var models = [];
+    var totalCount = 0;
+
+    var q = async.queue(onQueryCallback);
+    q.drain = done;
+
+    startQuery();
+
+    function startQuery() {
+        var condition = {};
+
+        var from = req.params['from'];
+        if(!util.isNullOrUndefined(from)) {
+            from = parseInt(from);
+            condition["createTime"] = from;
+        }
+
+        var weiboFields = {
+            _id: true,
+            createTime: true,
+            updateTime: true,
+            content: true,
+            authorId: true
+        }
+
+        var cursor = db.collection('weibos').find(condition, weiboFields).sort({createTime:1});
+
+        cursor.count(function(err, count){
+            totalCount = count;
+            cursor.limit(30).each(function(err, item){
+                if(item != null) {
+                    q.push(item);
+                }
+            });
+        });
+    }
+
+    function onQueryCallback(item, callback) {
+        var model = {};
+
+        model.objectId = item._id;
+        model.createTime = item.createTime;
+        model.updateTime = item.updateTime;
+        model.content = item.content;
+        model.authorId = item.authorId;
+
+        models.push(model);
+        callback();
+    }
+
+    function done() {
+        res.charSet('utf-8');
+        res.setHeader('X-Total-Count', totalCount);
+        res.send(models);
+        next();
+    }
 }

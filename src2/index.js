@@ -4,7 +4,7 @@
 var lotus = require('./lotus');
 var path = require('path');
 
-var projectPath = path.resolve(__dirname, '../projectWB');
+var projectPath = path.resolve(__dirname, '../project/yunmeng');
 var builderPaths = ['./builder', './builderExtend'];
 
 lotus.projectConfig.load(projectPath);
@@ -16,12 +16,5 @@ lotus.builderMgr.load(builderPaths);
 var androidBuilder = require('./androidBuilder');
 androidBuilder.startBuild();
 
-//var x = function() {
-//    showPage('DetailPage', function(){
-//        mainVM = getViewModel('MainViewModel');
-//        detailVM.weibo = mainVM.currentClickItem;
-//    })
-//};
-//
-//var esprima = require('esprima');
-//esprima.parse(x);
+var serverBuilder = require('./serverBuilder');
+serverBuilder.startBuild();

@@ -55,7 +55,15 @@ var queryImport = function(typeName) {
     }
 }
 
+var canBeNull = function(typeName) {
+    if(typeName == 'int' || typeName == 'bool') {
+        return false;
+    }
+    return true;
+}
+
 exports.getType = getType;
 exports.getTypeDefaultValue = getTypeDefaultValue;
 exports.isModel = isModel;
 exports.queryImport = queryImport;
+exports.canBeNull = canBeNull;

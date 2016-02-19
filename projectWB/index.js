@@ -5,6 +5,12 @@ module.exports = {
     productName: 'Weibo',
     organizationDomain: 'com.tencent',
     displayName: '微博',
-    serverDomain: 'http://192.168.0.103:8081',
-    entryPage: 'WeibosPage'
+    entryPage: 'WeibosPage',
+    server: {
+        domain: '192.168.0.103',
+        port: '8081',
+        dbDomain: '127.0.0.1',
+        dbPort: '27017',
+        dbName: 'lotus'
+    }
 }

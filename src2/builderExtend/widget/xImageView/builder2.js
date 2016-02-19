@@ -13,10 +13,6 @@ var XImageViewBuilder = function() {
 
 util.inherits(XImageViewBuilder, WidgetBuilder);
 
-//XImageViewBuilder.prototype.parse = function() {
-//
-//}
-
 XImageViewBuilder.prototype._buildAssignment = function(key, value, model) {
     if(key != 'uri') {
         XImageViewBuilder.super_.prototype._buildAssignment.call(this, key, value, model);

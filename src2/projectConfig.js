@@ -2,6 +2,7 @@
  * Created by danney on 16/2/4.
  */
 var path = require('path');
+var util = require('util');
 var config = null;
 var outputDir = null;
 
@@ -29,7 +30,13 @@ var getPackageName = function() {
 }
 
 var getServerDomain = function() {
-    return config.serverDomain;
+    var serverConfig =  config.server;
+    var port = '';
+    if(!util.isNullOrUndefined(serverConfig.port)) {
+        port = ':' + serverConfig.port
+    }
+
+    return 'http://' + serverConfig.domain + port + '/';
 }
 
 var srcDir = null;
@@ -57,7 +64,9 @@ var getManifestDir = function() {
     return manifestDir;
 }
 
-
+var getServerDir = function() {
+    return path.join(outputDir, 'server');
+}
 
 exports.load = load;
 exports.get = get;
@@ -68,3 +77,4 @@ exports.getOutputDir = getOutputDir;
 exports.getSrcDir = getSrcDir;
 exports.getResDir = getResDir;
 exports.getManifestDir = getManifestDir;
+exports.getServerDir = getServerDir;

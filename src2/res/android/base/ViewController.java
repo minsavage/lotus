@@ -1,5 +1,6 @@
 package {{packageName}}.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -42,6 +43,10 @@ public class ViewController {
             subViewControllerMgr.addHost(hostCallback);
         }
         return subViewControllerMgr;
+    }
+
+    public void finish() {
+        ((Activity) getContext()).finish();
     }
 
     //以下为传递Activity的事件

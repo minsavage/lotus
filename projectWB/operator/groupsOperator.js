@@ -19,5 +19,15 @@ module.exports = {
                 }
             }
         }
+    },
+
+    bind: {
+        collections: [
+            {name: 'group', type: 'master'}
+        ],
+        map: {
+            name: 'group.name',
+            userId: 'group.userId'
+        }
     }
 }

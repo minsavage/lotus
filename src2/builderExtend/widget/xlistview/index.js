@@ -3,6 +3,8 @@
  */
 module.exports = {
     XListView: {
+        widget: require('./widgetBuilder'),
+        widgetBuildConfig: require('./widgetBuildConfig'),
         widgetLayoutBuildConfig: require('./layoutBuildConfig'),
         dependency: require('./dependency')
     }

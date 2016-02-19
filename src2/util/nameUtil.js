@@ -17,6 +17,20 @@ var vcToBindingName = function(name) {
     return 'Vc' + str + 'Binding';
 }
 
+var operatorToServerFunctionName = function(operator, action) {
+    return action + stringUtil.withoutSuffix(operator.name, 'Operator');
+}
+
+var operatorToServerPathName = function(operator) {
+    var suffix = '';
+    if(operator.resultType == 'collection') {
+        suffix = 's';
+    }
+    return stringUtil.firstCharacterToLowercase(operator.model) + suffix;
+}
+
 exports.pageToActivityName = pageToActivityName;
 exports.vcToXmlFileName = vcToXmlFileName;
 exports.vcToBindingName = vcToBindingName;
+exports.operatorToServerFunctionName = operatorToServerFunctionName;
+exports.operatorToServerPathName = operatorToServerPathName;

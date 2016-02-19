@@ -7,9 +7,10 @@ module.exports = {
         {name: 'objectId', type: 'string'},
         {name: 'content', type: 'string'},
         {name: 'createTime', type: 'date'},
-        {name: 'authorId', type: 'string'},
-        {name: 'authorAvatarUrl', type: 'string'},
         {name: 'commentCount', type: 'int'},
-        {name: 'likeCount', type: 'int'}
+        {name: 'likeCount', type: 'int'},
+        {name: 'authorId', type: 'string'},
+        {name: 'authorName', type: 'string'},
+        {name: 'authorAvatarUrl', type: 'string'}
     ]
 }

@@ -27,5 +27,21 @@ module.exports = {
                 createTime: -1
             }
         }
+    },
+
+    bind: {
+        type: 'multiSchema',
+        collections: [
+            {name: 'weibo', type: 'master'},
+            {name: 'user', type: 'secondary', condition: {objectId: 'weibo.authorId'} }
+        ],
+        map: {
+            content: 'weibo.content',
+            commentCount: 'weibo.commentCount',
+            likeCount: 'weibo.likeCount',
+            authorId: 'weibo.authorId',
+            authorName: 'user.name',
+            authorAvatarUrl: 'user.avatarUrl'
+        }
     }
 }

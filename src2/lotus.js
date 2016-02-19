@@ -6,6 +6,7 @@ var lotus = {
         stringUtil: require('./util/stringUtil'),
         variableTypeUtil: require('./util/variableTypeUtil'),
         codeGenerateUtil: require('./util/codeGenerateUtil'),
+        jsCodeUtil: require('./util/jsCodeUtil'),
         objectUtil: require('./util/objectUtil'),
         nameUtil: require('./util/nameUtil'),
         actionTranslateUtil: require('./util/actionTranslateUtil'),

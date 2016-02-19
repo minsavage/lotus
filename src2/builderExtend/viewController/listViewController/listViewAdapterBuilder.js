@@ -28,8 +28,8 @@ ListViewAdapterBuilder.prototype.parse = function(listViewModel, hostViewControl
 
     var className = hostViewControllerModel.name + 'Adapter';
     var listDataGetter = getListDataGetter(adapter.listData);
-    var itemModelClassName = itemViewController.viewModel.type;
-    var itemModelObjName = itemViewController.viewModel.name;
+    var itemModelClassName = itemViewController.viewModels.master.type;
+    var itemModelObjName = itemViewController.viewModels.master.name;
 
     var code = mustache.render(tpl.listViewAdapter.main, {
         className: className,

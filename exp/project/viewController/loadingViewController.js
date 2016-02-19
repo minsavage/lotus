@@ -29,10 +29,10 @@ module.exports = {
                 type: 'TextView',
                 layout_width: 'wrap_content',
                 layout_height: 'wrap_content',
-                text: 'hello world',
+                text: '@{loadingVM.currentText}',
                 event: {
                     'onClick': function() {
-
+                        showPage('MainPage');
                     }
                 }
             }
