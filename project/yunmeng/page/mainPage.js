@@ -3,5 +3,5 @@
  */
 module.exports = {
     name: 'MainPage',
-    content: 'AudioListViewController'
+    content: 'MainViewController'
 }

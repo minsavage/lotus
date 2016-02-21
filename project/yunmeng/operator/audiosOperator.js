@@ -31,7 +31,8 @@ module.exports = {
             audioMixUrl: 'audio.audioMix',
             audioMusicUrl: 'audio.audioMusic',
             audioVoiceUrl: 'audio.audioVoice',
-            audioBkgUrl: 'audio.audioBkg'
+            audioBkgUrl: 'audio.audioBkg',
+            order: 'audio.order'
         }
     }
 }

@@ -102,7 +102,6 @@ WidgetCodeBuilder.prototype._buildOnDestroy = function(model, buildConfig) {
 WidgetCodeBuilder.prototype._buildEvent = function(model, buildConfig) {
     if(util.isNullOrUndefined(model.event) ||
         util.isNullOrUndefined(buildConfig.event)) {
-        return;
     }
 
     var events = model.event;

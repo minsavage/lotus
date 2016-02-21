@@ -39,7 +39,7 @@ var isModel = function(typeName) {
     var models = modelMgr.getModels();
     for(var k in models) {
         var model = models[k];
-        if(model.type == typeName) {
+        if(model.name == typeName) {
             return true;
         }
     }

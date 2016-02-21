@@ -130,7 +130,7 @@ var generateSwitchCase = function(switchName, ids, values) {
         var id = ids[i];
         var value = values[i];
 
-        caseStr += 'case ' + id + ': { \r' + value + '\rbreak;\r' + '}\r'
+        caseStr += 'case ' + id + ': { \r' + value.trim() + '\rbreak;\r' + '}\r'
     }
 
     return 'switch (' + switchName + ') {\r' + caseStr.trim() + '\r}';

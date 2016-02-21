@@ -5,9 +5,9 @@ module.exports = {
     productName: 'yunmeng',
     organizationDomain: 'com.soundario',
     displayName: '云梦',
-    entryPage: 'MainPage',
+    entryPage: 'LoadingPage',
     server: {
-        domain: '192.168.1.189',
+        domain: '192.168.48.27',
         port: '8081',
         dbDomain: '127.0.0.1',
         dbPort: '27017',

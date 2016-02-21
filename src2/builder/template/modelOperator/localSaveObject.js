@@ -7,6 +7,7 @@ public void save(Context context, {{modelClassName}} {{modelObjName}}, Callback 
     }
 
     SharedPreferences.Editor sp = context.getSharedPreferences({{operatorClassName}}.class.getName(), Context.MODE_PRIVATE).edit();
+    sp.putBoolean("__exist", true);
     {{assignment}}
     sp.commit();
 

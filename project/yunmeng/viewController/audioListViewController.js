@@ -14,11 +14,13 @@ module.exports = {
             name: 'mainVM'
         }],
         init: function() {
-            audiosVM.currentName = mainVM.currentAudio.name;
+            audiosVM.currentAudioName = mainVM.audio.name;
         }
     },
     event: {
-
+        onCreateView: function() {
+            prepareData();
+        }
     },
     content: {
         type: 'RelativeLayout',
@@ -65,9 +67,8 @@ module.exports = {
             event: {
                 onItemClick: function() {
                     audiosVM.selectedAudio = audiosVM.audioList.get(position);
-                    audiosVM.setSelectedAudio(audiosVM.getAudioList().get(position));
                     audiosVM.saveCurrentAudio();
-                    mainVM.currentAudio = audiosVM.selectedAudio;
+                    mainVM.audio = audiosVM.selectedAudio;
                     closePage();
                 }
             }

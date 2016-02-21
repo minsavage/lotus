@@ -14,7 +14,6 @@ var projectConfig = lotus.projectConfig;
 var modelMgr = lotus.modelMgr;
 var builderMgr = lotus.builderMgr;
 var ImportRecorder = lotus.recorder.ImportRecorder;
-var actionTranslateUtil = lotus.util.actionTranslateUtil;
 var FunctionBuilder = require('../function/functionBuilder');
 
 var ViewControllerBuilder = function() {
@@ -53,6 +52,7 @@ ViewControllerBuilder.prototype._parseInternal = function(model) {
     this._buildViewModel(model);
     this._buildUIControl(model.content);
     this._buildDataBinding(model);
+    this._buildEvent(model);
 
     return true;
 }
@@ -109,20 +109,13 @@ ViewControllerBuilder.prototype._buildViewModel = function(model) {
                 viewModelObjName: vm.name}) + '\r';
     }
 
-    //检测是否需要注册ViewModelPropertyChanged监听
-    if(!util.isNullOrUndefined(model.bind) && objectUtil.getSize(model.bind) > 0) {
-        init += mustache.render(tpl.viewController.viewModelAddCallback, {
-            viewModelObjName: master.name
-        });
-    }
-
     if(util.isFunction(model.viewModels.init)) {
         var builder = new FunctionBuilder();
         var codeRecorder = builder.parse(model.viewModels.init);
         init += codeRecorder.getOnCreate();
     }
 
-    this._codeOnCreate += init + '\r';
+    this._codeOnCreate += init;
 
     //销毁
     var destroy = mustache.render(tpl.viewController.viewModelDestroy, {
@@ -136,13 +129,6 @@ ViewControllerBuilder.prototype._buildViewModel = function(model) {
 
     this._codeOnDestroy += destroy;
 
-
-    ////注册监听
-    //var observer = mustache.render(tpl.viewController.viewModelObserverStmt, {
-    //    viewModelClassName: className,
-    //    viewModelObjName: objName
-    //});
-
     this._importRecorder.addViewModel(master.type);
     for(var k in slaves) {
         var vm = slaves[k];
@@ -151,33 +137,30 @@ ViewControllerBuilder.prototype._buildViewModel = function(model) {
 }
 
 ViewControllerBuilder.prototype._buildDataBinding = function(model) {
-    if(!util.isNullOrUndefined(model.bind)) {
-        for(var property in model.bind) {
-            var action = model.bind[property]
-            if(util.isNullOrUndefined(this._dataBinding[property])) {
-                this._dataBinding[property] = [];
-            }
+    var bind = model.bind;
+    for(var k in bind) {
+        var property = k.split('.')[1];
 
-            this._dataBinding[property].push(action);
+        var builder = new FunctionBuilder();
+        var codeRecorder = builder.parse(bind[k]);
+        var code = codeRecorder.getOnCreate();
+        this._importRecorder.addAll(codeRecorder.getImportRecorder());
+
+        if(util.isNullOrUndefined(this._dataBinding[property])) {
+            this._dataBinding[property] = '';
         }
-    }
 
-    if (objectUtil.getSize(this._dataBinding) == 0) {
-        return;
+        this._dataBinding[property] += code;
     }
 
     var ids = [];
     var values = [];
-    for(var property in this._dataBinding) {
-        var propertyStr = 'BR.' + property.split('.')[1];
-        ids.push(propertyStr);
-        var actions = this._dataBinding[property];
-        var value = '';
-        for(var k in actions) {
-            value += actionTranslateUtil.translate(actions[k]) + '\r';
-        }
-        values.push(value);
+
+    for(var k in this._dataBinding) {
+        ids.push('BR.' + k);
+        values.push(this._dataBinding[k]);
     }
+
     var content = codeGenerateUtil.generateSwitchCase('propertyId', ids, values);
 
     var result = mustache.render(tpl.viewController.viewModelObserverStmt, {
@@ -185,24 +168,118 @@ ViewControllerBuilder.prototype._buildDataBinding = function(model) {
         content: content
     });
 
+    var init = mustache.render(tpl.viewController.viewModelAddCallback, {
+        viewModelObjName: model.viewModels.master.name
+    });
+
     this._codeEventImpl += result + '\r\r';
+    this._codeOnCreate += init + '\r';
+
+    return;
+
+    //if(!util.isNullOrUndefined(model.bind)) {
+    //    for(var property in model.bind) {
+    //        var action = model.bind[property]
+    //        if(util.isNullOrUndefined(this._dataBinding[property])) {
+    //            this._dataBinding[property] = [];
+    //        }
+    //
+    //        this._dataBinding[property].push(action);
+    //    }
+    //}
+    //
+    //if (objectUtil.getSize(this._dataBinding) == 0) {
+    //    return;
+    //}
+    //
+    //var ids = [];
+    //var values = [];
+    //for(var property in this._dataBinding) {
+    //    var propertyStr = 'BR.' + property.split('.')[1];
+    //    ids.push(propertyStr);
+    //    var actions = this._dataBinding[property];
+    //    var value = '';
+    //    for(var k in actions) {
+    //        var builder = new FunctionBuilder();
+    //        var codeRecorder = builder.parse(actions[k]);
+    //        value += codeRecorder.getOnCreate();
+    //        this._importRecorder.addAll(codeRecorder.getImportRecorder());
+    //
+    //        //value += actionTranslateUtil.translate(actions[k]) + '\r';
+    //    }
+    //    values.push(value);
+    //}
+    //var content = codeGenerateUtil.generateSwitchCase('propertyId', ids, values);
+    //
+    //var result = mustache.render(tpl.viewController.viewModelObserverStmt, {
+    //    viewModelObjName: model.viewModels.master.name,
+    //    content: content
+    //});
+    //
+    //this._codeEventImpl += result + '\r\r';
 }
 
 ViewControllerBuilder.prototype._buildUIControl = function(model) {
     var codeRecorder = buildWidget(model);
     if(codeRecorder != null) {
-        this._codeMemberVariable += codeRecorder.getMemberVariable() + '\r';
-        this._codeOnCreate += codeRecorder.getOnCreate() + '\r';
-        this._codeOnCreateView += codeRecorder.getOnCreateView() + '\r';
-        this._codeOnDestroy += codeRecorder.getOnDestroy() + '\r';
-        this._codeEventImpl += codeRecorder.getEventImpl() + '\r\r';
+        this._codeMemberVariable += codeRecorder.getMemberVariable().trim();
+        this._codeOnCreate += codeRecorder.getOnCreate().trim();
+        this._codeOnCreateView += codeRecorder.getOnCreateView().trim();
+        this._codeOnDestroy += codeRecorder.getOnDestroy().trim();
+        this._codeEventImpl += codeRecorder.getEventImpl().trim();
         this._importRecorder.addAll(codeRecorder.getImportRecorder());
+
+        var dataBinding = codeRecorder.getDataBinding();
+        for(var k in dataBinding) {
+            if(util.isString(this._dataBinding[k])) {
+                this._dataBinding[k] += dataBinding[k];
+            }
+            else {
+                this._dataBinding[k] = dataBinding[k];
+            }
+        }
     }
 
     var units = model['units'];
     if(units != null) {
         for(var key in units) {
             this._buildUIControl(units[key]);
+        }
+    }
+}
+
+ViewControllerBuilder.prototype._buildEvent = function(model) {
+    if(util.isNullOrUndefined(model.event)) {
+        return;
+    }
+
+    var events = ['onCreate', 'onCreateView', 'onStart', 'onResume', 'onPaused', 'onStop', 'onDestroy', 'onDestroyView'];
+    for(var k in events) {
+        var name = events[k];
+        var eventFunc = model.event[name];
+        if(util.isFunction(eventFunc)) {
+            var builder = new FunctionBuilder();
+            var codeRecorder = builder.parse(eventFunc);
+            this._importRecorder.addAll(codeRecorder.getImportRecorder());
+            var content = codeRecorder.getOnCreate();
+
+            if(name == 'onCreate') {
+                this._codeOnCreate += content;
+            }
+            else if(name == 'onCreateView') {
+                this._codeOnCreateView += content;
+            }
+            else if(name == 'onDestroy') {
+                this._codeOnDestroy += content;
+            }
+            else {
+                var code = mustache.render(tpl.viewController.event, {
+                    eventName: name,
+                    content: content
+                });
+
+                this._codeEventImpl += code;
+            }
         }
     }
 }

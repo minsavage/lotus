@@ -9,10 +9,9 @@ module.exports = {
 
     import: [
         'com.facebook.drawee.backends.pipeline.Fresco',
-        'com.facebook.drawee.view.SimpleDraweeView'
+        'com.facebook.drawee.view.SimpleDraweeView',
+        'android.net.Uri'
     ],
-
-    onCreate: 'Fresco.initialize(getContext());',
 
     event: extend({}, view.event)
 }

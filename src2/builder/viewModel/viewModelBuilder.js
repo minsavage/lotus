@@ -12,6 +12,7 @@ var variableTypeUtil = lotus.util.variableTypeUtil;
 var projectConfig = lotus.projectConfig;
 var modelMgr = lotus.modelMgr;
 var ImportRecorder = lotus.recorder.ImportRecorder;
+var FunctionBuilder = require('../function/functionBuilder');
 
 var ViewModelBuilder = function() {
     this._importRecorder = new ImportRecorder();
@@ -222,19 +223,26 @@ ViewModelBuilder.prototype._buildOperatorAction = function(operatorOriginal, que
 //}
 
 ViewModelBuilder.prototype._buildAction = function(actions) {
-    var result = '';
-    if(util.isNullOrUndefined(actions)) {
+    if(!util.isFunction(actions)) {
         return '';
     }
-    else if(util.isObject(actions)) {
-        return buildActionByKeyValue(actions);
-    }
-    else if(util.isFunction(actions)) {
-        return buildActionByFunction(actions);
-    }
-    else {
-        return '';
-    }
+
+    var functionBuilder = new FunctionBuilder();
+    var codeRecorder = functionBuilder.parse(actions);
+    this._importRecorder.addAll(codeRecorder.getImportRecorder());
+    return codeRecorder.getOnCreate();
+    //
+    //
+    //
+    //else if(util.isObject(actions)) {
+    //    return buildActionByKeyValue(actions);
+    //}
+    //else if(util.isFunction(actions)) {
+    //    return buildActionByFunction(actions);
+    //}
+    //else {
+    //    return '';
+    //}
 }
 
 var buildActionByKeyValue = function(map) {
