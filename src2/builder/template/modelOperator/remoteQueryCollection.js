@@ -1,7 +1,7 @@
 public void query(Map<String, String> options, final CollectionCallback<{{modelClassName}}> callback) {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl("{{{url}}}")
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterUtil.createFactory())
         .build();
 
     RemoteOperatorService service = retrofit.create(RemoteOperatorService.class);

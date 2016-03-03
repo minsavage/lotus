@@ -183,6 +183,9 @@ CodeTranslator.prototype.handleSystemCallExpression = function(syntax) {
     else if(syntax.callee.name == 'closePage') {
         return this.closePageBuilder(syntax);
     }
+    else if(syntax.callee.name == 'native') {
+        return this.nativeBuilder(syntax);
+    }
     else {
         return '';
     }
@@ -206,6 +209,12 @@ CodeTranslator.prototype.showPageBuilder = function(syntax) {
 CodeTranslator.prototype.closePageBuilder = function(syntax) {
     var code = 'finish();'
     return code;
+}
+
+CodeTranslator.prototype.nativeBuilder = function(syntax) {
+    var arg0 = syntax.arguments[0];
+    var native = arg0.value;
+    return native;
 }
 
 module.exports = CodeTranslator;

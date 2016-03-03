@@ -11,7 +11,8 @@ module.exports = function() {
             replace: {
                 id: 'android:{{key}}="@+id/{{value}}"',
                 layout_below: 'android:{{key}}="@+id/{{value}}"',
-                layout_above: 'android:{{key}}="@+id/{{value}}"'
+                layout_above: 'android:{{key}}="@+id/{{value}}"',
+                layout_toRightOf: 'android:{{key}}="@+id/{{value}}"'
             },
 
             ignore: {

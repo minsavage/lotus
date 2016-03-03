@@ -58,7 +58,7 @@ ListViewAdapterBuilder.prototype._buildWidget = function(model) {
     if(codeRecorder != null) {
         this._codeDeclare += codeRecorder.getMemberVariable() + '\r';
         this._codeInit += codeRecorder.getOnCreateView(); + '\r'
-        this._codeEvent = codeRecorder.getEventImpl() + '\r\r';
+        this._codeEvent += codeRecorder.getEventImpl() + '\r\r';
         this._codeAssignment += codeRecorder.getAssignment() + '\r';
         this._importReorder.addAll(codeRecorder.getImportRecorder());
     }

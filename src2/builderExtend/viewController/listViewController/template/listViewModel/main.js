@@ -3,6 +3,8 @@ package {{packageName}}.viewModel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.util.Log;
+import java.util.HashMap;
 
 import {{packageName}}.BR;
 import {{packageName}}.base.Collection;
@@ -10,9 +12,11 @@ import {{packageName}}.base.CollectionCallback;
 import {{packageName}}.base.ViewModel;
 {{import}}
 
-import java.util.HashMap;
+
 
 public class {{className}} extends ViewModel {
+    private static final String TAG = "{{className}}";
+
     public final static int ListViewLoadingStatusLoading        = 0;
     public final static int ListViewLoadingStatusLoadingMore    = 1;
     public final static int ListViewLoadingStatusLoadSucceed    = 2;

@@ -8,6 +8,7 @@ module.exports = {
         {name: 'currentAudio', type: 'Audio'},
         {name: 'queryFinished', type: 'bool'},
         {name: 'queryOnlineFinished', type: 'bool'},
+        {name: 'loadStatus', type: 'int'},
     ],
 
     operators: {
@@ -53,8 +54,17 @@ module.exports = {
                             name: 'audios'
                         },
                         action: function(){
+                            loadStatus = 0;
                             currentAudio = audios.get(0);
                             saveCurrentAudio();
+                        }
+                    },
+
+                    fail: {
+                        data: {
+                        },
+                        action: function(){
+                            loadStatus = 1;
                         }
                     }
                 }

@@ -59,17 +59,53 @@ module.exports = {
             layout_width: 'match_parent',
             layout_height: 'match_parent',
             layout_below: 'top',
-            ptrMode:'both',
+            ptrMode: 'both',
             adapter: {
                 listItem: 'AudioListItemViewController',
                 listData: '@{audiosVM.audioList}'
             },
             event: {
-                onItemClick: function() {
+                onItemClick: function () {
                     audiosVM.selectedAudio = audiosVM.audioList.get(position);
                     audiosVM.saveCurrentAudio();
                     mainVM.audio = audiosVM.selectedAudio;
                     closePage();
+                }
+            }
+        }, {
+            type: 'RelativeLayout',
+            layout_width: 'match_parent',
+            layout_height: 'match_parent',
+            id: 'rlLoading',
+            visibility: 'gone',
+            units: [{
+                type: 'TextView',
+                id: 'tvLoading',
+                layout_width: 'wrap_content',
+                layout_height: 'wrap_content',
+                layout_centerInParent: true,
+                text: '正在努力加载...',
+                textColor: '#FFFFFF'
+            }],
+            event: {}
+        }, {
+            type: 'RelativeLayout',
+            id: 'rlLoadFailure',
+            layout_width: 'match_parent',
+            layout_height: 'match_parent',
+            visibility: 'gone',
+            units: [{
+                type: 'TextView',
+                id: 'tvLoadFailure',
+                layout_width: 'wrap_content',
+                layout_height: 'wrap_content',
+                layout_centerInParent: true,
+                text: '加载失败，轻触屏幕重新加载',
+                textColor: '#FFFFFF'
+            }],
+            event: {
+                onClick: function() {
+
                 }
             }
         }]

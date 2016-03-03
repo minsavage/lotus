@@ -51,8 +51,10 @@ WidgetCodeBuilder.prototype._needParse = function(model, buildConfig) {
     if(this._isAdapterModel == true){
         for(var k in model) {
             var v = model[k];
-            if(v.indexOf('@{') > -1) {
-                return true;
+            if(util.isString(v)) {
+                if(v.indexOf('@{') > -1) {
+                    return true;
+                }
             }
         }
     }

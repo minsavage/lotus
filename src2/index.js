@@ -4,11 +4,11 @@
 var lotus = require('./lotus');
 var path = require('path');
 
-var projectPath = path.resolve(__dirname, '../project/yunmeng');
+var projectPath = path.resolve(__dirname, '../project/weibo');
 var builderPaths = ['./builder', './builderExtend'];
 
 lotus.projectConfig.load(projectPath);
-lotus.projectConfig.setOutputDir(path.resolve(__dirname, '../output'));
+lotus.projectConfig.setOutputDir(path.resolve(__dirname, '../output/weibo'));
 
 lotus.modelMgr.load(projectPath);
 lotus.builderMgr.load(builderPaths);

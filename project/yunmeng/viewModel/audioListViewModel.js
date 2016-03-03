@@ -15,7 +15,8 @@ module.exports = {
     },
     properties:[
         {name: 'currentAudioName', type: 'string'},
-        {name: 'selectedAudio', type: 'Audio'}
+        {name: 'selectedAudio', type: 'Audio'},
+        {name: 'loadStatus', type: 'int'}
     ],
 
     operators: {
@@ -42,7 +43,17 @@ module.exports = {
                             type: 'Audio',
                             name: 'audio'
                         },
-                        action: {
+                        action: function(){
+                            loadStatus = 0;
+                        }
+                    },
+
+                    fail: {
+                        data: {
+
+                        },
+                        action: function(){
+                            loadStatus = 1;
                         }
                     }
                 }

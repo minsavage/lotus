@@ -2,6 +2,7 @@ package {{packageName}}.viewModel;
 
 import android.content.Context;
 import android.databinding.Bindable;
+import android.util.Log;
 import {{packageName}}.BR;
 import {{packageName}}.base.ViewModel;
 {{import}}

@@ -7,6 +7,8 @@ public void query{{nameWithoutOperatorSuffix}}() {
         {{operatorObjName}} = new {{operatorClassName}}();
     }
 
+    {{options}}
+
     {{operatorObjName}}.query({{parameters}}new {{callback}}<{{model}}>() {
         @Override
         public void onSuccess({{resultType}} {{resultObj}}) {
@@ -15,6 +17,7 @@ public void query{{nameWithoutOperatorSuffix}}() {
 
         @Override
         public void onFail(Throwable t) {
+            Log.e(TAG, t.toString());
             {{onFail}}
         }
     });

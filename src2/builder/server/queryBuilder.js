@@ -59,10 +59,10 @@ QueryBuilder.prototype._buildCondition = function(operator) {
 
         var typeTranslate = '';
         if(p.type != 'string') {
-            typeTranslate = jsCodeUtil.generateStringToType('from', 'from', p.type)
+            typeTranslate = jsCodeUtil.generateStringToType(name, name, p.type);
         }
 
-        var isNull = jsCodeUtil.generateIsNullForType('from', p.type);
+        var isNull = jsCodeUtil.generateIsNullForType(name, p.type);
 
         code += mustache.render(tpl.query.getParameter, {
             parameterName: name,
@@ -85,7 +85,12 @@ var buildConditionAssign = function(parameterName, condition) {
     for(var k in condition) {
         v = condition[k];
         if(util.isString(v)) {
-            if(v == name) {
+            if(v == parameterName) {
+                if(k == 'objectId') {
+                    k = '_id';
+                    v = 'new ObjectID(' + v + ')';
+                }
+
                 code = mustache.render(tpl.query.conditionAssign, {
                     key: k,
                     value: v
@@ -109,45 +114,6 @@ var buildConditionAssign = function(parameterName, condition) {
 
     return code;
 }
-
-
-
-//        condition: {
-//            createTime: {
-//                $lt: 'from'
-//            }
-//        },
-
-
-//    query: {
-
-//
-
-//
-//
-//    var from = req.params['from'];
-//    var to = req.params['to'];
-//
-//    if(util.isNullOrUndefined(from) || util.isNullOrUndefined(from) || util.isNullOrUndefined(from)) {
-//        throw 'argument not enough'
-//    }
-//
-//    if(!util.isNullOrUndefined(from)) {
-//        from = parseInt(from);
-//        condition["order"] = {$gt: from};
-//    }
-//    else {
-//        throw 'argument not enough'
-//    }
-//
-//
-//}
-//
-//
-//if(!util.isNullOrUndefined(from)) {
-//    from = parseInt(from);
-//    condition["order"] = {$gt: from};
-//}
 
 QueryBuilder.prototype._buildFind = function(operator) {
     var collection = null;
@@ -173,6 +139,7 @@ QueryBuilder.prototype._buildFind = function(operator) {
 
     var fieldsName = collection.name + 'Fields';
     var fields = this._fields[collection.name];
+    fields = 'createTime: true,\rupdateTime:true,\r' + fields;
 
     var maxLimit = 100;
     var limit = operator.action.query.limit;

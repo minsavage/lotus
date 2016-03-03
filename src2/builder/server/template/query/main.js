@@ -34,8 +34,8 @@ function {{functionName}}(req, res, next) {
 
 var getCondition = function(req) {
     var condition = {};
-
     {{condition}}
+    return condition;
 }
 
 var setCondition = function(condition, key, compareOp, value) {

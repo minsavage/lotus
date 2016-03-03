@@ -78,9 +78,9 @@ public class ViewControllerMgr {
     public ViewController findViewControllerByTag(String tag) {
         if (tag != null && tag.length() > 0) {
             for (int i = 0; i < viewControllers.size(); ++i) {
-                String vctag = viewControllers.get(0).tag;
-                if (tag.compareTo(vctag) == 0) {
-                    return viewControllers.get(0);
+                String vcTag = viewControllers.get(i).tag;
+                if (tag.compareTo(vcTag) == 0) {
+                    return viewControllers.get(i);
                 }
             }
         }

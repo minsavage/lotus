@@ -10,8 +10,9 @@ public void query{{OperatorNameWithoutSuffix}}() {
             setListViewLoadingStatus(ListViewLoadingStatusLoadSucceed);
         }
 
-            @Override
-            public void onFail(Throwable t) {
+        @Override
+        public void onFail(Throwable t) {
+            Log.e(TAG, t.toString());
             setListViewLoadingStatus(ListViewLoadingStatusLoadFailed);
         }
     });
@@ -30,8 +31,9 @@ public void query{{OperatorNameWithoutSuffix}}More() {
             setListViewLoadingStatus(ListViewLoadingStatusLoadSucceed);
         }
 
-            @Override
-            public void onFail(Throwable t) {
+        @Override
+        public void onFail(Throwable t) {
+            Log.e(TAG, t.toString());
             setListViewLoadingStatus(ListViewLoadingStatusLoadFailed);
         }
     });

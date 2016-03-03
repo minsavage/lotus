@@ -15,6 +15,7 @@ var ImportRecorder = lotus.recorder.ImportRecorder;
 var FunctionBuilder = require('../function/functionBuilder');
 
 var ViewModelBuilder = function() {
+    this._model = null;
     this._importRecorder = new ImportRecorder();
 }
 
@@ -23,6 +24,8 @@ ViewModelBuilder.prototype.parse = function(model) {
         console.log('model.name == null');
         return;
     }
+
+    this._model = model;
 
     var content = '';
     content += this._buildProperties(model.properties);
@@ -84,7 +87,7 @@ ViewModelBuilder.prototype._buildOperator = function(name, operator) {
     }
 
     var result = '';
-    if(operator.query != undefined || operator.query != null) {
+    if(!util.isNullOrUndefined(operator.query)) {
         result += this._buildOperatorQuery(operatorOriginal, operator.query) + '\r\r';
     }
 
@@ -116,23 +119,30 @@ ViewModelBuilder.prototype._buildOperatorQuery = function(operatorOriginal, quer
     }
 
     var paraStr = '';
+    var codeOptions = ''
+
     if(operatorOriginal.accessType == 'local') {
         paraStr = 'context.get(), ';
     }
     else {
-        //todo: 这里参数暂时都用null 代替， 后续需要修改
-        paraStr += 'null, '
+        var parameters = queryModel.requestParameters;
+        if(util.isArray(parameters) && parameters.length > 0) {
+            for(var i = 0; i < parameters.length; ++i) {
+                var p = parameters[i];
+                if(!this._isProperty(p)) {
+                    throw 'there is no property to be request parameter: ' + p;
+                }
+                codeOptions += mustache.render(tpl.viewModel.putMap, {key: p, value: p});
+            }
+            codeOptions = tpl.viewModel.map + codeOptions;
+            this._importRecorder.addPlain('java.util.HashMap');
+
+            paraStr += 'map, '
+        }
+        else {
+            paraStr += 'null, '
+        }
     }
-
-
-
-    //var parameters = queryModel.requestParameters;
-    //if(parameters != undefined && parameters != null) {
-    //    for(var i = 0; i < parameters.length; ++i) {
-    //        var p = parameters[i];
-    //        paraStr += p + ', ';
-    //    }
-    //}
 
     var nameWithoutOperator = stringUtil.withoutSuffix(operatorOriginal.name, 'Operator');
 
@@ -151,6 +161,7 @@ ViewModelBuilder.prototype._buildOperatorQuery = function(operatorOriginal, quer
         operatorObjName: stringUtil.firstCharacterToLowercase(operatorOriginal.name),
         operatorClassName: stringUtil.firstCharacterToUppercase(operatorOriginal.name),
         parameters: paraStr,
+        options: codeOptions,
         callback: callbackStr,
         model: operatorOriginal.model,
         resultType: queryModel.response.success.data.type,
@@ -243,6 +254,17 @@ ViewModelBuilder.prototype._buildAction = function(actions) {
     //else {
     //    return '';
     //}
+}
+
+ViewModelBuilder.prototype._isProperty = function(name) {
+    var properties = this._model.properties
+    for(var k in properties) {
+        var p = properties[k];
+        if(p.name == name) {
+            return true;
+        }
+    }
+    return false;
 }
 
 var buildActionByKeyValue = function(map) {
