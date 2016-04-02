@@ -7,7 +7,7 @@ var path = require('path');
 var lotus = require('../../lotus');
 var tpl = lotus.template(path.resolve(__dirname, '../template'));
 var stringUtil = lotus.util.stringUtil;
-var variableTypeUtil = lotus.util.variableTypeUtil;
+var nameUtil = lotus.util.nameUtil;
 var codeGenerateUtil = lotus.util.codeGenerateUtil;
 var modelMgr = lotus.modelMgr;
 var ImportRecorder = lotus.recorder.ImportRecorder;
@@ -40,8 +40,8 @@ RemoteOperatorServiceBuilder.prototype.parse = function(operators) {
                 hasParameter = true;
             }
 
-            result += generateAnnotation(actionName, operator.model, isCollection) + '\r';
-            result += generateGet(operator.model, isCollection, hasParameter) + '\r\r';
+            result += generateAnnotation(actionName, operator.model, operator.resultType, action.method, action.url) + '\r';
+            result += generateGet(operator.model, operator.resultType, action.method, hasParameter, action.parameterType) + '\r\r';
         }
     }
 
@@ -52,31 +52,82 @@ RemoteOperatorServiceBuilder.prototype.parse = function(operators) {
     });
 }
 
-var generateAnnotation = function(action, model, isCollection) {
+var generateAnnotation = function(action, model, resultType, method, url) {
+    if(!stringUtil.isNotEmpty(url)) {
+        url = '/' + nameUtil.getOperatorQueryResultObjectName(model, resultType);
+    }
+
+    var methodName = '';
+    if(stringUtil.isNotEmpty(method)) {
+        methodName = getMethodName(method);
+    }
+
     if(action == 'query') {
-        var name = isCollection ? (model + 's') : model;
-        return '@GET("/' + stringUtil.firstCharacterToLowercase(name) + '")';
+        var template = '@{{method}}("{{url}}")';
+        return mustache.render(template, {
+            method: methodName,
+            url: url
+        });
+    }
+    else {
+        throw 'not implemented action: ' + action;
     }
 }
 
-var generateGet = function(modelName, isCollection, hasParameter) {
-    var returnType = '';
-    var functionName = '';
-    if(isCollection) {
-        returnType = 'Collection<' + modelName + '>';
-        functionName = modelName + 's';
+var generateGet = function(modelName, resultType, method, hasParameter, paramType) {
+    var functionName = nameUtil.getOperatorFunctionName('query', modelName, resultType);
+
+    var resourceName = '';
+    if(resultType == 'collection') {
+        resourceName = 'Collection<' + modelName + '>';
     }
     else {
-        returnType = modelName;
-        functionName = modelName;
+        resourceName = modelName;
     }
 
     var parameter = '';
     if(hasParameter) {
-        parameter = '@QueryMap Map<String, String> options'
+        var annotation = getParameterAnnotation(method, paramType);
+        parameter = annotation + ' Map<String, Object> parameters';
     }
 
-    return 'Call<' + returnType + '> get' + functionName + '(' + parameter + ');'
+    var template = 'Call<{{retType}}> {{funcName}}({{param}});';
+
+    return mustache.render(template, {
+        retType: resourceName,
+        funcName: functionName,
+        param: parameter
+    })
+}
+
+var getMethodName = function(method) {
+    if(method == 'get') {
+        return 'GET'
+    }
+    else if(method == 'post') {
+        return 'POST'
+    }
+    else {
+        throw 'getMethodName error, not implement: ' + method
+    }
+}
+
+var getParameterAnnotation = function(method, paramType) {
+    if(!stringUtil.isNotEmpty(method)) {
+        method = 'get';
+    }
+
+    if(method == 'get') {
+        return '@QueryMap';
+    }
+    else if(method == 'post') {
+        if(paramType == 'formUrlEncoded') {
+            return '@FieldMap'
+        }
+        else {
+            return '@Body'
+        }
+    }
 }
 
 module.exports = RemoteOperatorServiceBuilder;

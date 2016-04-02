@@ -1,4 +1,4 @@
-package com.soundario.weibo.base;
+package {{packageName}}.base;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;

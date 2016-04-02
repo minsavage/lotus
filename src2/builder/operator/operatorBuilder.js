@@ -8,6 +8,7 @@ var lotus = require('../../lotus');
 var tpl = lotus.template(path.resolve(__dirname, '../template'));
 var variableTypeUtil = lotus.util.variableTypeUtil;
 var stringUtil = lotus.util.stringUtil;
+var nameUtil = lotus.util.nameUtil;
 var codeGenerateUtil = lotus.util.codeGenerateUtil;
 var projectConfig = lotus.projectConfig;
 var modelMgr = lotus.modelMgr;
@@ -24,27 +25,22 @@ ModelOperatorBuilder.prototype.parse = function(model) {
         importStr = this.buildLocalImport(model);
     }
     else {
-        contentStr += this.buildRemoteQueryCollection(model);
+        contentStr += this.buildRemoteQuery(model);
         importStr = this.buildRemoteImport(model);
     }
 
     return codeGenerateUtil.generateClass(projectConfig.getPackageName(), 'operator', importStr, model.name, contentStr);
 }
 
-ModelOperatorBuilder.prototype.buildRemoteQueryCollection = function(model) {
-    var parameters = model.action.query.parameters;
-    var parameterStr = '';
-    for(var name in parameters) {
-        var para = parameters[name];
-        var javaType = variableTypeUtil.getType(para.type);
-        parameterStr += javaType + ' ' + name + ', ';
-    }
+ModelOperatorBuilder.prototype.buildRemoteQuery = function(model) {
+    var resultClassName = nameUtil.getOperatorQueryResultClassName(model.model, model.resultType);
+    var resourceObjName = nameUtil.getOperatorQueryResultObjectName(model.model, model.resultType);
 
-    return mustache.render(tpl.modelOperator.remoteQueryCollection, {
-        parameters: parameterStr,
+    return mustache.render(tpl.modelOperator.remoteQuery, {
         url: projectConfig.getServerDomain(),
-        modelClassName: stringUtil.firstCharacterToUppercase(model.model),
-        modelObjName: stringUtil.firstCharacterToLowercase(model.model)
+        resultClassName: resultClassName,
+        resultObjectName: resourceObjName,
+        queryFuncName: nameUtil.getOperatorFunctionName('query', model.model, model.resultType)
     });
 }
 

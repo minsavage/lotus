@@ -29,8 +29,36 @@ var operatorToServerPathName = function(operator) {
     return stringUtil.firstCharacterToLowercase(operator.model) + suffix;
 }
 
+var getOperatorFunctionName = function(actionName, modelName, resultType) {
+    var name = getOperatorQueryResultObjectName(modelName);
+    return actionName + stringUtil.firstCharacterToUppercase(name)
+}
+
+var getOperatorQueryResultClassName = function(modelName, resultType) {
+    if(resultType == 'collection') {
+        return 'Collection<' + modelName + '>';
+    }
+    else {
+        return modelName;
+    }
+}
+
+var getOperatorQueryResultObjectName = function(modelName, resultType) {
+    modelName = stringUtil.firstCharacterToLowercase(modelName);
+    if(resultType == 'collection' &&
+        resultType.charAt(returnType.length-1) != 's') {
+        return modelName + 's';
+    }
+    else {
+        return modelName;
+    }
+}
+
 exports.pageToActivityName = pageToActivityName;
 exports.vcToXmlFileName = vcToXmlFileName;
 exports.vcToBindingName = vcToBindingName;
 exports.operatorToServerFunctionName = operatorToServerFunctionName;
 exports.operatorToServerPathName = operatorToServerPathName;
+exports.getOperatorFunctionName = getOperatorFunctionName;
+exports.getOperatorQueryResultClassName = getOperatorQueryResultClassName;
+exports.getOperatorQueryResultObjectName = getOperatorQueryResultObjectName;
