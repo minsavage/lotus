@@ -15,7 +15,7 @@ var lotus = {
     },
 
     recorder: {
-        ImportRecorder: require('./recorder/importRecorder'),
+        ImportRecorder: require('./recorder/importRecorder2'),
         LayoutRecorder: require('./recorder/layoutRecorder'),
         CodeRecorder: require('./recorder/codeRecorder'),
         GradleRecorder: require('./recorder/GradleRecorder')

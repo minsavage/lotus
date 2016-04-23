@@ -11,7 +11,9 @@
 //var variableTypeUtil = lotus.util.variableTypeUtil;
 //var importUtil = lotus.util.importUtil;
 
-import Builder from './builder';
+"use strict";
+
+var Builder = require('./builder');
 
 class ModelBuilder extends Builder{
     parse(model) {
@@ -39,3 +41,5 @@ class ModelBuilder extends Builder{
 
     }
 }
+
+module.exports = ModelBuilder;
