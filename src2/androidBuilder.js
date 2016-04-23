@@ -85,6 +85,16 @@ var startBuild = function() {
         saveFile(layoutPath, layoutContent);
     }
 
+    //enum
+    var models = modelMgr.getEnums();
+    for(var k in models) {
+        var model = models[k];
+        var EnumBuilder = builderMgr.queryEnumBuilder();
+        var builder = new EnumBuilder();
+        builder.parse(model);
+    }
+
+    //manifest
     var ManifestBuilder = require('./builder/project/manifestBuilder');
     var builder = new ManifestBuilder();
     var content = builder.parse();

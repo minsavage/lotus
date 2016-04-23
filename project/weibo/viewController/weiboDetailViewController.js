@@ -23,6 +23,7 @@ module.exports = {
             detailVM.weibo = weibosVM.selectedWeibo;
         }
     },
+
     content: {
         type: 'RelativeLayout',
         layout_width: 'match_parent',

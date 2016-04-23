@@ -1,0 +1,1 @@
+exports.{{functionName}} = {{functionName}};

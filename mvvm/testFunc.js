@@ -46,3 +46,59 @@ var x = {
         }
     }
 }
+
+
+
+class MyList extend Compoent {
+    render () {
+        return (
+            <ListView
+                dataSource={this.state.dataSource}
+                renderRow={this.renderMovie}
+                style={styles.listView}
+            />
+        );
+    }
+
+    dataSource: {
+        ....
+    }
+
+    renderMovie () {
+        do something
+    }
+}
+
+
+class WeiboViewModel {
+    private User user;
+}
+
+class WeiboViewModel {
+    private String name;
+    priate  String age;
+    String gender;
+}
+
+showAlertView([
+    {title: '打开', handler: function() {
+
+    }},
+
+    {title: ''}
+])
+
+
+function() {
+    status = Enum.LoadingStatus;
+
+    showPage('UserPage', {
+        name: 'ViewMode.name'
+    })
+}
+
+
+onCreateView: {
+    userVM.name = getPara('name');
+    userVM.name = getPara('name');
+}

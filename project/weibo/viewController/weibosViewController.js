@@ -31,8 +31,7 @@ module.exports = {
                 layout_height: 'wrap_content',
                 layout_alignParentLeft: true,
                 layout_centerVertical: true,
-                paddingLeft: "12dp",
-                src: '@drawable/navigationbar_friendattention'
+                paddingLeft: "12dp"
             }, {
                 type: 'ImageView',
                 layout_width: 'wrap_content',
@@ -40,7 +39,6 @@ module.exports = {
                 layout_alignParentRight: true,
                 layout_centerVertical: true,
                 paddingRight: "12dp",
-                src: '@drawable/navigationbar_icon_radar'
             }, {
                 type: 'TextView',
                 layout_width: 'wrap_content',

@@ -7,7 +7,7 @@ module.exports = {
     displayName: '微博',
     entryPage: 'MainPage',
     server: {
-        domain: '192.168.1.104',
+        domain: '10.0.2.2',
         port: '8081',
         dbDomain: '127.0.0.1',
         dbPort: '27017',

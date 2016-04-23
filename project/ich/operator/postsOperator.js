@@ -2,16 +2,29 @@
  * Created by danney on 16/2/22.
  */
 module.exports = {
-    name: 'WeibosOperator',
-    model: 'Weibo',
+    name: 'PostsOperator',
+    model: 'QueryPosts',
     accessType: 'remote',
-    resultType: 'collection',
+    resultType: 'object',
     action: {
         query: {
+            url: 'v1/forums',
+            method: 'post',
+            parameterType: 'json', //'formUrlEncoded'
             parameters: {
-                from: {
-                    type: 'date',
-                    canBeNull: true
+                page: {
+                    type: 'int',
+                    canBeNull: false
+                },
+
+                count: {
+                    type: 'int',
+                    canBeNull: false
+                },
+
+                forum_id: {
+                    type: 'int',
+                    canBeNull: false
                 }
             },
 
@@ -27,21 +40,21 @@ module.exports = {
 
             limit: 50
         }
-    },
-
-    bind: {
-        collections: [
-            {name: 'weibo', type: 'master'},
-            {name: 'user', type: 'secondary', condition: {objectId: 'weibo.authorId'}}
-        ],
-
-        map: {
-            content: 'weibo.content',
-            authorId: 'weibo.authorId',
-            commentCount: 'weibo.commentCount',
-            likeCount: 'weibo.likeCount',
-            authorName: 'user.name',
-            authorAvatarUrl: 'user.avatarUrl'
-        }
     }
+
+    //bind: {
+    //    collections: [
+    //        {name: 'weibo', type: 'master'},
+    //        {name: 'user', type: 'secondary', condition: {objectId: 'weibo.authorId'}}
+    //    ],
+    //
+    //    map: {
+    //        content: 'weibo.content',
+    //        authorId: 'weibo.authorId',
+    //        commentCount: 'weibo.commentCount',
+    //        likeCount: 'weibo.likeCount',
+    //        authorName: 'user.name',
+    //        authorAvatarUrl: 'user.avatarUrl'
+    //    }
+    //}
 }

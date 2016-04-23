@@ -80,8 +80,7 @@ module.exports = {
                         type: 'ImageView',
                         layout_width: 'wrap_content',
                         layout_height: 'wrap_content',
-                        layout_marginRight: '10dp',
-                        src: '@drawable/timeline_icon_retweet'
+                        layout_marginRight: '10dp'
                     }, {
                         type: 'TextView',
                         layout_width: 'wrap_content',
@@ -115,7 +114,6 @@ module.exports = {
                         layout_width: 'wrap_content',
                         layout_height: 'wrap_content',
                         layout_marginRight: '10dp',
-                        src: '@drawable/timeline_icon_comment'
                     }, {
                         type: 'TextView',
                         layout_width: 'wrap_content',
@@ -148,7 +146,6 @@ module.exports = {
                         layout_width: 'wrap_content',
                         layout_height: 'wrap_content',
                         layout_marginRight: '10dp',
-                        src: '@drawable/timeline_icon_unlike'
                     }, {
                         type: 'TextView',
                         id: 'ivLikeBtn',

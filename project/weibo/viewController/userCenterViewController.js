@@ -17,7 +17,10 @@ module.exports = {
             type: 'TextView',
             layout_width: 'wrap_content',
             layout_height: 'wrap_content',
-            text: 'UserCenterViewController'
+            text: 'UserCenterViewController',
+            name: '@{user.name}'
+            uri: '@{user.avatarUrl}'
+
         }]
     }
 }

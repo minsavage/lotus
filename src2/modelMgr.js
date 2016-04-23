@@ -10,8 +10,73 @@ var modelsContainer = {
     'operator': [],
     'viewModel': [],
     'viewController': [],
-    'page': []
+    'page': [],
+    'enum': []
 };
+
+var load2 = function(path) {
+    if(isDir(path)) {
+        if(isRootDir(path)) {
+            loadAll(path);
+        }
+        else {
+            var dirName = getDirName(path);
+            loadDir(dirName, path);
+        }
+    }
+    else {
+        var dirName = getDirName(path);
+        var container = modelsContainer[dirName];
+        if(!util.isNullOrUndefined(container)) {
+            loadFile(container, path);
+        }
+    }
+}
+
+var isDir = function(path) {
+    return fs.statSync(path).isDirectory();
+}
+
+var isRootDir = function(path) {
+    var filePath = path.resolve(path, 'index.js');
+    return fs.existsSync(filePath);
+}
+
+var getDirName = function(path) {
+
+}
+
+var loadFile = function(container, filePath) {
+    if(path.extname(fileName) == '.js') {
+        var model = require(lotus.util.stringUtil.withoutSuffix(filePath, '.js'));
+        container.push(model);
+    }
+}
+
+var loadDir = function(container, dirPath) {
+    var contentList = fs.readdirSync(dirPath);
+    for(var k in contentList) {
+        var fileName = contentList[k];
+        var filePath = path.resolve(dirPath, fileName);
+        if(fs.statSync(filePath).isFile()) {
+            loadFile(container, filePath);
+        }
+    }
+}
+
+var loadAll = function(rootPath) {
+    var contentList = fs.readdirSync(rootPath);
+    for(var k in contentList) {
+        var item = contentList[k];
+        var container = modelsContainer[item];
+
+        if (!util.isNullOrUndefined(container)) {
+            var subDirPath = path.resolve(rootPath, item);
+            loadDir(container, subDirPath);
+        }
+    }
+}
+
 
 var load = function(projectPath) {
     var lotus = require('./lotus');
@@ -66,6 +131,10 @@ var getViewControllers = function() {
 
 var getPages = function() {
     return modelsContainer.page;
+}
+
+var getEnums = function() {
+    return modelsContainer.enum;
 }
 
 var queryModel = function(name) {
@@ -132,6 +201,7 @@ exports.getModels = getModels;
 exports.getOperators = getOperators;
 exports.getViewModels = getViewModels;
 exports.getViewControllers = getViewControllers;
+exports.getEnums = getEnums;
 
 exports.queryOperator = queryOperator;
 exports.queryModel = queryModel;
