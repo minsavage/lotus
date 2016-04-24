@@ -1,6 +1,7 @@
 /**
  * Created by danney on 17/1/15.
  */
+'use strict';
 var util = require('util');
 var mustache = require('mustache');
 var path = require('path');
@@ -10,46 +11,57 @@ var stringUtil = lotus.util.stringUtil;
 var nameUtil = lotus.util.nameUtil;
 var codeGenerateUtil = lotus.util.codeGenerateUtil;
 var modelMgr = lotus.modelMgr;
-var ImportRecorder = lotus.recorder.ImportRecorder;
+var BaseBuilder = require('../baseBuilder');
 
+class RemoteOperatorServiceBuilder extends BaseBuilder {
+    parse(operators) {
+        super.parse(operators);
 
-var RemoteOperatorServiceBuilder = function() {
-    this._importRecorder = new ImportRecorder();
-}
-
-RemoteOperatorServiceBuilder.prototype.parse = function(operators) {
-    if(operators.length == 0) {
-        return '';
-    }
-
-    var result = '';
-
-    for(var k in operators) {
-        var operator = operators[k];
-        if(operator.accessType != 'remote' || util.isNullOrUndefined(operator.action)) {
-            continue;
+        var content = '';
+        for(var k in operators) {
+            content += this.parseOperator(operators[k]);
         }
 
-        this._importRecorder.addModel(operator.model);
+        return mustache.render(tpl.modelOperator.remoteOperatorService, {
+            packageName: lotus.projectConfig.getPackageName(),
+            importModel: this.importRecorder.generate(),
+            content: content.trim()
+        });
+    }
 
+    parseOperator(operator) {
+        var result = '';
         for(var actionName in operator.action) {
             var action = operator.action[actionName];
-            var isCollection = (operator.resultType == 'collection') ? true: false;
+            var isCollection = (action.resultType == 'collection') ? true: false;
             var hasParameter = false;
             if(!util.isNullOrUndefined(action.parameters)) {
                 hasParameter = true;
             }
 
-            result += generateAnnotation(actionName, operator.model, operator.resultType, action.method, action.url) + '\r';
-            result += generateGet(operator.model, operator.resultType, action.method, hasParameter, action.parameterType) + '\r\r';
+            result += generateAnnotation(actionName,
+                                            operator.operatedModel,
+                                            action.resultType,
+                                            action.method,
+                                            action.url) + '\r';
+
+            result += generateGet(operator.operatedModel,
+                                    action.resultType,
+                                    action.method,
+                                    hasParameter,
+                                    action.parameterType) + '\r\r';
         }
+
+        this.importRecorder.add(operator.import);
+
+        return result;
     }
 
-    return mustache.render(tpl.modelOperator.remoteOperatorService, {
-        packageName: lotus.projectConfig.getPackageName(),
-        importModel: this._importRecorder.generate(),
-        content: result.trim()
-    });
+    check(operators) {
+        if(!util.isArray(operators) || operators.length < 1) {
+            throw 'RemoteOperatorServiceBuilder: parse() need a array and length > 1'
+        }
+    }
 }
 
 var generateAnnotation = function(action, model, resultType, method, url) {

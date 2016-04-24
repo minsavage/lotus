@@ -46,7 +46,7 @@ var getOperatorQueryResultClassName = function(modelName, resultType) {
 var getOperatorQueryResultObjectName = function(modelName, resultType) {
     modelName = stringUtil.firstCharacterToLowercase(modelName);
     if(resultType == 'collection' &&
-        resultType.charAt(returnType.length-1) != 's') {
+        resultType.charAt(resultType.length-1) != 's') {
         return modelName + 's';
     }
     else {

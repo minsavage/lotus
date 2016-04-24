@@ -5,14 +5,14 @@ var chai = require('chai');
 var expect = chai.expect;
 var fs = require('fs');
 var path = require('path');
-var lotus = require('../src/lotus');
+var lotus = require('../../src/lotus');
 
 var muk = require('muk');
 muk(lotus.projectConfig, 'getPackageName', function(){
     return 'com.lotus.tn';
 })
 
-var ModelBuilder = require('../src/builder/model/modelBuilder');
+var ModelBuilder = require('../../src/builder/model/modelBuilder');
 
 describe('ModelBuilder', function () {
     describe('#parse', function(){

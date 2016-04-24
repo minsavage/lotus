@@ -14,7 +14,6 @@ class BaseBuilder {
 
     parse(model) {
         this.check(model);
-
         this.model = model;
         this.importRecorder.add(model.import);
     }

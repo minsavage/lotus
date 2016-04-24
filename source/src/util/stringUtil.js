@@ -63,8 +63,13 @@ var toLowerCaseWithUnderline = function(str) {
     return newStr;
 }
 
+var removeAllWhiteSpaceCharacters = function(str) {
+    return str.replace(/\s+/g, '');
+}
+
 exports.isNotEmpty = isNotEmpty;
 exports.withoutSuffix = withoutSuffix;
 exports.firstCharacterToUppercase = firstCharacterToUppercase;
 exports.firstCharacterToLowercase = firstCharacterToLowercase;
 exports.toLowerCaseWithUnderline = toLowerCaseWithUnderline;
+exports.removeAllWhiteSpaceCharacters = removeAllWhiteSpaceCharacters;
