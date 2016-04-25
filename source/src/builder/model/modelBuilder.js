@@ -27,13 +27,15 @@ class ModelBuilder extends BaseBuilder {
         var result = '';
         for(var k in  properties) {
             var p = properties[k];
-            result += this.buildProperty(p.name, p.type);
+            result += this.buildProperty(p);
         }
         return result;
     }
 
-    buildProperty(name, type) {
+    buildProperty(property) {
         var ret = '';
+        var name = property.name;
+        var type = property.type;
         ret += codeGenerateUtil.generateMemberVariable(type, name) + '\r\r';
         ret += codeGenerateUtil.generateGetter(type, name) + '\r\r';
         ret += codeGenerateUtil.generateSetter(type, name) + '\r\r';

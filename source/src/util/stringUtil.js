@@ -64,7 +64,12 @@ var toLowerCaseWithUnderline = function(str) {
 }
 
 var removeAllWhiteSpaceCharacters = function(str) {
-    return str.replace(/\s+/g, '');
+    if(util.isString(str)) {
+        return str.replace(/\s+/g, '');
+    }
+    else {
+        return null;
+    }
 }
 
 exports.isNotEmpty = isNotEmpty;
