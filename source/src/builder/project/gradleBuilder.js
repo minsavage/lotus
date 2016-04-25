@@ -13,8 +13,8 @@ var GradleBuilder = function() {
 }
 
 GradleBuilder.prototype.parse = function(gradleRecorder) {
-    this._gradleRecoder.app = require('../../res/android/gradle/app');
-    this._gradleRecoder.setting = require('../../res/android/gradle/setting');
+    this._gradleRecoder.app = require('../../../res/android/gradle/app');
+    this._gradleRecoder.setting = require('../../../res/android/gradle/setting');
     this._gradleRecoder.addAll(gradleRecorder);
 
     this._gradleRecoder.app.android.defaultConfig.applicationId = projectConfig.getPackageName();

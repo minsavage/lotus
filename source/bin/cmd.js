@@ -46,6 +46,9 @@ else {
 console.log('input:' + map['input']);
 console.log('output:' + map['output']);
 
+if(!util.isNullOrUndefined(argv.f)) {
+    map.files = path.resolve(map.input, argv.f);
+}
 
 var start = require('../src/app');
 start(map);

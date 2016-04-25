@@ -8,9 +8,16 @@ var outputDir = null;
 
 
 var load = function(projectPath) {
+    console.log('loading project...load index');
     var path = require('path');
     var indexPath = path.resolve(projectPath, 'index.js');
-    config = require(indexPath);
+    try {
+        config = require(indexPath);
+    }
+    catch(err) {
+        throw 'load project failed, can not found index.js';
+    }
+    console.log('loading project...found index.js');
 }
 
 var get = function(key) {

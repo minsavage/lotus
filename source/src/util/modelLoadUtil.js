@@ -16,6 +16,12 @@ var modelsContainer = {
 };
 
 var load = function(path) {
+    console.log('loading models...');
+
+    if(!fs.existsSync(path)) {
+        throw 'path does not exist: ' + path;
+    }
+
     var lotus = require('../lotus');
     modelsContainer = lotus.modelMgr.getAll();
 
@@ -25,16 +31,21 @@ var load = function(path) {
         }
         else {
             var dirName = getDirName(path);
-            loadDir(dirName, path);
+            console.log('loading models...load dir: ' + dirName);
+
+            var container = modelsContainer[dirName];
+            loadDir(container, path);
         }
     }
     else {
         var dirName = getDirName(path);
+        console.log('loading models...load file: ' + path);
         var container = modelsContainer[dirName];
         if(!util.isNullOrUndefined(container)) {
             loadFile(container, path);
         }
     }
+    console.log('loading models...done');
 }
 
 var isDir = function(path) {
@@ -47,7 +58,7 @@ var isRootDir = function(path) {
 }
 
 var getDirName = function(path) {
-    var array = pathUtil.split(path.seq);
+    var array = path.split(pathUtil.sep);
     if(isDir(path)) {
         return array[array.length-1];
     }
@@ -76,6 +87,7 @@ var loadDir = function(container, dirPath) {
 }
 
 var loadAll = function(rootPath) {
+    console.log('loading models...load all model');
     var contentList = fs.readdirSync(rootPath);
     for(var k in contentList) {
         var item = contentList[k];

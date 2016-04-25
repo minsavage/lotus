@@ -3,27 +3,40 @@
  */
 var lotus = require('./lotus');
 var path = require('path');
+var util = require('util');
 
 var start = function(map) {
     var projectPath = map.input;
     var outputPath = map.output;
 
-    //lotus.projectConfig.load(projectPath);
-    //lotus.projectConfig.setOutputDir(outputPath);
+    console.log('loading project...');
+
+    lotus.projectConfig.load(projectPath);
+    lotus.projectConfig.setOutputDir(outputPath);
 
     var modelLoadUtil = require('./util/modelLoadUtil');
-    var x = modelLoadUtil.load(projectPath);
+
+    if(util.isString(map.files)) {
+        modelLoadUtil.load(map.files);
+    }
+    else {
+        modelLoadUtil.load(projectPath);
+    }
+
+    console.log('loading project...done');
+
+    var builderPaths = [
+        path.resolve(__dirname, 'builder'),
+        path.resolve(__dirname, 'builderExtend')];
+
+    lotus.builderMgr.load(builderPaths);
+
+    console.log('-------------------init lotus success-------------------');
 
 
+    var androidBuilder = require('./androidBuilder');
+    androidBuilder.startBuild();
 
-    //var builderPaths = ['./builder', './builderExtend'];
-    //
-    //
-    //lotus.modelMgr.load(projectPath);
-    //lotus.builderMgr.load(builderPaths);
-    //
-    //var androidBuilder = require('./androidBuilder');
-    //androidBuilder.startBuild();
     //
     //var serverBuilder = require('./serverBuilder');
     //serverBuilder.startBuild();

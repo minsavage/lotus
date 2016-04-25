@@ -28,6 +28,7 @@ var buildersContainer = {
 };
 
 var load = function(paths) {
+    console.log('loading builder...')
     if(!util.isArray(paths)) {
         throw 'buildMgr loading need path array, please check your input parameter'
     }
@@ -36,6 +37,7 @@ var load = function(paths) {
         var path = paths[k];
         loadInternal(path);
     }
+    console.log('loading builder...done');
 }
 
 var loadInternal = function(path) {

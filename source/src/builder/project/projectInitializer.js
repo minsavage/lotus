@@ -14,7 +14,7 @@ var ProjectInitializer = function() {
 
 ProjectInitializer.prototype.init = function() {
     try {
-        var srcDir = path.resolve(__dirname, '../../res/android/project' );
+        var srcDir = path.resolve(__dirname, '../../../res/android/project' );
         var destDir = path.resolve(projectConfig.getOutputDir(), projectConfig.get('productName'));
         fsUtil.copySync(srcDir, destDir);
     } catch (err) {
@@ -25,7 +25,7 @@ ProjectInitializer.prototype.init = function() {
 }
 
 ProjectInitializer.prototype.copyBase = function() {
-    var baseDir = path.resolve(__dirname, '../../res/android/base' );
+    var baseDir = path.resolve(__dirname, '../../../res/android/base' );
     var destDir = path.resolve(projectConfig.getSrcDir(), 'base');
     fsUtil.ensureDirSync(destDir);
 

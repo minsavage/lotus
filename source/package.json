@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "lotus": "./bin/lotus-cmd.js"
+    "lotus": "./bin/cmd.js"
   },
   "dependencies": {
     "minimist": "1.2.0"
