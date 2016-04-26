@@ -15,6 +15,7 @@ var BaseBuilder = require('../baseBuilder')
 
 class RemoteOperatorBuilder extends BaseBuilder{
     parse(model) {
+        console.log('parsing... ' + model.name);
         super.parse(model);
 
         var content = '';
@@ -35,6 +36,10 @@ class RemoteOperatorBuilder extends BaseBuilder{
 
     buildQuery(model) {
         var query = model.action.query;
+        if(query.resultType != 'object' &&
+            query.resultType != 'collection') {
+            throw 'not support result type: ' + query.resultType;
+        }
 
         var resultClassName = nameUtil.getOperatorQueryResultClassName(model.operatedModel, query.resultType);
         var resourceObjName = nameUtil.getOperatorQueryResultObjectName(model.operatedModel, query.resultType);
@@ -55,7 +60,6 @@ class RemoteOperatorBuilder extends BaseBuilder{
         this.importRecorder.add([
             '$.base.Callback',
             '$.base.GsonConverterUtil',
-            '$.operator.RemoteOperatorService',
             'android.util.Log',
             'java.util.Map',
             'retrofit.Call',

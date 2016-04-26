@@ -2,12 +2,13 @@
  * Created by danney on 16/2/22.
  */
 module.exports = {
+    import:['$.model.QueryPosts'],
     name: 'PostsOperator',
-    model: 'QueryPosts',
-    accessType: 'remote',
-    resultType: 'object',
+    operatedModel: 'QueryPosts',
+    type: 'remote',
     action: {
         query: {
+            resultType: 'object',
             url: 'v1/forums',
             method: 'post',
             parameterType: 'json', //'formUrlEncoded'
