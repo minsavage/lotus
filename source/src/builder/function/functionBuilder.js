@@ -18,18 +18,24 @@ var FunctionBuilder = function() {
 }
 
 FunctionBuilder.prototype.parse = function(f) {
-    var code = f;
-    if(util.isFunction(f)) {
-        code = f.toString();
-        code = code.substring(13, code.length -1);
+    if(!util.isFunction(f)) {
+        throw 'FunctionBuilder need a function';
     }
+
+    var code = 'var x = ' + f.toString();
 
     var syntax = esprima.parse(code);
     if(!util.isArray(syntax.body)) {
         return null;
     }
 
-    var programs = syntax.body;
+    var funcObject = syntax.body[0].declarations[0].init;
+
+    var parameters = getParameters(funcObject.params);
+    var code = '';
+    var importRecorder = new lotus.recorder.ImportRecorder();
+
+    var programs = funcObject.body.body;
 
     for(var k in programs) {
         var program = programs[k];
@@ -37,11 +43,27 @@ FunctionBuilder.prototype.parse = function(f) {
         var codeTranslator = new CodeTranslator();
         var result = codeTranslator.translate(program);
 
-        this._codeRecorder.addOnCreate(result.code + '\r');
-        this._codeRecorder.getImportRecorder().addAll(result.import);
+        code += result.code + '\r';
+        importRecorder.add(result.import);
+
+        //this._codeRecorder.addOnCreate(result.code + '\r');
+        //this._codeRecorder.getImportRecorder().addAll(result.import);
     }
 
-    return this._codeRecorder;
+    return {
+        parameters: parameters,
+        import: importRecorder,
+        code: code
+    }
+}
+
+var getParameters = function(params) {
+    var parameters = [];
+    for(var k in params) {
+        var para = params[k];
+        parameters.push(para.name);
+    }
+    return parameters;
 }
 
 module.exports = FunctionBuilder;

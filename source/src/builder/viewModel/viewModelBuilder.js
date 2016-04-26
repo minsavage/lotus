@@ -28,6 +28,14 @@ class ViewModelBuilder extends BaseBuilder {
         var result = '';
         result += this.buildProperties(model.properties);
         result += this.buildMethods(model.methods);
+
+        return mustache.render(tpl.viewModel.main, {
+            packageName: projectConfig.getPackageName(),
+            import: this.importRecorder.generate(),
+            className: stringUtil.firstCharacterToUppercase(model.name),
+            content: result.trim()
+        });
+
         return result;
     }
 
@@ -75,6 +83,8 @@ class ViewModelBuilder extends BaseBuilder {
     buildOperator(name, methods) {
         var result = '';
         result += codeGenerateUtil.generateMemberVariable(name, name) + '\r\r';
+
+        this.importRecorder.add('$.operator.' + name);
 
         for(var k in methods) {
             var method = methods[k];
@@ -140,6 +150,8 @@ class ViewModelBuilder extends BaseBuilder {
             return '';
         }
 
+        this.importRecorder.add('java.util.HashMap');
+
         var codeOptions = '';
         for(var k in parameters) {
             var p = parameters[k];
@@ -151,7 +163,7 @@ class ViewModelBuilder extends BaseBuilder {
                     p = '\"' + p + '\"';
                 }
             }
-            codeOptions += mustache.render(tpl.viewModel.putMap, {key: p, value: p});
+            codeOptions += mustache.render(tpl.viewModel.putMap, {key: k, value: p});
         }
         codeOptions = tpl.viewModel.map + codeOptions;
         return codeOptions;

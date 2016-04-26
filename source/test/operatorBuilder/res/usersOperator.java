@@ -4,7 +4,6 @@ import com.lotus.tn.model.User;
 import com.lotus.tn.base.Collection;
 import com.lotus.tn.base.Callback;
 import com.lotus.tn.base.GsonConverterUtil;
-import com.lotus.tn.operator.RemoteOperatorService;
 
 import android.util.Log;
 

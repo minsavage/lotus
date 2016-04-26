@@ -39,7 +39,7 @@ var ViewModelBuilder = require('../../src/builder/viewModel/viewModelBuilder');
 describe('ViewModelBuilder', function () {
     describe('#parse', function(){
         it('should parse view model success', function () {
-            var filePath = path.resolve(__dirname, 'res/user.java');
+            var filePath = path.resolve(__dirname, 'res/userViewModel.java');
             var expectedResult = fs.readFileSync(filePath, 'utf8');
             expectedResult = stringUtil.removeAllWhiteSpaceCharacters(expectedResult);
 

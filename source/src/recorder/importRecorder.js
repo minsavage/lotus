@@ -26,6 +26,11 @@ class ImportRecorder {
                 }
             }
         }
+        else if(item instanceof ImportRecorder) {
+            for(var k in item.container) {
+                this.container[k] = true;
+            }
+        }
         else {
             throw 'import: do not support item, ' + item
         }
