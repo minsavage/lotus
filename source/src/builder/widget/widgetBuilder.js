@@ -117,8 +117,8 @@ WidgetCodeBuilder.prototype._buildEvent = function(model, buildConfig) {
         var functionBuilder = new FunctionBuilder();
 
         var codeRecorder = functionBuilder.parse(action);
-        var content = codeRecorder.getOnCreate();
-        this._codeRecorder.getImportRecorder().addAll(codeRecorder.getImportRecorder());
+        var content = codeRecorder.code;
+        this._codeRecorder.getImportRecorder().add(codeRecorder.import);
 
         var listenerName = model.id + config.name;
 
@@ -145,9 +145,7 @@ WidgetCodeBuilder.prototype._buildEvent = function(model, buildConfig) {
 WidgetCodeBuilder.prototype._buildImport = function(model, buildConfig) {
     if(!util.isNullOrUndefined(buildConfig) && !util.isNullOrUndefined(buildConfig.import)) {
         var importGenerator = this._codeRecorder.getImportRecorder();
-        for(var k in buildConfig.import) {
-            importGenerator.addPlain(buildConfig.import[k]);
-        }
+        importGenerator.add(buildConfig.import)
     }
 }
 

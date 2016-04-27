@@ -200,8 +200,8 @@ CodeTranslator.prototype.showPageBuilder = function(syntax) {
         pageName: activityName
     });
 
-    this._importRecorder.addPlain('android.content.Intent');
-    this._importRecorder.addActivity(activityName);
+    this._importRecorder.add('android.content.Intent');
+    this._importRecorder.add('$.activity.'+activityName);
 
     return code;
 }

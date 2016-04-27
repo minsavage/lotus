@@ -7,14 +7,14 @@ module.exports = {
     import: [
         '$.model.QueryPosts',
         '$.viewModel.PostItemViewModel',
-        '$.enumeration.ListViewLoadingStatus',
+        //'$.enumeration.ListViewLoadingStatus',
         'java.util.ArrayList'
     ],
 
     properties: [
         {name: 'postList', type: 'ArrayList<PostItemViewModel>'},
         {name: 'loadMoreEnable', type: 'bool'},
-        {name: 'listViewLoadingStatus', type: 'ListViewLoadingStatus'},
+        //{name: 'listViewLoadingStatus', type: 'ListViewLoadingStatus'},
         {name: 'firstPage', type: 'int', default: 1},
         {name: 'nextPage', type: 'int'},
         {name: 'page', type: 'int'},
