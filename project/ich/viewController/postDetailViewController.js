@@ -17,7 +17,14 @@ module.exports = {
         units: [{
             type:'TextView',
             id:'textView',
-            text: 'Post Detail Page'
+            text: 'Post Detail Page',
+            event: {
+                onClick: function (v) {
+                    v.getView();
+                    v.visibility = View.GONE;
+                    showPage('UserInfo');
+                }
+            }
         }]
     }
 }

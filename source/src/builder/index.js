@@ -12,7 +12,7 @@ module.exports = {
         viewController: require('./viewController/viewControllerBuilder'),
         layout: require('./viewController/layoutBuilder'),
 
-        widget: require('./widget/widgetBuilder'),
+        widget: require('./widget/widgetBuilder2'),
         widgetLayout: require('./widget/widgetLayoutBuilder'),
 
         function: require('./function/functionBuilder'),

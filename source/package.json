@@ -10,7 +10,9 @@
     "lotus": "./bin/cmd.js"
   },
   "dependencies": {
-    "minimist": "1.2.0"
+    "chai": "^3.5.0",
+    "minimist": "1.2.0",
+    "muk": "^0.4.0"
   },
   "keywords": [],
   "author": "minsavage",

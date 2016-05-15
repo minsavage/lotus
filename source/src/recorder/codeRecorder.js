@@ -39,6 +39,10 @@ CodeRecorder.prototype.addAssignment = function(str) {
     this._assignment += str;
 }
 
+CodeRecorder.prototype.addImport = function(item) {
+    this._importRecorder.add(item);
+}
+
 CodeRecorder.prototype.addDataBinding = function(property, str) {
     var oldStr = this._dataBinding[property];
     if(util.isString(oldStr)) {
@@ -79,6 +83,16 @@ CodeRecorder.prototype.getDataBinding = function() {
 
 CodeRecorder.prototype.getImportRecorder = function() {
     return this._importRecorder;
+}
+
+CodeRecorder.prototype.toString = function() {
+    return this._importRecorder.generate() + '\r' +
+        this._memberVariable + '\r' +
+        this._memberVariable + '\r' +
+        this._onCreate + '\r' +
+        this._onCreateView + '\r' +
+        this._onDestroy + '\r' +
+        this._eventImpl;
 }
 
 module.exports = CodeRecorder;
