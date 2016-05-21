@@ -1,32 +1,32 @@
 /**
- * Created by danney on 16/4/8.
+ * Created by danney on 16/5/21.
  */
 module.exports = {
-    name: 'PostsViewController',
+    name: 'RevealSquareViewController',
+    import:['$.viewModel.RevealSquareViewModel'],
     viewModels: {
         master: {
-            type: 'PostsViewModel',
-            name: 'postsVM'
+            type: 'RevealSquareViewModel',
+            name: 'rsVM'
         }
     },
     event: {
         onStart: function() {
-            postsVM.queryPosts();
+            rsVM.queryForums();
         }
     },
     content: {
-        type: 'LinearLayout',
+        type: 'RelativeLayout',
         layout_width: 'match_parent',
-        layout_height: 'wrap_content',
-        orientation: 'vertical',
+        layout_height: 'match_parent',
         units: [{
             type: 'RecyclerView',
             id: 'myRecyclerView',
             layout_width: 'match_parent',
             layout_height: 'match_parent',
             adapter: {
-                item: 'PostItemViewController',
-                dataSource: '@{postsVM.postList}'
+                item: 'RevealSquareItemViewController',
+                dataSource: '@{rsVM.forums}'
             }
         }]
     }

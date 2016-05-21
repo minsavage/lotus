@@ -3,5 +3,5 @@
  */
 module.exports = {
     name: 'MainPage',
-    content: 'PostsViewController'
+    content: 'RevealSquareViewController'
 }

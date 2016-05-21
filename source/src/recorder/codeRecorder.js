@@ -88,7 +88,6 @@ CodeRecorder.prototype.getImportRecorder = function() {
 CodeRecorder.prototype.toString = function() {
     return this._importRecorder.generate() + '\r' +
         this._memberVariable + '\r' +
-        this._memberVariable + '\r' +
         this._onCreate + '\r' +
         this._onCreateView + '\r' +
         this._onDestroy + '\r' +

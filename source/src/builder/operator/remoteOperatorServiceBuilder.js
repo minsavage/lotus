@@ -70,9 +70,10 @@ var generateAnnotation = function(action, model, resultType, method, url) {
     }
 
     var methodName = '';
-    if(stringUtil.isNotEmpty(method)) {
-        methodName = getMethodName(method);
+    if(!stringUtil.isNotEmpty(method)) {
+        method = 'get';
     }
+    methodName = getMethodName(method);
 
     if(action == 'query') {
         var template = '@{{method}}("{{url}}")';

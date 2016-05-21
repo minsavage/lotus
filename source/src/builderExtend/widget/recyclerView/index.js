@@ -5,7 +5,7 @@ module.exports = {
     RecyclerView: {
         widget: require('./widgetBuilder'),
         widgetBuildConfig: require('./widgetBuildConfig'),
-        // widgetLayoutBuildConfig: require('./layoutBuildConfig'),
-        // dependency: require('./dependency')
+        widgetLayoutBuildConfig: require('./layoutBuildConfig'),
+        dependency: require('./dependency')
     }
 }

@@ -1,6 +1,7 @@
 /**
  * Created by zouqin on 16/5/10.
  */
+'use strict';
 var util = require('util');
 var lotus = require('../../../lotus')
 var path = require('path');
@@ -9,16 +10,15 @@ var mustache = require('mustache');
 var codeGenerateUtil = lotus.util.codeGenerateUtil;
 var stringUtil = lotus.util.stringUtil;
 
-
 class SingleItemAdapterBuilder {
     parse(model) {
         var adapterClassName = 'RecyclerViewAdapter';
         var item = model.adapter.item;
         var dataSource = model.adapter.dataSource;
-        var viewHolderClassName = stringUtil.withoutSuffix(item, 'viewController') + 'ViewHolder';
+        var viewHolderClassName = stringUtil.withoutSuffix(item, 'ViewController') + 'ViewHolder';
 
         var code = mustache.render(tpl.singleViewHolderAdapter, {
-            adapterClassName: this.adapterClassName,
+            adapterClassName: adapterClassName,
             viewHolderClassName: viewHolderClassName,
             dataSource: getListDataGetter(dataSource)
         });

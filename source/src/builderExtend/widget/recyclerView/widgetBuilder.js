@@ -1,7 +1,7 @@
 /**
  * Created by danney on 16/5/3.
  */
-
+'use strict';
 var util = require('util');
 var lotus = require('../../../lotus')
 var path = require('path');
@@ -23,7 +23,8 @@ class RecyclerViewBuilder extends WidgetBuilder {
     }
 
     parse(model, buildConfig) {
-        if(util.isNullOrUndefined(super.parse(model, buildConfig))) {
+        var ret = super.parse(model, buildConfig);
+        if(util.isNullOrUndefined(ret)) {
             console.log('parsing... null');
             return null;
         }
@@ -34,10 +35,8 @@ class RecyclerViewBuilder extends WidgetBuilder {
     }
 
     _buildMemberVariable() {
-        console.log('parsing... member');
         super._buildMemberVariable();
-        var code = codeGenerateUtil.generateVariableDeclare(this.adapterClassName, this.adapterObjName);
-        console.log(code);
+        var code = codeGenerateUtil.generateMemberVariable(this.adapterClassName, this.adapterObjName);
         this.codeRecorder.addMemberVariable(code);
     }
 
@@ -49,7 +48,7 @@ class RecyclerViewBuilder extends WidgetBuilder {
 
     _buildOnDestroy() {
         super._buildOnDestroy();
-        var code = 'recyclerViewAdapter = null;';
+        var code = 'recyclerViewAdapter = null;\r';
         this.codeRecorder.addOnDestroy(code);
     }
 
@@ -57,12 +56,15 @@ class RecyclerViewBuilder extends WidgetBuilder {
         var SingleItemAdapterBuilder = require('./singleItemAdapterBuilder');
         var builder = new SingleItemAdapterBuilder();
         var code = builder.parse(this.model);
-        console.log(code);
         this.codeRecorder.addEventImpl(code);
     }
 
     _buildViewHolder() {
-
+        var ViewHolderBuilder = require('./viewHolderBuilder');
+        var builder = new ViewHolderBuilder();
+        var result = builder.parse(this.model);
+        this.codeRecorder.addEventImpl(result.code);
+        this.codeRecorder.addImport(result.import);
     }
 
     canParse() {

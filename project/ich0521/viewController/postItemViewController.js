@@ -2,14 +2,17 @@
  * Created by danney on 16/4/1.
  */
 module.exports = {
-    name: 'PostItem2ViewController',
+    name: 'PostItemViewController',
+    import:['$.viewModel.PostItemViewModel'],
+    config: {
+        layoutOnly: true
+    },
     viewModels: {
         master: {
             type: 'PostItemViewModel',
             name: 'postItemVM'
         }
     },
-
     content: {
         type: 'LinearLayout',
         layout_width: 'match_parent',
@@ -36,7 +39,7 @@ module.exports = {
             text: '@{postItemVM.post.text}',
             event:{
                 onClick: function(){
-                    showPage('PostDetailPage');
+                    //showPage('PostDetailPage');
                 }
             }
         }]

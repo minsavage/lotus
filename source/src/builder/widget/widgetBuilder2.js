@@ -1,6 +1,7 @@
 /**
  * Created by danney on 16/1/19.
  */
+'use strict';
 var util = require('util');
 var mustache = require('mustache');
 var lotus = require('../../lotus');
@@ -55,11 +56,11 @@ class WidgetBuilder extends BaseBuilder{
     }
 
     _buildMemberVariable() {
-        console.log('parsing...2');
-        var code = codeGenerateUtil.generateVariableDeclare(this.className, this.model.id);
+        if(util.isNullOrUndefined(this.model.id)) {
+            throw 'there is no id for widget when creating member variable';
+        }
+        var code = codeGenerateUtil.generateMemberVariable(this.className, this.model.id) + '\r';
         this.codeRecorder.addMemberVariable(code);
-        console.log('parsing...4');
-        console.log(code);
     }
 
     _buildOnCreate() {
@@ -75,7 +76,7 @@ class WidgetBuilder extends BaseBuilder{
     }
 
     _buildOnDestroy() {
-        this.codeRecorder.addOnDestroy(this.model.id + ' = null;');
+        this.codeRecorder.addOnDestroy(this.model.id + ' = null;\r');
     }
 
     _buildEvent() {

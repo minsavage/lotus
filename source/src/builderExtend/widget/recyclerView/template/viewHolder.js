@@ -1,20 +1,28 @@
 static class {{viewHolderClassName}} extends RecyclerView.ViewHolder {
-    public static {{viewHolderClassName}} create(LayoutInflater inflater, ViewGroup parent) {
-        {{dataBindingClassName}} binding = DataBindingUtil.inflate(inflater, R.layout.{{layout}}, parent, false);
-        {{viewHolderClassName}} holder = new {{viewHolderClassName}}(binding);
+    public static {{viewHolderClassName}} create(Context c, LayoutInflater inflater, ViewGroup parent) {
+        {{bindingClassName}} binding = {{bindingClassName}}.inflate(inflater, parent, false);
+        {{viewHolderClassName}} holder = new {{viewHolderClassName}}(c, binding);
         return holder;
     }
 
-    private {{dataBindingClassName}} binding;
-    {{declare}}
-    public {{viewHolderClassName}}({{dataBindingClassName}} binding) {
+    private WeakReference<Context> context;
+    private {{bindingClassName}} binding;
+    {{memberVariable}}
+
+    public {{viewHolderClassName}}(Context c, {{bindingClassName}} binding) {
         super(binding.getRoot());
+        context = new WeakReference<Context>(c);
+        this.binding = binding;
         {{init}}
     }
 
     public void bindTo({{itemClassName}} {{itemObjName}}) {
-        binding.setPostItemVM({{itemObjName}});
+        binding.{{setFuncName}}({{itemObjName}});
         binding.executePendingBindings();
+    }
+
+    private Context getContext() {
+        return context.get();
     }
 
     {{event}}

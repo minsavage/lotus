@@ -7,6 +7,7 @@ var builderMgr = lotus.builderMgr;
 var codeGenerateUtil = lotus.util.codeGenerateUtil;
 var LayoutRecorder = lotus.recorder.LayoutRecorder;
 var projectConfig = lotus.projectConfig;
+var stringUtil = lotus.util.stringUtil;
 
 var LayoutBuilder = function() {
     this.layoutDataBinding = true;
@@ -34,10 +35,26 @@ LayoutBuilder.prototype._buildRoot = function(model) {
 }
 
 LayoutBuilder.prototype._buildDataBinding = function(model) {
-    var name = 'name="' + model.viewModels.master.name + '"';
+    var fullClassName = '';
+    var className = model.viewModels.master.type;
+    if(util.isArray(model.import)) {
+        for(var k in model.import) {
+            var importLine = model.import[k];
+            var reg = '.\\.' + className + '$';
+            var n = importLine.search(reg);
+            if(n > -1) {
+                fullClassName = importLine.replace('$', projectConfig.getPackageName());
+                break;
+            }
+        }
+    }
 
-    var fullType = projectConfig.getPackageName() + '.viewModel.' + model.viewModels.master.type;
-    var type = 'type="' + fullType + '"';
+    if(!stringUtil.isNotEmpty(fullClassName)) {
+        throw 'can not find full class name of view model';
+    }
+
+    var name = 'name="' + model.viewModels.master.name + '"';
+    var type = 'type="' + fullClassName + '"';
 
     var properties = [name, type];
 

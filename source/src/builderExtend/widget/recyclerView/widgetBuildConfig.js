@@ -8,7 +8,10 @@ var view = require('../android/view/codeBuildConfig');
 var extend = require('util')._extend;
 
 module.exports = {
-    import: [],
+    import: [
+        'android.support.v7.widget.RecyclerView',
+        'android.support.v7.widget.LinearLayoutManager'
+    ],
 
     event: extend({
         onItemClick: {

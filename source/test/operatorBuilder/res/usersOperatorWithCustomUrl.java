@@ -13,6 +13,6 @@ import retrofit.http.Path;
 import retrofit.http.QueryMap;
 
 public interface RemoteOperatorService {
-    @("v1/users")
+    @GET("v1/users")
     Call<Collection<User>> queryUser(@QueryMap Map<String, Object> parameters);
 }

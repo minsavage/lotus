@@ -51,6 +51,8 @@ class ViewControllerBuilder extends BaseBuilder {
         }
 
         this._model = model;
+        this.importRecorder.add(model.import);
+
         this._buildViewModel(model);
         this._buildUIControl(model.content);
         this._buildDataBinding(model);
@@ -213,8 +215,8 @@ class ViewControllerBuilder extends BaseBuilder {
             if(util.isFunction(eventFunc)) {
                 var builder = new FunctionBuilder();
                 var codeRecorder = builder.parse(eventFunc);
-                this.importRecorder.add(codeRecorder.getImportRecorder());
-                var content = codeRecorder.getOnCreate();
+                this.importRecorder.add(codeRecorder.import);
+                var content = codeRecorder.code;
 
                 if(name == 'onCreate') {
                     this._codeOnCreate += content;

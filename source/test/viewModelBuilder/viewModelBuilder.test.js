@@ -46,7 +46,6 @@ describe('ViewModelBuilder', function () {
             var model = require('./res/userViewModel');
             var builder = new ViewModelBuilder();
             var ret = builder.parse(model);
-            fs.writeFile('test.java', ret);
             ret = stringUtil.removeAllWhiteSpaceCharacters(ret);
 
             expect(ret).to.equal(expectedResult);

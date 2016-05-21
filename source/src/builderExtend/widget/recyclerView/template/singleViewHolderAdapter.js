@@ -7,7 +7,7 @@ class {{adapterClassName}} extends RecyclerView.Adapter<{{viewHolderClassName}}>
 
     @Override
     public {{viewHolderClassName}} onCreateViewHolder(ViewGroup parent, int viewType) {
-        return {{viewHolderClassName}}.create(inflater, parent);
+        return {{viewHolderClassName}}.create(getContext(), inflater, parent);
     }
 
     @Override

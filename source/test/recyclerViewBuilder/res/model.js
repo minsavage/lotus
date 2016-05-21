@@ -7,7 +7,7 @@ module.exports = {
     layout_width: 'match_parent',
     layout_height: 'match_parent',
     adapter: {
-        item: 'itemViewController',
+        item: 'ItemViewController',
         dataSource: '@{weibosVM.weibos}'
     }
 }

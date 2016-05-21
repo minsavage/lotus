@@ -2,23 +2,45 @@
  * Created by danney on 16/4/1.
  */
 module.exports = {
-    config: {
-        layoutOnly: true,
-        layoutDataBinding: false
-    },
     name: 'PostItemViewController',
+    config: {
+        layoutOnly: true
+    },
     viewModels: {
         master: {
-            type: 'Post',
-            name: 'post'
+            type: 'PostItemViewModel',
+            name: 'postItemVM'
         }
     },
-
     content: {
         type: 'LinearLayout',
         layout_width: 'match_parent',
         layout_height: 'wrap_content',
         orientation: 'vertical',
-        units: []
+        background: '#999999',
+        units: [{
+            type: 'TextView',
+            id: 'textView',
+            layout_width: 'wrap_content',
+            layout_height: 'wrap_content',
+            text: '@{postItemVM.post.title}'
+        },{
+            type: 'TextView',
+            id: 'textViewName',
+            layout_width: 'wrap_content',
+            layout_height: 'wrap_content',
+            text: '@{postItemVM.post.author}'
+        },{
+            type: 'TextView',
+            id: 'textViewContent',
+            layout_width: 'wrap_content',
+            layout_height: 'wrap_content',
+            text: '@{postItemVM.post.text}',
+            event:{
+                onClick: function(){
+                    //showPage('PostDetailPage');
+                }
+            }
+        }]
     }
 }
