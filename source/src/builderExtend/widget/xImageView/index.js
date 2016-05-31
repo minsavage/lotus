@@ -3,8 +3,8 @@
  */
 module.exports = {
     XImageView: {
-        widget: require('./builder2'),
-        widgetBuildConfig: require('./codeBuildConfig'),
+        //widget: require('./builder2'),
+        //widgetBuildConfig: require('./codeBuildConfig'),
         widgetLayoutBuildConfig: require('./layoutBuildConfig'),
         dependency: require('./dependency')
     }

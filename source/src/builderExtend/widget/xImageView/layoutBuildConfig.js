@@ -15,11 +15,8 @@ module.exports = function() {
 
         propertyGenerateRules: {
             replace: {
+                uri: 'app:{{key}}="{{value}}"',
                 actualImageScaleType: 'fresco:{{key}}="{{value}}"'
-            },
-
-            ignore: {
-                uri: true
             }
         }
     });

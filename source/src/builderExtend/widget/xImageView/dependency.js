@@ -3,5 +3,5 @@
  */
 module.exports = {
     type: 'library',
-    src: 'com.facebook.fresco:fresco:0.8.0+'
+    src: 'com.facebook.fresco:fresco:0.10.0'
 }
