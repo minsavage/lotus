@@ -17,26 +17,27 @@ module.exports = {
         type: 'RelativeLayout',
         id: 'relativeLayout',
         layout_width: 'match_parent',
-        layout_height: '100dp',
-        units: [
-        //    {
-        //    type: 'ImageView',
-        //    id: 'ivForumPic',
-        //    layout_width: '50dp',
-        //    layout_height: '50dp',
-        //    uri: '@{forum.forum_pic}'
-        //},
-            {
+        layout_height: '60dp',
+        units: [{
+            type: 'XImageView',
+            id: 'ivForumPic',
+            layout_width: '50dp',
+            layout_height: '50dp',
+            uri: '@{forum.forum_pic}'
+        }, {
             type: 'TextView',
-            id: 'textViewName',
+            id: 'tvForumName',
             layout_width: 'wrap_content',
             layout_height: 'wrap_content',
+            layout_marginLeft:"60dp",
             text: '@{forum.title}'
         },{
             type: 'TextView',
-            id: 'textViewContent',
+            id: 'tvDescription',
             layout_width: 'wrap_content',
             layout_height: 'wrap_content',
+            layout_below:"tvForumName",
+            layout_marginLeft:"60dp",
             text: '@{forum.detail}'
         }],
         event: {

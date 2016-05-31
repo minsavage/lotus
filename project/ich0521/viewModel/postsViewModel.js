@@ -24,10 +24,9 @@ module.exports = {
             },
             response: {
                 onSuccess: function(ret) {
-
                 },
-                onFailure: function(err) {
 
+                onFailure: function(err) {
                 }
             }
         }

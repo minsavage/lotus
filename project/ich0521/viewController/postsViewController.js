@@ -45,7 +45,6 @@ module.exports = {
                 background: '#000000',
                 event: {
                     onClick: function() {
-
                     }
                 }
             }]
