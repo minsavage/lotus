@@ -19,7 +19,8 @@ var CodeTranslator = function() {
         IfStatement: this.handleIfStatement,
         BlockStatement: this.handleBlockStatement,
         Literal: this.handleLiteral,
-        Identifier: this.handleIdentifier
+        Identifier: this.handleIdentifier,
+        ReturnStatement: this.handleReturnStatement
     };
 
     this._importRecorder = new ImportRecorder();
@@ -174,6 +175,10 @@ CodeTranslator.prototype.handleLiteral = function(syntax) {
 
 CodeTranslator.prototype.handleIdentifier = function(syntax) {
     return syntax.name;
+}
+
+CodeTranslator.prototype.handleReturnStatement = function(syntax) {
+    return 'return ' + this.parse(syntax.argument) + ';';
 }
 
 CodeTranslator.prototype.handleSystemCallExpression = function(syntax) {

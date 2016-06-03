@@ -18,13 +18,15 @@ module.exports = {
         id: 'relativeLayout',
         layout_width: 'match_parent',
         layout_height: '60dp',
-        units: [{
-            type: 'XImageView',
-            id: 'ivForumPic',
-            layout_width: '50dp',
-            layout_height: '50dp',
-            uri: '@{forum.forum_pic}'
-        }, {
+        units: [
+        //    {
+        //    type: 'XImageView',
+        //    id: 'ivForumPic',
+        //    layout_width: '50dp',
+        //    layout_height: '50dp',
+        //    uri: '@{forum.forum_pic}'
+        //},
+            {
             type: 'TextView',
             id: 'tvForumName',
             layout_width: 'wrap_content',

@@ -11,8 +11,9 @@ import retrofit.http.Body;
 import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.QueryMap;
+import rx.Observable;
 
 public interface RemoteOperatorService {
     @GET("v1/users")
-    Call<Collection<User>> queryUser(@QueryMap Map<String, Object> parameters);
+    Observable<Collection<User>> queryUser(@QueryMap Map<String, Object> parameters);
 }

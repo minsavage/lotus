@@ -83,7 +83,9 @@ var keyToStr = function(k, v) {
     }
     else {
         if(util.isString(v)) {
-            if(k == 'proguardFiles') {
+            if(k == 'proguardFiles' ||
+                k == 'sourceCompatibility' ||
+                k == 'targetCompatibility') {
 
             }
             else {

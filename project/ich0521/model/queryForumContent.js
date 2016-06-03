@@ -3,8 +3,8 @@
  */
 module.exports = {
     name: 'QueryForumContent',
-    import: ['java.util.ArrayList'],
+    import: ['java.util.List'],
     properties: [
-        {name: 'recom', type: 'ArrayList<Forum>'},
+        {name: 'recom', type: 'List<Forum>'},
     ]
 }

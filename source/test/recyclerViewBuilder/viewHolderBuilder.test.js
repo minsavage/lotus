@@ -32,7 +32,7 @@ describe('ViewHolderBuilder', function () {
 
             var model = require('./res/model');
             var ret = builder.parse(model);
-            fs.writeFileSync('test2.java', ret);
+            //fs.writeFileSync('test2.java', ret);
             ret = stringUtil.removeAllWhiteSpaceCharacters(ret);
 
             expect(ret).to.equal(expectedResult);

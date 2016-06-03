@@ -118,20 +118,35 @@ class ViewModelBuilder extends BaseBuilder {
             throw 'query action does no exist in operator model';
         }
 
-        var resultType = nameUtil.getOperatorQueryResultClassName(operatorModel.operatedModel, queryModel.resultType);
+        //var resultType = nameUtil.getOperatorQueryResultClassName(operatorModel.operatedModel, queryModel.resultType);
+        var resultType = queryModel.responseType;
+        if(!util.isNullOrUndefined(queryModel.responseConverter) &&
+            stringUtil.isNotEmpty(queryModel.responseConverter.convertedType)) {
+            var resultType = queryModel.responseConverter.convertedType;
+
+        }
+
         var actionResult = this.buildAction(method.response.onSuccess);
         this.importRecorder.add(actionResult.import);
         var onSuccessStr = actionResult.code;
         var resultObj = actionResult.parameters[0];
 
-        return mustache.render(tpl.viewModel.operatorQuery2, {
+        var subscriberStr = mustache.render(tpl.viewModel.subscriber, {
+            resultType: resultType,
+            resultObj: resultObj,
+            onSuccess: onSuccessStr,
+            //onFail: onFailStr
+        })
+
+        return mustache.render(tpl.viewModel.operatorQuery3, {
             actionName: method.name,
             operatorObjName: stringUtil.firstCharacterToLowercase(operator),
             parameters: this.getParameters(method.parameters),
             setParameters: this.buildSetParameters(method.parameters),
-            resultType: resultType,
-            resultObj: resultObj,
-            onSuccess: onSuccessStr,
+            subscriber: subscriberStr
+            //resultType: resultType,
+            //resultObj: resultObj,
+            //onSuccess: onSuccessStr,
             //onFail: onFailStr
         });
     }

@@ -11,6 +11,7 @@ import retrofit.http.Body;
 import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.QueryMap;
+import rx.Observable;
 
 public interface RemoteOperatorService {
     {{content}}

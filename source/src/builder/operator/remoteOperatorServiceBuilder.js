@@ -104,7 +104,7 @@ var generateGet = function(modelName, resultType, method, hasParameter, paramTyp
         parameter = annotation + ' Map<String, Object> parameters';
     }
 
-    var template = 'Call<{{retType}}> {{funcName}}({{param}});';
+    var template = 'Observable<{{retType}}> {{funcName}}({{param}});';
 
     return mustache.render(template, {
         retType: resourceName,

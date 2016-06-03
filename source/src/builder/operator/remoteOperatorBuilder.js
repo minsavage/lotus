@@ -12,6 +12,7 @@ var nameUtil = lotus.util.nameUtil;
 var codeGenerateUtil = lotus.util.codeGenerateUtil;
 var projectConfig = lotus.projectConfig;
 var BaseBuilder = require('../baseBuilder')
+var FunctionBuilder = require('../function/functionBuilder');
 
 class RemoteOperatorBuilder extends BaseBuilder{
     parse(model) {
@@ -36,35 +37,67 @@ class RemoteOperatorBuilder extends BaseBuilder{
 
     buildQuery(model) {
         var query = model.action.query;
-        if(query.resultType != 'object' &&
-            query.resultType != 'collection') {
-            throw 'not support result type: ' + query.resultType;
+        var responseType = query.responseType;
+        var responseName = nameUtil.getNameByType(responseType);
+        var convertedType = '';
+        var convertedName = '';
+        var converterCode = '';
+
+        if(!util.isNullOrUndefined(query.responseConverter) &&
+            !util.isNullOrUndefined(query.responseConverter.convertedType)) {
+            convertedType = query.responseConverter.convertedType;
+            convertedName = nameUtil.getNameByType(convertedType);
+            converterCode = this.buildConverter(query.responseConverter);
         }
 
-        var resultClassName = nameUtil.getOperatorQueryResultClassName(model.operatedModel, query.resultType);
-        var resourceObjName = nameUtil.getOperatorQueryResultObjectName(model.operatedModel, query.resultType);
-
-        if(query.resultType == 'collection') {
-            this.importRecorder.add('$.base.Collection');
+        if(stringUtil.isNotEmpty(convertedType)) {
+            responseType = convertedType;
         }
 
         return mustache.render(tpl.modelOperator.remoteQuery, {
             url: projectConfig.getServerDomain(),
-            resultClassName: resultClassName,
-            resultObjectName: resourceObjName,
-            queryFuncName: nameUtil.getOperatorFunctionName('query', model.operatedModel, query.resultType)
+            resultClassName: responseType,
+            queryFuncName: nameUtil.getOperatorFunctionName('query', model.operatedModel),
+            converter: converterCode
         });
+    }
+
+    buildConverter(converterModel) {
+        var action = converterModel.actions[0];
+        var op = action.op;
+        var ret = this.buildAction(action.action);
+
+        var template = '.map({{input}} -> {\r{{code}} })';
+        var converter = mustache.render(template, {
+            input: ret.parameters[0],
+            code: ret.code
+        });
+
+        this.importRecorder.add(ret.import);
+        return converter.trim();
+    }
+
+    buildAction(action) {
+        if(!util.isFunction(action)) {
+            return null;
+        }
+
+        var functionBuilder = new FunctionBuilder();
+        return functionBuilder.parse(action);
     }
 
     addImport() {
         this.importRecorder.add([
-            '$.base.Callback',
             '$.base.GsonConverterUtil',
             'android.util.Log',
             'java.util.Map',
             'retrofit.Call',
             'retrofit.Response',
-            'retrofit.Retrofit'
+            'retrofit.Retrofit',
+            'retrofit.RxJavaCallAdapterFactory',
+            'rx.Observable',
+            'rx.android.schedulers.AndroidSchedulers',
+            'rx.schedulers.Schedulers'
         ])
     }
 }

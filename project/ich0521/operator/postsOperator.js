@@ -3,28 +3,40 @@
  */
 module.exports = {
     name: 'PostsOperator',
-    import: ['$.model.QueryPosts'],
+    import: [
+        '$.model.QueryPosts',
+        '$.model.Post',
+        'java.util.List'
+    ],
     operatedModel: 'QueryPosts',
     type: 'remote',
     action: {
         query: {
-            resultType: 'object',
             url: 'v1/forums',
             method: 'post',
             parameterType: 'json',
             parameters: {
-                page: {
-                    type: 'int',
-                    canBeNull: false
-                },
-                count: {
-                    type: 'int',
-                    canBeNull: false
-                },
-                forum_id: {
-                    type: 'int',
-                    canBeNull: false
-                }
+                page: {type: 'int', canBeNull: false},
+                count: {type: 'int', canBeNull: false},
+                forum_id: {type: 'int', canBeNull: false}
+            },
+            responseType: 'QueryPosts',
+            responseConverter: {
+                convertedType: 'List<Post>',
+                actions: [
+                    {
+                        op: 'map',
+                        action: function(queryPosts) {
+                            //if(queryPosts == null ||
+                            //    queryPosts.content == null ||
+                            //    queryPosts.content.posts == null) {
+                            //    error();
+                            //}
+
+                            return queryPosts.content.posts;
+                        }
+                    }
+                ]
             }
         }
     }

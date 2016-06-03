@@ -6,10 +6,12 @@ module.exports = {
     import: [
         '$.viewModel.PostItemViewModel',
         '$.model.QueryPosts',
+        '$.model.Post',
+        'java.util.List',
         'java.util.ArrayList'
     ],
     properties: [
-        {name: 'posts', type: 'ArrayList<PostItemViewModel>'},
+        {name: 'posts', type: 'List<PostItemViewModel>'},
         {name: 'page', type: 'int'},
         {name: 'count', type: 'int'},
         {name: 'forumId', type: 'int'}
@@ -24,6 +26,7 @@ module.exports = {
             },
             response: {
                 onSuccess: function(ret) {
+                    //posts = ret.content.posts;
                 },
 
                 onFailure: function(err) {

@@ -3,7 +3,7 @@
  */
 module.exports = {
     import: [
-        'java.util.ArrayList'
+        'java.util.List'
     ],
 
     name: 'QueryPostContent',
@@ -13,6 +13,6 @@ module.exports = {
         {name: 'forum_name', type: 'string'},
         {name: 'next_page', type: 'int'},
         {name: 'forum_id', type: 'int'},
-        {name: 'posts', type: 'ArrayList<Post>'},
+        {name: 'posts', type: 'List<Post>'},
     ]
 }

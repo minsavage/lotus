@@ -52,8 +52,8 @@ describe('RemoteOperatorBuilder', function () {
             var model = require('./res/usersOperator');
             var builder = new RemoteOperatorBuilder();
             var ret = builder.parse(model);
+            //fs.writeFileSync('test2.java', ret);
             ret = ret.replace(/\s+/g, '');
-
             expect(ret).to.equal(expectedResult);
         })
     })

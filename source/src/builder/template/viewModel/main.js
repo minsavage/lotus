@@ -6,6 +6,7 @@ import android.util.Log;
 import {{packageName}}.BR;
 import {{packageName}}.base.Callback;
 import {{packageName}}.base.ViewModel;
+import rx.Subscriber;
 {{import}}
 
 public class {{className}} extends ViewModel {
