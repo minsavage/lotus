@@ -24,9 +24,12 @@ var CodeTranslator = function() {
     };
 
     this._importRecorder = new ImportRecorder();
+
+    this.env = null;
 }
 
-CodeTranslator.prototype.translate = function(syntax) {
+CodeTranslator.prototype.translate = function(syntax, env) {
+    this.env = env;
     var code = this.parse(syntax);
     return {
         code: code,
@@ -87,7 +90,7 @@ CodeTranslator.prototype.handleCallExpression = function(syntax) {
 
 CodeTranslator.prototype.handleAssignmentExpression = function(syntax) {
     var right = this.parse(syntax.right);
-    right = stringUtil.withoutSuffix(right, ';');
+    //right = stringUtil.withoutSuffix(right, ';');
 
 
     var obj = null;
@@ -103,10 +106,6 @@ CodeTranslator.prototype.handleAssignmentExpression = function(syntax) {
 
     var code = codeGenerateUtil.generateSetterCall(obj, property, right);
     return code;
-
-    //var obj = "Identifier"
-    //var left = this.handleMemberExpression(syntax.left, true, right) + ';';
-    //return left;
 }
 
 CodeTranslator.prototype.handleMemberExpression = function(syntax, isSetter, setValue) {
@@ -129,7 +128,7 @@ CodeTranslator.prototype.handleMemberExpression = function(syntax, isSetter, set
         code = codeGenerateUtil.generateGetterCall(objName, property.name);
     }
 
-    return stringUtil.withoutSuffix(code, ';');
+    return code;
 }
 
 
@@ -198,11 +197,46 @@ CodeTranslator.prototype.handleSystemCallExpression = function(syntax) {
 
 CodeTranslator.prototype.showPageBuilder = function(syntax) {
     var arg0 = syntax.arguments[0];
+    var arg1 = syntax.arguments[1];
+
     var pageName = arg0.value;
     var activityName = lotus.util.nameUtil.pageToActivityName(pageName);
 
+    if(!util.isNullOrUndefined(arg1)) {
+        var props = arg1.properties;
+        var propsSetter = '';
+        for(var k in props) {
+            var p = props[k];
+            var key = p.key.name;
+            var objName = p.value.object.name;
+            var objProperty = p.value.property.name;
+
+            var type = this.env.find(objName);
+            if(util.isNullOrUndefined(type)) {
+                throw 'can not find the type info when build showPage(): ' + objName;
+            }
+
+            var field = type.findField(objProperty);
+            if(util.isNullOrUndefined(field)) {
+                throw 'can not find the property info when build showPage(): ' + objProperty;
+            }
+
+            var getter = codeGenerateUtil.generateGetterCall(objName, objProperty);
+            var code = codeGenerateUtil.generateSPSetter('props', field.type.name, key, getter) + ';\r';
+            if(stringUtil.isNotEmpty(code)) {
+                propsSetter += code;
+            }
+        }
+        var propsCode = '';
+        if(stringUtil.isNotEmpty(propsSetter)) {
+            var template = 'Bundle props = new Bundle();\r {{setter}} intent.putExtra("props", props);'
+            propsCode = mustache.render(template, {setter: propsSetter});
+        }
+    }
+
     var code = mustache.render(tpl.showPage.show, {
-        pageName: activityName
+        pageName: activityName,
+        props: propsCode
     });
 
     this._importRecorder.add('android.content.Intent');

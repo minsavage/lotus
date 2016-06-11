@@ -1,6 +1,7 @@
 package {{packageName}}.base;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,6 +23,13 @@ public abstract class ViewControllerActivity extends Activity {
             Class<ViewController> aClass = getViewControllerClass();
             rootViewController = aClass.newInstance();
             rootViewController.setContext(this);
+
+            Intent intent = getIntent();
+            Bundle props = intent.getBundleExtra("props");
+            if(props != null) {
+                rootViewController.setProps(props);
+            }
+
             rootViewController.performCreate(savedInstanceState);
         }
         catch (InstantiationException e) {

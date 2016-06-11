@@ -19,7 +19,13 @@ class Class {
     }
 
     findField(name) {
-
+        for(var i = 0; i < this.fields.length; ++i) {
+            var f = this.fields[i];
+            if(f.name == name) {
+                return f;
+            }
+        }
+        return null;
     }
 
     findMethods(name) {

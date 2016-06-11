@@ -27,12 +27,14 @@ class SingleItemAdapterBuilder {
 }
 
 var getListDataGetter = function(str) {
-    var data = str.substring(2, str.length-1);
-    var array = data.split('.');
-    var obj = array[0];
-    var property = array[1];
-    var listDataGetter = codeGenerateUtil.generateGetterCall(obj, property);
-    return listDataGetter.substr(0, listDataGetter.length-1);
+    var reg = /^@{(\w+)\.(\w+)}$/g;
+    if(!reg.test(str)) {
+        throw 'error syntax: '+ str;
+    }
+
+    var obj = RegExp.$1;
+    var property = RegExp.$2;
+    return codeGenerateUtil.generateGetterCall(obj, property);
 }
 
 module.exports = SingleItemAdapterBuilder;

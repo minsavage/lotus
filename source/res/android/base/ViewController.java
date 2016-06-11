@@ -20,6 +20,8 @@ public class ViewController {
 
     protected View view;
 
+    protected Bundle props;
+
     int containerViewId = 0;
 
     String tag;
@@ -35,6 +37,14 @@ public class ViewController {
 
     public Context getContext() {
         return context;
+    }
+
+    public Bundle getProps() {
+        return props;
+    }
+
+    public void setProps(Bundle props) {
+        this.props = props;
     }
 
     public ViewControllerMgr getSubViewControllerMgr() {

@@ -15,6 +15,7 @@ var projectConfig = lotus.projectConfig;
 var modelMgr = lotus.modelMgr;
 var builderMgr = lotus.builderMgr;
 var FunctionBuilder = require('../function/functionBuilder');
+var CodeTranslatorEnv = require('../function/codeTranslatorEnv');
 var BaseBuilder = require('../baseBuilder');
 
 class ViewControllerBuilder extends BaseBuilder {
@@ -27,9 +28,12 @@ class ViewControllerBuilder extends BaseBuilder {
         this._codeEventImpl = '';
         this._codeOnDestroy = "";
         this._dataBinding = {};
+        this.codeTranslatorEnv = null;
     }
 
     parse(model) {
+        super.parse(model);
+
         if(this._parseInternal(model)) {
             return this._render();
         }
@@ -53,7 +57,7 @@ class ViewControllerBuilder extends BaseBuilder {
         this._model = model;
         this.importRecorder.add(model.import);
 
-        this._buildViewModel(model);
+        this._buildViewModels(model);
         this._buildUIControl(model.content);
         this._buildDataBinding(model);
         this._buildEvent(model);
@@ -83,56 +87,124 @@ class ViewControllerBuilder extends BaseBuilder {
             viewModelDestroy: this._codeOnDestroy.trim(),
             viewModelObserverStmt: this._codeEventImpl.trim(),
             dataBindingName : nameUtil.vcToBindingName(this._model.name),
-            viewModelObjName: this._model.viewModels.master.name,
-            viewModelObjNameWithFirstUppercase: stringUtil.firstCharacterToUppercase(this._model.viewModels.master.name)
+            viewModelObjName: this._model.viewModels[0].name,
+            viewModelObjNameWithFirstUppercase: stringUtil.firstCharacterToUppercase(this._model.viewModels[0].name)
         }
         return data;
     }
 
-    _buildViewModel(model) {
-        var master = model.viewModels.master;
-        var slaves = model.viewModels.slave;
-
-        //变量申明
-        this._codeMemberVariable += codeGenerateUtil.generateMemberVariable(master.type, master.name) + '\r';
-        for(var k in slaves) {
-            var vm = slaves[k];
-            this._codeMemberVariable += codeGenerateUtil.generateMemberVariable(vm.type, vm.name) + '\r';
+    _buildViewModels(model) {
+        var len = model.viewModels.length;
+        for(var i = 0; i < len; ++i) {
+            var vm = model.viewModels[i];
+            var isCreate = i == 0 ? true: false;
+            this._buildViewModel(vm, isCreate);
         }
 
-        //初始化
-        var init = mustache.render(tpl.viewController.viewModelInit, {
-                viewModelClassName: master.type,
-                viewModelObjName: master.name
-            }) + '\r';
+        var init = '';
+        for(var i = 0; i < len; ++i) {
+            var vm = model.viewModels[i];
+            var code = this._buildViewModelInit(vm);
+            if(stringUtil.isNotEmpty(code)) {
+                init += code;
+            }
+        }
 
-        for(var k in slaves) {
-            var vm = slaves[k];
-            init += mustache.render(tpl.viewController.viewModelInitGet, {
+        if(stringUtil.isNotEmpty(init)) {
+            var template = 'if (props != null) {\r {{init}} \r}';
+            this._codeOnCreate += mustache.render(template, {init: init});
+        }
+    }
+
+    _buildViewModel(vm, isCreate) {
+        //变量申明
+        this._codeMemberVariable += codeGenerateUtil.generateMemberVariable(vm.type, vm.name) + '\r';
+
+        //初始化
+        var template = tpl.viewController.viewModelInitGet;
+        if(isCreate == true) {
+            template = tpl.viewController.viewModelInit;
+        }
+
+        this._codeOnCreate += mustache.render(template, {
+                viewModelClassName: vm.type,
+                viewModelObjName: vm.name}) + '\r';
+
+        //销毁
+        if(isCreate == true) {
+            this._codeOnDestroy += mustache.render(tpl.viewController.viewModelDestroy, {
                     viewModelClassName: vm.type,
                     viewModelObjName: vm.name}) + '\r';
         }
-
-        if(util.isFunction(model.viewModels.init)) {
-            var builder = new FunctionBuilder();
-            var codeRecorder = builder.parse(model.viewModels.init);
-            init += codeRecorder.getOnCreate();
+        else {
+            this._codeOnDestroy += vm.name + ' = null;\r';
         }
-
-        this._codeOnCreate += init;
-
-        //销毁
-        var destroy = mustache.render(tpl.viewController.viewModelDestroy, {
-                viewModelClassName: master.type,
-                viewModelObjName: master.name
-            }) + '\r';
-        for(var k in slaves) {
-            var vm = slaves[k];
-            destroy +=  vm.name + ' = null;\r';
-        }
-
-        this._codeOnDestroy += destroy;
     }
+
+    _buildViewModelInit(vm) {
+        if(util.isNullOrUndefined(vm.init)) {
+            return null;
+        }
+
+        var code = '';
+        for(var p in vm.init) {
+            var v = vm.init[p];
+            var vmTypeInfo = this.classMgr.find(vm.type);
+            var field = vmTypeInfo.findField(p);
+            if(util.isNullOrUndefined(field)) {
+                throw 'can not find this field [' + p + '] in ' + vm.type;
+            }
+
+            var propGetter = codeGenerateUtil.generateSPGetter('props', field.type.name, p);
+            code += codeGenerateUtil.generateSetterCall(vm.name, p, propGetter);
+        }
+        return code;
+    }
+
+    //_buildViewModel(model) {
+    //    var master = model.viewModels.master;
+    //    var slaves = model.viewModels.slave;
+    //
+    //    //变量申明
+    //    this._codeMemberVariable += codeGenerateUtil.generateMemberVariable(master.type, master.name) + '\r';
+    //    for(var k in slaves) {
+    //        var vm = slaves[k];
+    //        this._codeMemberVariable += codeGenerateUtil.generateMemberVariable(vm.type, vm.name) + '\r';
+    //    }
+    //
+    //    //初始化
+    //    var init = mustache.render(tpl.viewController.viewModelInit, {
+    //            viewModelClassName: master.type,
+    //            viewModelObjName: master.name
+    //        }) + '\r';
+    //
+    //    for(var k in slaves) {
+    //        var vm = slaves[k];
+    //        init += mustache.render(tpl.viewController.viewModelInitGet, {
+    //                viewModelClassName: vm.type,
+    //                viewModelObjName: vm.name}) + '\r';
+    //    }
+    //
+    //    if(util.isFunction(model.viewModels.init)) {
+    //        var builder = new FunctionBuilder();
+    //        var codeRecorder = builder.parse(model.viewModels.init);
+    //        init += codeRecorder.getOnCreate();
+    //    }
+    //
+    //    this._codeOnCreate += init;
+    //
+    //    //销毁
+    //    var destroy = mustache.render(tpl.viewController.viewModelDestroy, {
+    //            viewModelClassName: master.type,
+    //            viewModelObjName: master.name
+    //        }) + '\r';
+    //    for(var k in slaves) {
+    //        var vm = slaves[k];
+    //        destroy +=  vm.name + ' = null;\r';
+    //    }
+    //
+    //    this._codeOnDestroy += destroy;
+    //}
 
     _buildDataBinding(model) {
         var bind = model.bind;
@@ -168,12 +240,12 @@ class ViewControllerBuilder extends BaseBuilder {
         var content = codeGenerateUtil.generateSwitchCase('propertyId', ids, values);
 
         var result = mustache.render(tpl.viewController.viewModelObserverStmt, {
-            viewModelObjName: model.viewModels.master.name,
+            viewModelObjName: model.viewModels[0].name,
             content: content
         });
 
         var init = mustache.render(tpl.viewController.viewModelAddCallback, {
-            viewModelObjName: model.viewModels.master.name
+            viewModelObjName: model.viewModels[0].name
         });
 
         this._codeEventImpl += result + '\r\r';
@@ -181,7 +253,7 @@ class ViewControllerBuilder extends BaseBuilder {
     }
 
     _buildUIControl(model) {
-        var codeRecorder = buildWidget(model);
+        var codeRecorder = buildWidget(model, this.getEnv());
         if(codeRecorder != null) {
             this._codeMemberVariable += codeRecorder.getMemberVariable().trim();
             this._codeOnCreate += codeRecorder.getOnCreate().trim();
@@ -244,16 +316,29 @@ class ViewControllerBuilder extends BaseBuilder {
             }
         }
     }
+
+    getEnv() {
+        if(this.codeTranslatorEnv == null) {
+            this.codeTranslatorEnv = new CodeTranslatorEnv();
+
+            for(var i = 0; i < this.model.viewModels.length; ++i) {
+                var vm = this.model.viewModels[i];
+                this.codeTranslatorEnv.add(vm.name, this.classMgr.find(vm.type));
+            }
+        }
+        return this.codeTranslatorEnv;
+    }
 }
 
 
-var buildWidget = function(model) {
+var buildWidget = function(model, env) {
     var Builder = builderMgr.queryWidgetBuilder(model.type);
     var config = builderMgr.queryWidgetBuildConfig(model.type);
 
     var codeRecorder = null;
     if(Builder != null) {
         var builder = new Builder();
+        model.codeTranslatorEnv = env;
         codeRecorder = builder.parse(model, config);
     }
 

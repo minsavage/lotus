@@ -17,7 +17,7 @@ var FunctionBuilder = function() {
     this._codeRecorder = new CodeRecorder();
 }
 
-FunctionBuilder.prototype.parse = function(f) {
+FunctionBuilder.prototype.parse = function(f, env) {
     if(!util.isFunction(f)) {
         throw 'FunctionBuilder need a function';
     }
@@ -41,13 +41,10 @@ FunctionBuilder.prototype.parse = function(f) {
         var program = programs[k];
 
         var codeTranslator = new CodeTranslator();
-        var result = codeTranslator.translate(program);
+        var result = codeTranslator.translate(program, env);
 
         code += result.code + '\r';
         importRecorder.add(result.import);
-
-        //this._codeRecorder.addOnCreate(result.code + '\r');
-        //this._codeRecorder.getImportRecorder().addAll(result.import);
     }
 
     return {

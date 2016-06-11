@@ -4,12 +4,10 @@
 module.exports = {
     name: 'RevealSquareViewController',
     import:['$.viewModel.RevealSquareViewModel'],
-    viewModels: {
-        master: {
-            type: 'RevealSquareViewModel',
-            name: 'rsVM'
-        }
-    },
+    viewModels: [{
+        type: 'RevealSquareViewModel',
+        name: 'rsVM'
+    }],
     bind: {
         'rsVM.forums': function() {
             recyclerViewAdapter.notifyDataSetChanged();

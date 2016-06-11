@@ -86,7 +86,7 @@ var generateGetterCall = function(objName, propertyName) {
         //e.g. :  setName("danney");
         objName = '';
     }
-    return objName + 'get' + stringUtil.firstCharacterToUppercase(propertyName) + '();';
+    return objName + 'get' + stringUtil.firstCharacterToUppercase(propertyName) + '()';
 }
 
 var generateSPGetter = function(objName, type, key) {
@@ -100,7 +100,7 @@ var generateSPGetter = function(objName, type, key) {
     }
 
     return objName + '.get' + realType +
-        '("' + key + '", ' + variableTypeUtil.getTypeDefaultValue(type) + ');'
+        '("' + key + '", ' + variableTypeUtil.getTypeDefaultValue(type) + ')'
 }
 
 var generateSPSetter = function(objName, type, key, value) {
@@ -113,7 +113,7 @@ var generateSPSetter = function(objName, type, key, value) {
         realType = variableTypeUtil.getType(type);
     }
 
-    return objName + '.put' + realType + '("' + key + '", ' + value + ');'
+    return objName + '.put' + realType + '("' + key + '", ' + value + ')'
 }
 
 var generateImport = function(packageName, subPackageName) {

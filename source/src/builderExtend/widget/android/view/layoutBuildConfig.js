@@ -17,7 +17,8 @@ module.exports = function() {
 
             ignore: {
                 type: true,
-                event: true
+                event: true,
+                codeTranslatorEnv: true
             }
         }
     }

@@ -7,6 +7,7 @@ static class {{viewHolderClassName}} extends RecyclerView.ViewHolder {
 
     private WeakReference<Context> context;
     private {{bindingClassName}} binding;
+    private {{itemClassName}} {{itemObjName}};
     {{memberVariable}}
 
     public {{viewHolderClassName}}(Context c, {{bindingClassName}} binding) {
@@ -17,6 +18,7 @@ static class {{viewHolderClassName}} extends RecyclerView.ViewHolder {
     }
 
     public void bindTo({{itemClassName}} {{itemObjName}}) {
+        this.{{itemObjName}} = {{itemObjName}};
         binding.{{setFuncName}}({{itemObjName}});
         binding.executePendingBindings();
     }

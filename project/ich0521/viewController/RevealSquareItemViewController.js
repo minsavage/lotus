@@ -7,12 +7,10 @@ module.exports = {
     config: {
         layoutOnly: true
     },
-    viewModels: {
-        master: {
-            type: 'Forum',
-            name: 'forum'
-        }
-    },
+    viewModels: [{
+        type: 'Forum',
+        name: 'forum'
+    }],
     content: {
         type: 'RelativeLayout',
         id: 'relativeLayout',
@@ -44,7 +42,9 @@ module.exports = {
         }],
         event: {
             onClick: function() {
-                showPage('PostsPage');
+                showPage('PostsPage', {
+                    forumId: forum.id
+                });
             }
         }
     }

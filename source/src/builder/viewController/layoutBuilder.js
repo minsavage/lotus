@@ -36,7 +36,7 @@ LayoutBuilder.prototype._buildRoot = function(model) {
 
 LayoutBuilder.prototype._buildDataBinding = function(model) {
     var fullClassName = '';
-    var className = model.viewModels.master.type;
+    var className = model.viewModels[0].type;
     if(util.isArray(model.import)) {
         for(var k in model.import) {
             var importLine = model.import[k];
@@ -53,7 +53,7 @@ LayoutBuilder.prototype._buildDataBinding = function(model) {
         throw 'can not find full class name of view model';
     }
 
-    var name = 'name="' + model.viewModels.master.name + '"';
+    var name = 'name="' + model.viewModels[0].name + '"';
     var type = 'type="' + fullClassName + '"';
 
     var properties = [name, type];

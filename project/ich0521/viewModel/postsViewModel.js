@@ -13,7 +13,7 @@ module.exports = {
         {name: 'posts', type: 'Array<Post>', defaultValue: []},
         {name: 'page', type: 'int', defaultValue: 1},
         {name: 'count', type: 'int', defaultValue: 100},
-        {name: 'forumId', type: 'int', defaultValue: 3}
+        {name: 'forumId', type: 'int'}
     ],
     methods: {
         queryPosts: {

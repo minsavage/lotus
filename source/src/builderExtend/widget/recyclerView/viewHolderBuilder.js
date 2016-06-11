@@ -13,6 +13,8 @@ var nameUtil = lotus.util.nameUtil;
 var builderMgr = lotus.builderMgr;
 var modelMgr = lotus.modelMgr;
 var BaseBuilder = require('../../../builder/baseBuilder');
+var ImportLoader = require('../../../type/importLoader');
+var CodeTranslatorEnv = require('../../../builder/function/codeTranslatorEnv');
 
 class ViewHolderBuilder {
     constructor() {
@@ -24,6 +26,8 @@ class ViewHolderBuilder {
         this._codeOnDestroy = "";
         this._dataBinding = {};
         this.importRecorder = new lotus.recorder.ImportRecorder();
+        this.viewControllerModel = null;
+        this.classMgr = null;
     }
 
     parse(model) {
@@ -33,12 +37,14 @@ class ViewHolderBuilder {
         var viewHolderClassName = stringUtil.withoutSuffix(item, 'ViewController') + 'ViewHolder';
         var bindingClassName = nameUtil.vcToBindingName(item);
 
-        var viewControllerModel = modelMgr.queryViewController(item);
-        var vmClassName = viewControllerModel.viewModels.master.type;
-        var vmObjName = viewControllerModel.viewModels.master.name;
+        this.viewControllerModel = modelMgr.queryViewController(item);
+        var vmClassName = this.viewControllerModel.viewModels[0].type;
+        var vmObjName = this.viewControllerModel.viewModels[0].name;
         var setFuncName = 'set' + stringUtil.firstCharacterToUppercase(vmObjName);
 
-        this._buildWidget(viewControllerModel.content);
+        this.classMgr = ImportLoader.load(this.viewControllerModel.import);
+
+        this._buildWidget(this.viewControllerModel.content);
 
         var code = mustache.render(tpl.viewHolder, {
             viewHolderClassName: viewHolderClassName,
@@ -53,7 +59,7 @@ class ViewHolderBuilder {
 
         this.importRecorder.add('$.databinding.' + bindingClassName);
         this.importRecorder.add('java.lang.ref.WeakReference');
-        this.importRecorder.add(viewControllerModel.import);
+        this.importRecorder.add(this.viewControllerModel.import);
 
         return {
             code: code,
@@ -69,7 +75,7 @@ class ViewHolderBuilder {
     }
 
     _buildWidgetInner(model) {
-        var codeRecorder = buildWidgetUtil(model);
+        var codeRecorder = buildWidgetUtil(model, this._getEnv());
         if(codeRecorder != null) {
             this._codeMemberVariable += codeRecorder.getMemberVariable().trim();
             this._codeOnCreate += codeRecorder.getOnCreate().trim();
@@ -96,15 +102,30 @@ class ViewHolderBuilder {
             }
         }
     }
+
+    _getEnv() {
+        if(this.codeTranslatorEnv == null) {
+            this.codeTranslatorEnv = new CodeTranslatorEnv();
+
+            var viewModels = this.viewControllerModel.viewModels;
+
+            for(var i = 0; i < viewModels.length; ++i) {
+                var vm = viewModels[i];
+                this.codeTranslatorEnv.add(vm.name, this.classMgr.find(vm.type));
+            }
+        }
+        return this.codeTranslatorEnv;
+    }
 }
 
-var buildWidgetUtil = function(model) {
+var buildWidgetUtil = function(model, env) {
     var Builder = builderMgr.queryWidgetBuilder(model.type);
     var config = builderMgr.queryWidgetBuildConfig(model.type);
 
     var codeRecorder = null;
     if(Builder != null) {
         var builder = new Builder();
+        model.codeTranslatorEnv = env;
         codeRecorder = builder.parse(model, config);
     }
 

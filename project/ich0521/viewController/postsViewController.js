@@ -4,15 +4,13 @@
 module.exports = {
     name: 'PostsViewController',
     import:['$.viewModel.PostsViewModel'],
-    viewModels: {
-        master: {
-            type: 'PostsViewModel',
-            name: 'postsVM',
-            init: {
-                count: '@{props.count}'
-            }
+    viewModels: [{
+        type: 'PostsViewModel',
+        name: 'postsVM',
+        init: {
+            forumId: '@{props.forumId}'
         }
-    },
+    }],
     bind: {
         'postsVM.posts': function() {
             recyclerViewAdapter.notifyDataSetChanged();
@@ -43,9 +41,6 @@ module.exports = {
                     onClick: function() {
                         closePage();
                     }
-                },
-                props: {
-                    "count": '@{postVM.count}'
                 }
             }, {
                 type: 'ImageView',

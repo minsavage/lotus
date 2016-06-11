@@ -7,12 +7,10 @@ module.exports = {
     config: {
         layoutOnly: true
     },
-    viewModels: {
-        master: {
-            type: 'Post',
-            name: 'post'
-        }
-    },
+    viewModels: [{
+        type: 'Post',
+        name: 'post'
+    }],
     content: {
         type: 'LinearLayout',
         layout_width: 'match_parent',

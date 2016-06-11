@@ -95,7 +95,7 @@ class WidgetBuilder extends BaseBuilder{
 
             var content = '';
             var functionBuilder = new FunctionBuilder();
-            var result = functionBuilder.parse(action);
+            var result = functionBuilder.parse(action, this.model.codeTranslatorEnv);
             content = result.code;
             this.importRecorder.add(result.import);
 
