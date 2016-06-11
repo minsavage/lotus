@@ -9,8 +9,13 @@ var tpl = lotus.template(path.resolve(__dirname, '../template'));
 var codeGenerateUtil = lotus.util.codeGenerateUtil;
 var projectConfig = lotus.projectConfig;
 var BaseBuilder = require('../baseBuilder');
+var util = require('util');
 
 class ModelBuilder extends BaseBuilder {
+    //constructor() {
+    //    super();
+    //}
+
     parse(model) {
         super.parse(model);
 
@@ -33,13 +38,12 @@ class ModelBuilder extends BaseBuilder {
     }
 
     buildProperty(property) {
-        var ret = '';
-        var name = property.name;
-        var type = property.type;
-        ret += codeGenerateUtil.generateMemberVariable(type, name) + '\r\r';
-        ret += codeGenerateUtil.generateGetter(type, name) + '\r\r';
-        ret += codeGenerateUtil.generateSetter(type, name) + '\r\r';
-        return ret;
+        var c = this.classMgr.find(property.type);
+        if(util.isNullOrUndefined(c)) {
+            throw 'can not supported type [' + property.type + '] , do you forget import it ?';
+        }
+
+        return c.generateProperty(property.name);
     }
 }
 

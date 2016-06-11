@@ -37,27 +37,42 @@ class RemoteOperatorBuilder extends BaseBuilder{
 
     buildQuery(model) {
         var query = model.action.query;
-        var responseType = query.responseType;
+        var responseType = this.classMgr.find(query.responseType);
+        if(util.isNullOrUndefined(responseType)) {
+            throw 'can not supported type: ' + responseType;
+        }
+
         var responseName = nameUtil.getNameByType(responseType);
-        var convertedType = '';
+
+        var convertedType = null;
         var convertedName = '';
         var converterCode = '';
 
         if(!util.isNullOrUndefined(query.responseConverter) &&
             !util.isNullOrUndefined(query.responseConverter.convertedType)) {
+
             convertedType = query.responseConverter.convertedType;
-            convertedName = nameUtil.getNameByType(convertedType);
+            convertedType = this.classMgr.find(convertedType);
+            if(util.isNullOrUndefined(convertedType)) {
+                throw 'can not supported type: ' + convertedType;
+            }
+
+            convertedName = nameUtil.getNameByType(convertedType.getName());
             converterCode = this.buildConverter(query.responseConverter);
         }
 
-        if(stringUtil.isNotEmpty(convertedType)) {
-            responseType = convertedType;
+        var resultClassName = '';
+        if(!util.isNullOrUndefined(convertedType)) {
+            resultClassName = convertedType.translator.getNativeName();
+        }
+        else {
+            resultClassName = responseType.translator.getNativeName();
         }
 
         return mustache.render(tpl.modelOperator.remoteQuery, {
             url: projectConfig.getServerDomain(),
-            resultClassName: responseType,
-            queryFuncName: nameUtil.getOperatorFunctionName('query', model.operatedModel),
+            resultClassName: resultClassName,
+            queryFuncName: nameUtil.getOperatorFunctionName('query', responseType.getName()),
             converter: converterCode
         });
     }

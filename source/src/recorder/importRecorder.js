@@ -37,16 +37,35 @@ class ImportRecorder {
     }
 
     generate() {
-        var projectConfig = require('../lotus').projectConfig;
-
         var result = '';
         for(var item in this.container) {
-            if(item.indexOf('$.') == 0) {
-                item = item.replace('$', projectConfig.getPackageName);
-            }
-            result += 'import ' + item + ';\r';
+            var ret = this.toNative(item);
+            result += 'import ' + ret + ';\r';
         }
         return result.trim();
+    }
+
+    toNative(item) {
+        var projectConfig = require('../lotus').projectConfig;
+
+        var regModel = /^\$\.(model|operator|viewModel|viewController|base)\.(\w+)$/g;
+        var regSystemType = /^system\.type\.(\w+)$/g;
+        if(regModel.test(item)) {
+            return projectConfig.getPackageName() + '.' + RegExp.$1 + '.' + RegExp.$2;
+        }
+        else if(regSystemType.test(item)) {
+            var type = RegExp.$1;
+            if(type == 'Array') {
+                return 'java.util.ArrayList'
+            }
+            else {
+                return item;
+            }
+        }
+        else {
+            item = item.replace('$', projectConfig.getPackageName());
+            return item;
+        }
     }
 }
 

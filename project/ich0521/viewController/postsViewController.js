@@ -7,7 +7,15 @@ module.exports = {
     viewModels: {
         master: {
             type: 'PostsViewModel',
-            name: 'postsVM'
+            name: 'postsVM',
+            init: {
+                count: '@{props.count}'
+            }
+        }
+    },
+    bind: {
+        'postsVM.posts': function() {
+            recyclerViewAdapter.notifyDataSetChanged();
         }
     },
     event: {
@@ -35,6 +43,9 @@ module.exports = {
                     onClick: function() {
                         closePage();
                     }
+                },
+                props: {
+                    "count": '@{postVM.count}'
                 }
             }, {
                 type: 'ImageView',

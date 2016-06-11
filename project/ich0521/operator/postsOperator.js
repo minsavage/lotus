@@ -6,7 +6,7 @@ module.exports = {
     import: [
         '$.model.QueryPosts',
         '$.model.Post',
-        'java.util.List'
+        'system.type.Array'
     ],
     operatedModel: 'QueryPosts',
     type: 'remote',
@@ -22,7 +22,7 @@ module.exports = {
             },
             responseType: 'QueryPosts',
             responseConverter: {
-                convertedType: 'List<Post>',
+                convertedType: 'Array<Post>',
                 actions: [
                     {
                         op: 'map',

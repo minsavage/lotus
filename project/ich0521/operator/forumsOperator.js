@@ -6,7 +6,7 @@ module.exports = {
     import: [
         '$.model.QueryForums',
         '$.model.Forum',
-        'java.util.List'
+        'system.type.Array'
     ],
     operatedModel: 'QueryForums',
     type: 'remote',
@@ -20,7 +20,7 @@ module.exports = {
             },
             responseType: 'QueryForums',
             responseConverter: {
-                convertedType: 'List<Forum>',
+                convertedType: 'Array<Forum>',
                 actions: [
                     {
                         op: 'map',

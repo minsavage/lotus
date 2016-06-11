@@ -10,6 +10,11 @@ module.exports = {
             name: 'rsVM'
         }
     },
+    bind: {
+        'rsVM.forums': function() {
+            recyclerViewAdapter.notifyDataSetChanged();
+        }
+    },
     event: {
         onStart: function() {
             rsVM.queryForums();

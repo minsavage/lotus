@@ -6,11 +6,10 @@ module.exports = {
     import: [
         '$.model.QueryForums',
         '$.model.Forum',
-        'java.util.List',
-        'java.util.ArrayList'
+        'system.type.Array'
     ],
     properties: [
-        {name: 'forums', type: 'List<Forum>'}
+        {name: 'forums', type: 'Array<Forum>',  defaultValue: []}
     ],
     methods: {
         queryForums: {

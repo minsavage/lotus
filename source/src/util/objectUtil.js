@@ -2,6 +2,7 @@
  * Created by danney on 16/1/20.
  */
 var util = require('util');
+var extend = util._extend;
 
 var getSize = function(obj) {
     if(util.isObject(obj)) {
@@ -23,7 +24,13 @@ var getSize = function(obj) {
 }
 
 var clone = function(obj) {
-    return JSON.parse(JSON.stringify(obj));
+    return extend({}, obj);
+}
+
+var deepClone = function(obj) {
+    var Constructor = obj.constructor;
+    var dest = new Constructor();
+    return extend(dest, obj);
 }
 
 var combine = function(dest, src) {
@@ -44,6 +51,7 @@ var combineInternal = function(dest, src) {
     return dest;
 }
 
-exports.getSize = getSize;
 exports.clone = clone;
+exports.deepClone = deepClone;
+exports.getSize = getSize;
 exports.combine = combine;

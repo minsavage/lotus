@@ -20,42 +20,54 @@ class ViewModelBuilder extends BaseBuilder {
     constructor() {
         super();
         this.operators = {};
+        this.propertyContent = '';
+        this.initContent = '';
+        this.methodContent = '';
     }
 
     parse(model) {
         super.parse(model);
 
-        var result = '';
-        result += this.buildProperties(model.properties);
-        result += this.buildMethods(model.methods);
+        this.buildProperties(model.properties);
+        var result = this.buildMethods(model.methods);
 
         return mustache.render(tpl.viewModel.main, {
             packageName: projectConfig.getPackageName(),
             import: this.importRecorder.generate(),
             className: stringUtil.firstCharacterToUppercase(model.name),
-            content: result.trim()
+            init: this.initContent.trim(),
+            content: this.propertyContent.trim() + this.methodContent.trim()
         });
 
         return result;
     }
 
     buildProperties(properties) {
-        var result = '';
         for(var k in  properties) {
             var p = properties[k];
-            result += this.buildProperty(p);
+            var ret = this.buildProperty(p);
+            this.propertyContent += ret.def;
+            this.initContent += ret.init;
         }
-        return result;
     }
 
     buildProperty(property) {
-        var ret = '';
-        var name = property.name;
-        var type = property.type;
-        ret += codeGenerateUtil.generateMemberVariable(type, name) + '\r\r';
-        ret += codeGenerateUtil.generateGetter(type, name, '@Bindable') + '\r\r';
-        ret += codeGenerateUtil.generateSetterWithNotify(type, name) + '\r\r';
-        return ret;
+        var c = this.classMgr.find(property.type);
+        if(util.isNullOrUndefined(c)) {
+            throw 'can not supported type [' + property.type + '] , do you forget import it ?';
+        }
+
+        var def = c.generateProperty(property.name, true);
+        var init = '';
+
+        if(!util.isNullOrUndefined(property.defaultValue)) {
+            init = c.generateInitializer(property.name, property.defaultValue);
+        }
+
+        return {
+            def: def,
+            init: init
+        }
     }
 
     buildMethods(methods) {
@@ -77,12 +89,15 @@ class ViewModelBuilder extends BaseBuilder {
         for(var name in this.operators) {
             result += this.buildOperator(name, this.operators[name]) + '\r\r';
         }
-        return result;
+
+        this.methodContent = result;
     }
 
     buildOperator(name, methods) {
         var result = '';
-        result += codeGenerateUtil.generateMemberVariable(name, name) + '\r\r';
+        var objName = stringUtil.firstCharacterToLowercase(name);
+        result += codeGenerateUtil.generateMemberVariable(name, objName) + '\r\r';
+        this.initContent += objName + ' = new ' + name + '();';
 
         this.importRecorder.add('$.operator.' + name);
 
@@ -123,7 +138,11 @@ class ViewModelBuilder extends BaseBuilder {
         if(!util.isNullOrUndefined(queryModel.responseConverter) &&
             stringUtil.isNotEmpty(queryModel.responseConverter.convertedType)) {
             var resultType = queryModel.responseConverter.convertedType;
+        }
 
+        resultType = this.classMgr.find(resultType);
+        if(resultType == null) {
+            throw 'do not supported type: ' + resultType;
         }
 
         var actionResult = this.buildAction(method.response.onSuccess);
@@ -132,7 +151,7 @@ class ViewModelBuilder extends BaseBuilder {
         var resultObj = actionResult.parameters[0];
 
         var subscriberStr = mustache.render(tpl.viewModel.subscriber, {
-            resultType: resultType,
+            resultType: resultType.translator.getNativeName(),
             resultObj: resultObj,
             onSuccess: onSuccessStr,
             //onFail: onFailStr

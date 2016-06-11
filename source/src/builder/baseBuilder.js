@@ -5,15 +5,18 @@
 var lotus = require('../lotus');
 var ImportRecorder = lotus.recorder.ImportRecorder;
 var importUtil = lotus.util.importUtil;
+var ImportLoader = require('../type/importLoader');
 
 class BaseBuilder {
     constructor() {
         this.importRecorder = new ImportRecorder();
         this.model = null;
+        this.classMgr = null;
     }
 
     parse(model) {
         this.check(model);
+        this.classMgr = ImportLoader.load(model.import);
         this.model = model;
         this.importRecorder.add(model.import);
     }

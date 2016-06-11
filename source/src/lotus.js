@@ -1,6 +1,8 @@
 /**
  * Created by danney on 16/2/3.
  */
+'use strict'
+
 var lotus = {
     util: {
         stringUtil: require('./util/stringUtil'),

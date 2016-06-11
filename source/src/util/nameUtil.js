@@ -59,14 +59,12 @@ var getNameByType = function(type) {
         return null;
     }
 
-    var reg = '^List<.*>$';
-    var n = type.search(reg);
-    if(n == -1) {
+    var reg = /^Array<(\w+)>$/g;
+    if(!reg.test(type)) {
         return stringUtil.firstCharacterToLowercase(type);
     }
     else {
-        //容器
-        var objType = type.substring(5, type.length-1);
+        var objType = RegExp.$1;
         if(objType.charAt(objType.length-1) != 's') {
             objType = objType + 's';
         }

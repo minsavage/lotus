@@ -2,6 +2,10 @@
  * Created by danney on 16/3/31.
  */
 module.exports = {
+    import: [
+        '$.model.QueryPostContent'
+    ],
+
     name: 'QueryPosts',
     properties: [
         {name: 'content', type: 'QueryPostContent'},

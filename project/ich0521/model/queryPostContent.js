@@ -3,7 +3,8 @@
  */
 module.exports = {
     import: [
-        'java.util.List'
+        'system.type.Array',
+        '$.model.Post'
     ],
 
     name: 'QueryPostContent',
@@ -13,6 +14,6 @@ module.exports = {
         {name: 'forum_name', type: 'string'},
         {name: 'next_page', type: 'int'},
         {name: 'forum_id', type: 'int'},
-        {name: 'posts', type: 'List<Post>'},
+        {name: 'posts', type: 'Array<Post>'},
     ]
 }

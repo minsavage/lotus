@@ -13,9 +13,9 @@ var startBuild = function() {
     //pages
     var models = modelMgr.getPages();
     var Builder = builderMgr.queryPageBuilder();
-    var builder = new Builder();
     for(var k in models) {
         var model = models[k];
+        var builder = new Builder();
         var content = builder.parse(model);
         var fileName = lotus.util.nameUtil.pageToActivityName(model.name) + '.java';
         var p = path.join(projectConfig.getSrcDir(), 'activity', fileName);
@@ -25,9 +25,9 @@ var startBuild = function() {
     //models
     var models = modelMgr.getModels();
     var Builder = builderMgr.queryModelBuilder();
-    var builder = new Builder();
     for(var k in models) {
         var model = models[k];
+        var builder = new Builder();
         var content = builder.parse(model);
         var p = path.join(projectConfig.getSrcDir(), 'model', model.name + '.java');
         saveFile(p, content);
@@ -36,9 +36,9 @@ var startBuild = function() {
     //operators
     var models = modelMgr.getOperators();
     var Builder = builderMgr.queryOperatorBuilder();
-    var builder = new Builder();
     for(var k in models) {
         var model = models[k];
+        var builder = new Builder();
         var content = builder.parse(model);
         var p = path.join(projectConfig.getSrcDir(), 'operator', model.name + '.java');
         saveFile(p, content);

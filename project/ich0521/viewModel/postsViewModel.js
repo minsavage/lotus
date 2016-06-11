@@ -7,14 +7,13 @@ module.exports = {
         '$.viewModel.PostItemViewModel',
         '$.model.QueryPosts',
         '$.model.Post',
-        'java.util.List',
-        'java.util.ArrayList'
+        'system.type.Array'
     ],
     properties: [
-        {name: 'posts', type: 'List<PostItemViewModel>'},
-        {name: 'page', type: 'int'},
-        {name: 'count', type: 'int'},
-        {name: 'forumId', type: 'int'}
+        {name: 'posts', type: 'Array<Post>', defaultValue: []},
+        {name: 'page', type: 'int', defaultValue: 1},
+        {name: 'count', type: 'int', defaultValue: 100},
+        {name: 'forumId', type: 'int', defaultValue: 3}
     ],
     methods: {
         queryPosts: {
@@ -26,7 +25,7 @@ module.exports = {
             },
             response: {
                 onSuccess: function(ret) {
-                    //posts = ret.content.posts;
+                    posts = ret;
                 },
 
                 onFailure: function(err) {

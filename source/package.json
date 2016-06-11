@@ -10,6 +10,7 @@
     "lotus": "./bin/cmd.js"
   },
   "dependencies": {
+    "assign-deep": "^0.4.5",
     "chai": "^3.5.0",
     "minimist": "1.2.0",
     "muk": "^0.4.0"

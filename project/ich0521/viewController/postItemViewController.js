@@ -3,14 +3,14 @@
  */
 module.exports = {
     name: 'PostItemViewController',
-    import:['$.viewModel.PostItemViewModel'],
+    import:['$.model.Post'],
     config: {
         layoutOnly: true
     },
     viewModels: {
         master: {
-            type: 'PostItemViewModel',
-            name: 'postItemVM'
+            type: 'Post',
+            name: 'post'
         }
     },
     content: {
@@ -24,19 +24,19 @@ module.exports = {
             id: 'textView',
             layout_width: 'wrap_content',
             layout_height: 'wrap_content',
-            text: '@{postItemVM.post.title}'
+            text: '@{post.title}'
         },{
             type: 'TextView',
             id: 'textViewName',
             layout_width: 'wrap_content',
             layout_height: 'wrap_content',
-            text: '@{postItemVM.post.author}'
+            text: '@{post.author}'
         },{
             type: 'TextView',
             id: 'textViewContent',
             layout_width: 'wrap_content',
             layout_height: 'wrap_content',
-            text: '@{postItemVM.post.text}',
+            text: '@{post.text}',
             event:{
                 onClick: function(){
                     //showPage('PostDetailPage');

@@ -5,7 +5,7 @@ var path = require('path');
 var util = require('util');
 var config = null;
 var outputDir = null;
-
+var _projectPath = null;
 
 var load = function(projectPath) {
     console.log('loading project...load index');
@@ -17,11 +17,16 @@ var load = function(projectPath) {
     catch(err) {
         throw 'load project failed, can not found index.js';
     }
+    _projectPath = projectPath
     console.log('loading project...found index.js');
 }
 
 var get = function(key) {
     return config[key];
+}
+
+var getProjectPath = function() {
+    return _projectPath;
 }
 
 var setOutputDir = function(path) {
@@ -77,6 +82,7 @@ var getServerDir = function() {
 
 exports.load = load;
 exports.get = get;
+exports.getProjectPath = getProjectPath;
 exports.getPackageName = getPackageName;
 exports.getServerDomain = getServerDomain;
 exports.setOutputDir = setOutputDir;

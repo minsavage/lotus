@@ -18,7 +18,7 @@ module.exports = {
             layout_width: 'wrap_content',
             layout_height: 'wrap_content',
             text: 'UserCenterViewController',
-            name: '@{user.name}'
+            name: '@{user.name}',
             uri: '@{user.avatarUrl}'
 
         }]

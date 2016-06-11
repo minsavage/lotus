@@ -3,8 +3,11 @@
  */
 module.exports = {
     name: 'QueryForumContent',
-    import: ['java.util.List'],
+    import: [
+        '$.model.Forum',
+        'system.type.Array'
+    ],
     properties: [
-        {name: 'recom', type: 'List<Forum>'},
+        {name: 'recom', type: 'Array<Forum>'},
     ]
 }

@@ -14,6 +14,7 @@ public class {{className}} extends ViewModel {
 
     public {{className}}(Context c) {
         super(c);
+        {{init}}
     }
 
     {{content}}

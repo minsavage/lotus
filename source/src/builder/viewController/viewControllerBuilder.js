@@ -137,12 +137,18 @@ class ViewControllerBuilder extends BaseBuilder {
     _buildDataBinding(model) {
         var bind = model.bind;
         for(var k in bind) {
-            var property = k.split('.')[1];
+            var reg = /^(\w)+\.(\w+)$/g;
+            if(!reg.test(k)) {
+                throw 'can not supported binding property';
+            }
+
+            var property = RegExp.$2;
 
             var builder = new FunctionBuilder();
             var codeRecorder = builder.parse(bind[k]);
-            var code = codeRecorder.getOnCreate();
-            this.importRecorder.add(codeRecorder.getImportRecorder());
+            var code = codeRecorder.code;
+
+            this.importRecorder.add(codeRecorder.import);
 
             if(util.isNullOrUndefined(this._dataBinding[property])) {
                 this._dataBinding[property] = '';
