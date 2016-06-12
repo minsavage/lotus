@@ -1,27 +1,22 @@
 /**
- * Created by danney on 16/4/8.
+ * Created by danney on 16/6/11.
  */
 module.exports = {
-    name: 'PostsViewController',
-    import:['$.viewModel.PostsViewModel'],
+    name: 'PostDetailViewController',
+    import:['$.viewModel.PostDetailViewModel'],
     viewModels: [{
-        type: 'PostsViewModel',
-        name: 'postsVM',
+        type: 'PostDetailViewModel',
+        name: 'pdVM',
         init: {
-            forumId: '@{props.forumId}'
+            pid: '@{props.pid}'
         }
     }],
-    bind: {
-        'postsVM.posts': function() {
-            recyclerViewAdapter.notifyDataSetChanged();
-        }
-    },
     event: {
         onStart: function() {
-            postsVM.queryPosts();
+            pdVM.queryPost();
         }
     },
-    content: {
+    content:{
         type: 'RelativeLayout',
         layout_width: 'match_parent',
         layout_height: 'match_parent',
@@ -55,16 +50,6 @@ module.exports = {
                     }
                 }
             }]
-        },{
-            type: 'RecyclerView',
-            id: 'myRecyclerView',
-            layout_width: 'match_parent',
-            layout_height: 'match_parent',
-            layout_below: 'top',
-            adapter: {
-                item: 'PostItemViewController',
-                dataSource: '@{postsVM.posts}'
-            }
         }]
     }
 }

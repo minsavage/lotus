@@ -14,6 +14,7 @@ var projectConfig = lotus.projectConfig;
 var modelMgr = lotus.modelMgr;
 var FunctionBuilder = require('../function/functionBuilder');
 var BaseBuilder = require('../baseBuilder');
+var operatorUtil = require('../operator/operatorUtil');
 
 
 class ViewModelBuilder extends BaseBuilder {
@@ -157,11 +158,14 @@ class ViewModelBuilder extends BaseBuilder {
             //onFail: onFailStr
         })
 
+        var ret = operatorUtil.generateViewModelMethodCall(queryModel, method.parameters);
+        this.importRecorder.add('java.util.HashMap');
+
         return mustache.render(tpl.viewModel.operatorQuery3, {
             actionName: method.name,
             operatorObjName: stringUtil.firstCharacterToLowercase(operator),
-            parameters: this.getParameters(method.parameters),
-            setParameters: this.buildSetParameters(method.parameters),
+            methodCall: ret.methodCall,
+            setParameters: ret.map,
             subscriber: subscriberStr
             //resultType: resultType,
             //resultObj: resultObj,

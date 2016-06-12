@@ -7,6 +7,7 @@ class Method {
     constructor() {
         var name = '';
         var parameterTypes = [];
+        var annotations = [];
         var returnType = null;
     }
 

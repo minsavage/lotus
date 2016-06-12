@@ -150,6 +150,10 @@ class ViewControllerBuilder extends BaseBuilder {
         for(var p in vm.init) {
             var v = vm.init[p];
             var vmTypeInfo = this.classMgr.find(vm.type);
+            if(util.isNullOrUndefined(vmTypeInfo)) {
+                throw 'can not find type info for [' + vm.type + '], do you forget importing it?';
+            }
+
             var field = vmTypeInfo.findField(p);
             if(util.isNullOrUndefined(field)) {
                 throw 'can not find this field [' + p + '] in ' + vm.type;

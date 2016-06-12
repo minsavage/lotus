@@ -1,0 +1,8 @@
+{
+    "name": "queryQueryPost",
+    "parameters": [
+        {"name": "pid", "type": "int", "annotations": ["@Path(\"pid\")"]},
+        {"name": "parameters", "type": "Map<String, Object>", "annotations": ["@QueryMap"]}],
+    "returnType": "Observable<QueryPost>",
+    "annotations": ["@GET(\"v1/posts/{pid}\")"]
+}

@@ -12,6 +12,7 @@ var nameUtil = lotus.util.nameUtil;
 var codeGenerateUtil = lotus.util.codeGenerateUtil;
 var modelMgr = lotus.modelMgr;
 var BaseBuilder = require('../baseBuilder');
+var operatorUtil = require('./operatorUtil');
 
 class RemoteOperatorServiceBuilder extends BaseBuilder {
     parse(operators) {
@@ -39,17 +40,20 @@ class RemoteOperatorServiceBuilder extends BaseBuilder {
                 hasParameter = true;
             }
 
-            result += generateAnnotation(actionName,
-                                            operator.operatedModel,
-                                            action.resultType,
-                                            action.method,
-                                            action.url) + '\r';
+            var methodModel = operatorUtil.generateMethod(action);
+            var result = operatorUtil.generateMethodCode(methodModel, true) + ';\r\r';
 
-            result += generateGet(operator.operatedModel,
-                                    action.resultType,
-                                    action.method,
-                                    hasParameter,
-                                    action.parameterType) + '\r\r';
+            //result += generateAnnotation(actionName,
+            //                                action.responseType,
+            //                                action.resultType,
+            //                                action.method,
+            //                                action.url) + '\r';
+            //
+            //result += generateGet(action.responseType,
+            //                        action.resultType,
+            //                        action.method,
+            //                        hasParameter,
+            //                        action.parameterType) + '\r\r';
         }
 
         this.importRecorder.add(operator.import);

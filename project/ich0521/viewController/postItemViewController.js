@@ -12,34 +12,41 @@ module.exports = {
         name: 'post'
     }],
     content: {
-        type: 'LinearLayout',
+        type: 'RelativeLayout',
+        id: 'root',
         layout_width: 'match_parent',
         layout_height: 'wrap_content',
-        orientation: 'vertical',
-        background: '#999999',
+        paddingLeft: "10dp",
+        paddingTop: "10dp",
         units: [{
             type: 'TextView',
-            id: 'textView',
+            id: 'tvTitle',
             layout_width: 'wrap_content',
             layout_height: 'wrap_content',
-            text: '@{post.title}'
+            text: '@{post.title}',
+            textColor: '#3C19BE'
         },{
             type: 'TextView',
-            id: 'textViewName',
+            id: 'tvName',
             layout_width: 'wrap_content',
             layout_height: 'wrap_content',
-            text: '@{post.author}'
+            layout_below: 'tvTitle',
+            text: '@{post.author}',
+            textColor: '#008000'
         },{
             type: 'TextView',
             id: 'textViewContent',
             layout_width: 'wrap_content',
-            layout_height: 'wrap_content',
-            text: '@{post.text}',
-            event:{
-                onClick: function(){
-                    //showPage('PostDetailPage');
-                }
+            layout_height: '60dp',
+            layout_below: 'tvName',
+            lines: "3",
+            ellipsize: "end",
+            text: '@{post.text}'
+        }],
+        event:{
+            onClick: function(){
+                showPage('PostDetailPage', {pid: post.pid});
             }
-        }]
+        }
     }
 }

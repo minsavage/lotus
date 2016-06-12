@@ -15,11 +15,11 @@ module.exports = {
             url: 'v1/forums',
             method: 'post',
             parameterType: 'json',
-            parameters: {
-                page: {type: 'int', canBeNull: false},
-                count: {type: 'int', canBeNull: false},
-                forum_id: {type: 'int', canBeNull: false}
-            },
+            parameters: [
+                {name: 'page', type: 'int', canBeNull: false, retrofitType: 'json'},
+                {name: 'count', type: 'int', canBeNull: false, retrofitType: 'json'},
+                {name: 'forum_id', type: 'int', canBeNull: false, retrofitType: 'json'}
+            ],
             responseType: 'QueryPosts',
             responseConverter: {
                 convertedType: 'Array<Post>',

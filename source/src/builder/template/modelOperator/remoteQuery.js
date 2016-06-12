@@ -1,4 +1,4 @@
-public Observable<{{resultClassName}}> query(Map<String, Object> parameters) {
+public {{method}} {
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl("{{{url}}}")
         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -6,7 +6,7 @@ public Observable<{{resultClassName}}> query(Map<String, Object> parameters) {
         .build();
 
     RemoteOperatorService service = retrofit.create(RemoteOperatorService.class);
-    return service.{{queryFuncName}}(parameters)
+    return service.{{methodCall}}
         .subscribeOn(Schedulers.newThread())
         .observeOn(AndroidSchedulers.mainThread()){{converter}};
 }

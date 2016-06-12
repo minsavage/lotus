@@ -36,15 +36,13 @@ var firstCharacterToLowercase = function(name) {
 }
 
 var withoutSuffix = function(str, suffix) {
-    var i = str.indexOf(suffix);
-    if (i < 0) {
-        return str;
-    }
-    else if(i == 0) {
-        return '';
+    var reg = '^(.*)' + suffix + '$';
+    reg = new RegExp(reg);
+    if(reg.test(str)) {
+        return RegExp.$1;
     }
     else {
-        return str.substring(0, i);
+        return str;
     }
 }
 

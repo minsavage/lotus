@@ -13,11 +13,9 @@ module.exports = {
     action: {
         query: {
             url: 'v1/recom/3',
-            parameters: {
-                uid: {
-                    type: 'int'
-                }
-            },
+            parameters: [
+                {name: 'uid', type: 'int', canBeNull: false, retrofitType: 'queryMap'}
+            ],
             responseType: 'QueryForums',
             responseConverter: {
                 convertedType: 'Array<Forum>',

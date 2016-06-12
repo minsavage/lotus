@@ -13,6 +13,7 @@ var codeGenerateUtil = lotus.util.codeGenerateUtil;
 var projectConfig = lotus.projectConfig;
 var BaseBuilder = require('../baseBuilder')
 var FunctionBuilder = require('../function/functionBuilder');
+var operatorUtil = require('./operatorUtil');
 
 class RemoteOperatorBuilder extends BaseBuilder{
     parse(model) {
@@ -42,6 +43,8 @@ class RemoteOperatorBuilder extends BaseBuilder{
             throw 'can not supported type: ' + responseType;
         }
 
+
+
         var responseName = nameUtil.getNameByType(responseType);
 
         var convertedType = null;
@@ -69,8 +72,20 @@ class RemoteOperatorBuilder extends BaseBuilder{
             resultClassName = responseType.translator.getNativeName();
         }
 
+        var methodModel = operatorUtil.generateMethod(query);
+        var serviceMethodCall = operatorUtil.generateMethodCallCodeWithSameArgument(methodModel);
+
+        methodModel.name = 'query';
+        methodModel.returnType = 'Observable<' + resultClassName + '>';
+        var method = operatorUtil.generateMethodCode(methodModel);
+
+
+
+
         return mustache.render(tpl.modelOperator.remoteQuery, {
             url: projectConfig.getServerDomain(),
+            method: method,
+            methodCall: serviceMethodCall,
             resultClassName: resultClassName,
             queryFuncName: nameUtil.getOperatorFunctionName('query', responseType.getName()),
             converter: converterCode

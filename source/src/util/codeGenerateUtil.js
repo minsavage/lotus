@@ -180,6 +180,22 @@ var generateActivityInManifest = function(name, isEntryPage) {
     });
 }
 
+var generateHashMap = function(name, map) {
+    var consTemplate = 'HashMap<String, Object> {{name}} = new HashMap<>();';
+    var setTemplate = 'map.put("{{key}}", {{value}});';
+
+    var consStr = consTemplate.replace("{{name}}", name);
+
+    var setStr = '';
+    for(var k in map) {
+        setStr += mustache.render(setTemplate, {
+            key: k,
+            value: map[k]
+        })
+    }
+    return consStr + '\r' + setStr;
+}
+
 exports.generateClass = generateClass;
 exports.generateVariableDeclare = generateVariableDeclare;
 exports.generateMemberVariable = generateMemberVariable;
@@ -195,3 +211,4 @@ exports.generateFindViewById = generateFindViewById;
 exports.generateSwitchCase = generateSwitchCase;
 exports.generateXml = generateXml;
 exports.generateActivityInManifest = generateActivityInManifest;
+exports.generateHashMap = generateHashMap;

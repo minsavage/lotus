@@ -5,5 +5,5 @@ public void {{actionName}}() {
 
     {{setParameters}}
 
-    {{operatorObjName}}.query({{parameters}}).{{subscriber}};
+    {{operatorObjName}}.{{methodCall}}.{{subscriber}};
 }
