@@ -2,8 +2,10 @@ package {{packageName}}.base;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.util.AndroidRuntimeException;
 import android.view.LayoutInflater;
@@ -13,23 +15,25 @@ import android.view.ViewGroup;
 /**
  * Created by danney on 16/1/18.
  */
-public class ViewController {
-    private Context context;
+public abstract class ViewController {
+    static final int INITIALIZING = 0;     // Not yet created.
+    static final int CREATED = 1;          // Created.
+    static final int STOPPED = 3;          // Fully created, not started.
+    static final int STARTED = 4;          // Created and started, not resumed.
+    static final int RESUMED = 5;          // Created started and resumed.
 
-    private Boolean called = false;
-
-    protected View view;
-
-    protected Bundle props;
+    int state = INITIALIZING;
 
     int containerViewId = 0;
-
     String tag;
+    private Context context;
+    private Boolean called = false;
+    protected View view;
+	
+	protected Bundle props;
+    protected ViewControllerManager viewControllerManager;
 
-    protected ViewControllerMgr subViewControllerMgr;
-
-    public ViewController() {
-    }
+    public ViewController() {}
 
     public void setContext(Context context) {
         this.context = context;
@@ -38,8 +42,8 @@ public class ViewController {
     public Context getContext() {
         return context;
     }
-
-    public Bundle getProps() {
+	
+	public Bundle getProps() {
         return props;
     }
 
@@ -47,12 +51,17 @@ public class ViewController {
         this.props = props;
     }
 
-    public ViewControllerMgr getSubViewControllerMgr() {
-        if (subViewControllerMgr == null) {
-            subViewControllerMgr = new ViewControllerMgr();
-            subViewControllerMgr.addHost(hostCallback);
+    public ViewControllerManager getViewControllerManager() {
+        if (viewControllerManager == null) {
+            viewControllerManager = new ViewControllerManager();
+            viewControllerManager.addHost(hostCallback);
         }
-        return subViewControllerMgr;
+        return viewControllerManager;
+    }
+
+    @Nullable
+    public View getView() {
+        return view;
     }
 
     public void finish() {
@@ -64,37 +73,13 @@ public class ViewController {
         called = true;
     }
 
-    @Nullable
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return null;
-    }
-
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-    }
-
-    @Nullable
-    public View getView() {
-        return view;
-    }
-
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        called = true;
-    }
-
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        called = true;
-    }
+    public abstract View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
 
     public void onStart() {
         called = true;
     }
 
     public void onResume() {
-        called = true;
-    }
-
-    public void onConfigurationChanged(Configuration newConfig) {
         called = true;
     }
 
@@ -106,16 +91,26 @@ public class ViewController {
         called = true;
     }
 
+    public void onDestroy() {
+        called = true;
+    }
+
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {called = true;}
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {called = true;}
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {called = true;}
+
+    public void onConfigurationChanged(Configuration newConfig) {
+        called = true;
+    }
+
     public void onLowMemory() {
         called = true;
     }
 
-    public void onDestroyView() {
-        called = true;
-    }
-
-    public void onDestroy() {
-        called = true;
+    public boolean onBackPressed() {
+        return false;
     }
 
     void performCreate(Bundle savedInstanceState) {
@@ -126,71 +121,45 @@ public class ViewController {
             throw new AndroidRuntimeException("ViewController " + this
                     + " did not call through to super.onCreate()");
         }
-
-        if (subViewControllerMgr != null) {
-            subViewControllerMgr.dispatchCreate();
-        }
     }
 
     View performCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
         view = onCreateView(inflater, container, savedInstanceState);
+        state = ViewController.CREATED;
         return view;
-    }
-
-    void performActivityCreated(Bundle savedInstanceState) {
-        called = false;
-        onActivityCreated(savedInstanceState);
-        if (!called) {
-            throw new AndroidRuntimeException("ViewController " + this
-                    + " did not call through to super.onActivityCreated()");
-        }
-        if (subViewControllerMgr != null) {
-            subViewControllerMgr.dispatchActivityCreated();
-        }
     }
 
     void performStart() {
         called = false;
+        state = STARTED;
         onStart();
         if (!called) {
             throw new AndroidRuntimeException("ViewController " + this
                     + " did not call through to super.onStart()");
         }
-        if (subViewControllerMgr != null) {
-            subViewControllerMgr.dispatchStart();
+        if (viewControllerManager != null) {
+            viewControllerManager.dispatchStart();
         }
     }
 
     void performResume() {
         called = false;
+        state = RESUMED;
         onResume();
         if (!called) {
             throw new AndroidRuntimeException("ViewController " + this
                     + " did not call through to super.onResume()");
         }
-        if (subViewControllerMgr != null) {
-            subViewControllerMgr.dispatchResume();
-        }
-    }
-
-    void performConfigurationChanged(Configuration newConfig) {
-        onConfigurationChanged(newConfig);
-        if (subViewControllerMgr != null) {
-            subViewControllerMgr.dispatchConfigurationChanged(newConfig);
-        }
-    }
-
-    void performLowMemory() {
-        onLowMemory();
-        if (subViewControllerMgr != null) {
-            subViewControllerMgr.dispatchLowMemory();
+        if (viewControllerManager != null) {
+            viewControllerManager.dispatchResume();
         }
     }
 
     void performPause() {
-        if (subViewControllerMgr != null) {
-            subViewControllerMgr.dispatchPause();
+        state = STARTED;
+        if (viewControllerManager != null) {
+            viewControllerManager.dispatchPause();
         }
         called = false;
         onPause();
@@ -201,8 +170,9 @@ public class ViewController {
     }
 
     void performStop() {
-        if (subViewControllerMgr != null) {
-            subViewControllerMgr.dispatchStop();
+        state = STOPPED;
+        if (viewControllerManager != null) {
+            viewControllerManager.dispatchStop();
         }
         called = false;
         onStop();
@@ -212,22 +182,10 @@ public class ViewController {
         }
     }
 
-    void performDestroyView() {
-        if (subViewControllerMgr != null) {
-            subViewControllerMgr.dispatchDestroyView();
-        }
-        called = false;
-        onDestroyView();
-        if (!called) {
-            throw new AndroidRuntimeException("ViewController " + this
-                    + " did not call through to super.onDestroyView()");
-        }
-    }
-
     void performDestroy() {
-        if (subViewControllerMgr != null) {
-            subViewControllerMgr.dispatchDestroy();
-            subViewControllerMgr = null;
+        if (viewControllerManager != null) {
+            viewControllerManager.dispatchDestroy();
+            viewControllerManager = null;
         }
         called = false;
         onDestroy();
@@ -237,7 +195,61 @@ public class ViewController {
         }
     }
 
-    private ViewControllerMgr.ViewControllerHostCallback hostCallback = new ViewControllerMgr.ViewControllerHostCallback() {
+    void performSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        if (viewControllerManager != null) {
+            viewControllerManager.dispatchSaveInstanceState(outState, outPersistentState);
+        }
+        called = false;
+        onSaveInstanceState(outState, outPersistentState);
+        if (!called) {
+            throw new AndroidRuntimeException("ViewController " + this
+                    + " did not call through to super.onSaveInstanceState()");
+        }
+    }
+
+    void performRestoreInstanceState(Bundle savedInstanceState) {
+        if (viewControllerManager != null) {
+            viewControllerManager.dispatchRestoreInstanceState(savedInstanceState);
+        }
+        called = false;
+        onRestoreInstanceState(savedInstanceState);
+        if (!called) {
+            throw new AndroidRuntimeException("ViewController " + this
+                    + " did not call through to super.onRestoreInstanceState()");
+        }
+    }
+
+    void performActivityResult(int requestCode, int resultCode, Intent data) {
+        onActivityResult(requestCode, resultCode, data);
+        if (viewControllerManager != null) {
+            viewControllerManager.dispatchActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    void performConfigurationChanged(Configuration newConfig) {
+        onConfigurationChanged(newConfig);
+        if (viewControllerManager != null) {
+            viewControllerManager.dispatchConfigurationChanged(newConfig);
+        }
+    }
+
+    void performLowMemory() {
+        onLowMemory();
+        if (viewControllerManager != null) {
+            viewControllerManager.dispatchLowMemory();
+        }
+    }
+
+    boolean performBackPressed() {
+        if (viewControllerManager != null) {
+            if (viewControllerManager.dispatchBackPressed()) {
+                return true;
+            }
+        }
+        return onBackPressed();
+    }
+
+    private ViewControllerManager.ViewControllerHostCallback hostCallback = new ViewControllerManager.ViewControllerHostCallback() {
         @Override
         public View findViewById(int viewId) {
             return view.findViewById(viewId);
@@ -246,6 +258,11 @@ public class ViewController {
         @Override
         public Context getContext() {
             return ViewController.this.getContext();
+        }
+
+        @Override
+        public Bundle getProps() {
+            return props;
         }
     };
 }

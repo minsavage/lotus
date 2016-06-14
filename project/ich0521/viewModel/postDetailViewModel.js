@@ -4,21 +4,28 @@
 module.exports = {
     name: 'PostDetailViewModel',
     import: [
-        '$.model.Post'
+        //'$.viewModel.PostItemViewModel',
+        '$.model.QueryComments',
+        '$.model.Comment',
+        'system.type.Array'
     ],
     properties: [
         {name: 'pid', type: 'int'},
-        {name: 'post', type: 'Post'}
+        {name: 'page', type: 'int', defaultValue: 1},
+        {name: 'count', type: 'int', defaultValue: 100},
+        {name: 'comments', type: 'Array<Comment>', defaultValue: []},
     ],
     methods: {
-        queryPost: {
-            action: 'PostOperator.query',
+        queryComments: {
+            action: 'CommentsOperator.query',
             parameters: {
-                pid: '@{pid}'
+                page: '@{page}',
+                count: '@{count}',
+                post_id: '@{pid}'
             },
             response: {
                 onSuccess: function(ret) {
-                    post = ret;
+                    comments = ret;
                 },
 
                 onFailure: function(err) {

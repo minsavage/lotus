@@ -37,7 +37,7 @@ ListViewControllerBuilder.prototype.parse = function(model) {
     return this._render();
 }
 
-ViewControllerBuilder.prototype._getTemplate = function() {
+ListViewControllerBuilder.prototype._getTemplate = function() {
     return tpl.listViewController.main;
 }
 

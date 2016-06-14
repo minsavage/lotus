@@ -19,20 +19,25 @@ class TypeTranslator {
         return this.getNativeName() + ' ' + objName;
     }
 
-    generateProperty(objName, setterNotify) {
+    generateProperty(objName) {
         var name = objName;
         var type = this.getNativeName();
 
         var ret = '';
         ret += codeGenerateUtil.generateMemberVariable(type, name) + '\r\r';
         ret += codeGenerateUtil.generateGetter(type, name) + '\r\r';
-        if(setterNotify == true) {
-            ret += codeGenerateUtil.generateSetterWithNotify(type, name);
-        }
-        else {
-            ret += codeGenerateUtil.generateSetter(type, name);
-        }
+        ret += codeGenerateUtil.generateSetter(type, name);
+        return ret;
+    }
 
+    generatePropertyWithDataBinding(objName) {
+        var name = objName;
+        var type = this.getNativeName();
+
+        var ret = '';
+        ret += codeGenerateUtil.generateMemberVariable(type, name) + '\r\r';
+        ret += codeGenerateUtil.generateGetter(type, name, "@Bindable") + '\r\r';
+        ret += codeGenerateUtil.generateSetterWithNotify(type, name);
         return ret;
     }
 

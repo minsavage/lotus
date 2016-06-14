@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import {{packageName}}.base.ViewController;
-import {{packageName}}.base.ViewModelMgr;
+import {{packageName}}.base.ViewControllerManager;
 import {{packageName}}.R;
 
 import java.util.Observable;

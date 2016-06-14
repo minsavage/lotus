@@ -1,5 +1,6 @@
 package {{packageName}}.viewController;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import {{packageName}}.BR;
 import {{packageName}}.R;
 import {{packageName}}.base.ViewController;
+import {{packageName}}.base.ViewControllerManager;
 import {{packageName}}.base.ViewModelMgr;
 import {{packageName}}.databinding.{{dataBindingName}};
 {{import}}

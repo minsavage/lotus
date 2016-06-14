@@ -99,3 +99,14 @@ var x = {
         }
     }
 };
+
+var x = {
+    type: 'XListView',
+    id: 'listView',
+    adapter: {
+        type: 'staticFirstItem',
+        staticFirstItem: 'TopViewController',
+        item: 'WeiboItemViewController',
+        dataSource: '@{weibosVM.weibos}'
+    }
+};

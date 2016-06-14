@@ -40,8 +40,13 @@ class Class {
         return this.translator.generateVariableDeclaration(objName);
     }
 
-    generateProperty(objName, setterNotify) {
-        return this.translator.generateProperty(objName, setterNotify);
+    generateProperty(objName, isDataBinding) {
+        if(isDataBinding == true) {
+            return this.translator.generatePropertyWithDataBinding(objName);
+        }
+        else {
+            return this.translator.generateProperty(objName);
+        }
     }
 
     generateInitializer(objName, value) {

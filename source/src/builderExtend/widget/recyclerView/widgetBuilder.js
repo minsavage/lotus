@@ -53,8 +53,15 @@ class RecyclerViewBuilder extends WidgetBuilder {
     }
 
     _buildAdapter() {
-        var SingleItemAdapterBuilder = require('./singleItemAdapterBuilder');
-        var builder = new SingleItemAdapterBuilder();
+        var AdapterBuilder = null;
+        if(this.model.adapter.type == 'staticFirstItem') {
+            AdapterBuilder = require('./staticFirstItemAdapterBuilder');
+        }
+        else {
+            AdapterBuilder = require('./singleItemAdapterBuilder');
+        }
+
+        var builder = new AdapterBuilder();
         var code = builder.parse(this.model);
         this.codeRecorder.addEventImpl(code);
     }

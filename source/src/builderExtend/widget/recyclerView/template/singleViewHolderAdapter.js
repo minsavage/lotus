@@ -1,8 +1,10 @@
 class {{adapterClassName}} extends RecyclerView.Adapter<{{viewHolderClassName}}> {
     LayoutInflater inflater;
+    ViewControllerManager viewControllerMgr;
 
-    {{adapterClassName}}(Context context) {
+    {{adapterClassName}}(Context context, ViewControllerManager vcm) {
         inflater = LayoutInflater.from(context);
+        viewControllerMgr = vcm;
     }
 
     @Override

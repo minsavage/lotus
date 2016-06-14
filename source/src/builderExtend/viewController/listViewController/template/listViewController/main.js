@@ -12,7 +12,7 @@ import android.widget.AdapterView;
 import {{packageName}}.BR;
 import {{packageName}}.R;
 import {{packageName}}.base.ViewController;
-import {{packageName}}.base.ViewModelMgr;
+import {{packageName}}.base.ViewControllerManager;
 import {{packageName}}.databinding.{{dataBindingName}};
 {{import}}
 

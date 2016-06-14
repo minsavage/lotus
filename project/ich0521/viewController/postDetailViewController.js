@@ -11,9 +11,14 @@ module.exports = {
             pid: '@{props.pid}'
         }
     }],
+    bind: {
+        'pdVM.comments': function() {
+            recyclerViewAdapter.notifyDataSetChanged();
+        }
+    },
     event: {
         onStart: function() {
-            pdVM.queryPost();
+            pdVM.queryComments();
         }
     },
     content:{
@@ -50,6 +55,18 @@ module.exports = {
                     }
                 }
             }]
+        },{
+            type: 'RecyclerView',
+            id: 'myRecyclerView',
+            layout_width: 'match_parent',
+            layout_height: 'match_parent',
+            layout_below: 'top',
+            adapter: {
+                type: 'staticFirstItem',
+                staticFirstItem: 'PostDetailTopViewController',
+                item: 'CommentItemViewController',
+                dataSource: '@{pdVM.comments}'
+            }
         }]
     }
 }

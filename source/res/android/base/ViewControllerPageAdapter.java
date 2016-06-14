@@ -8,9 +8,9 @@ import android.view.ViewGroup;
  * Created by danney on 16/1/27.
  */
 public abstract class ViewControllerPageAdapter extends PagerAdapter {
-    private ViewControllerMgr viewControllerMgr;
+    private ViewControllerManager viewControllerMgr;
 
-    public ViewControllerPageAdapter(ViewControllerMgr vcm) {
+    public ViewControllerPageAdapter(ViewControllerManager vcm) {
         viewControllerMgr = vcm;
     }
 
@@ -22,10 +22,9 @@ public abstract class ViewControllerPageAdapter extends PagerAdapter {
         ViewController vc = viewControllerMgr.findViewControllerByTag(tag);
         if (vc != null) {
             container.addView(vc.getView());
-        }
-        else {
+        } else {
             vc = getItem(position);
-            viewControllerMgr.add(container.getId(), vc, tag);
+            viewControllerMgr.add(container.getId(), vc, tag, false);
         }
 
         return vc;
@@ -33,12 +32,12 @@ public abstract class ViewControllerPageAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView(((ViewController)object).getView());
+        container.removeView(((ViewController) object).getView());
     }
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return ((ViewController)object).getView() == view ;
+        return ((ViewController) object).getView() == view;
     }
 
     private String makeTag(int viewId, long id) {
