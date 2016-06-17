@@ -28,7 +28,14 @@ DependencyBuilder.prototype.parse = function() {
 DependencyBuilder.prototype._searchDependency = function(model) {
     var dep = builderMgr.queryWidgetDependency(model.type);
     if(!util.isNullOrUndefined(dep)) {
-        this._handle(dep);
+        if(util.isArray(dep)) {
+            for(var k in dep) {
+                this._handle(dep[k]);
+            }
+        }
+        else {
+            this._handle(dep);
+        }
     }
     else {
         if(!util.isNullOrUndefined(model.units)) {
@@ -47,6 +54,9 @@ DependencyBuilder.prototype._handle = function(dep) {
     else if(dep.type == 'library') {
         this._handleLibraryDependency(dep);
     }
+    else if(dep.type == 'source') {
+        this._handleSourceDependency(dep);
+    }
 }
 
 DependencyBuilder.prototype._handleModuleDependency = function(dep) {
@@ -63,6 +73,12 @@ DependencyBuilder.prototype._handleModuleDependency = function(dep) {
 
 DependencyBuilder.prototype._handleLibraryDependency = function(dep) {
     this._gradleRecoder.app.dependencies.compile.push('\'' + dep.src + '\'');
+}
+
+DependencyBuilder.prototype._handleSourceDependency = function(dep) {
+    var srcDir = dep.src;
+    var destDir = path.resolve(projectConfig.getSrcDir(), 'widget');
+    fsUtil.copySync(srcDir, destDir);
 }
 
 module.exports = DependencyBuilder;

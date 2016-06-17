@@ -20,7 +20,6 @@ module.exports = {
         type: 'RelativeLayout',
         layout_width: 'match_parent',
         layout_height: '200dp',
-        background: '#333333',
         units: [{
             type: 'TextView',
             id: 'tvTitle',
@@ -37,10 +36,12 @@ module.exports = {
             text: '@{pdtVM.post.author}',
             textColor: '#008000'
         },{
-            type: 'WebView',
+            type: 'XWebView',
             id: 'webView',
             layout_width: 'match_parent',
-            layout_height: 'match_parent'
+            layout_height: 'match_parent',
+            layout_below: 'tvName',
+            content: '@{pdtVM.post.detail}'
         }]
     }
 }

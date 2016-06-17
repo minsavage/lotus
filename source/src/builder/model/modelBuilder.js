@@ -11,11 +11,9 @@ var projectConfig = lotus.projectConfig;
 var BaseBuilder = require('../baseBuilder');
 var util = require('util');
 
-class ModelBuilder extends BaseBuilder {
-    //constructor() {
-    //    super();
-    //}
+var R = require('ramda');
 
+class ModelBuilder extends BaseBuilder {
     parse(model) {
         super.parse(model);
 
@@ -48,3 +46,4 @@ class ModelBuilder extends BaseBuilder {
 }
 
 module.exports = ModelBuilder;
+
