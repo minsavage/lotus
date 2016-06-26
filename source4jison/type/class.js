@@ -8,6 +8,7 @@ class Class {
         this.name = '';
         this.fields = [];
         this.methods = [];
+        this.superClass = '';
     }
 
     addField(field) {
@@ -16,6 +17,14 @@ class Class {
 
     addFields(fields) {
         this.fields = this.fields.concat(fields);
+    }
+
+    addMethod(method) {
+        this.methods.push(method);
+    }
+
+    addMethods(methods) {
+        this.methods = this.methods.concat(methods);
     }
 }
 

@@ -43,55 +43,28 @@ function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
 /lex
 
 %{
-    var Class = require('../type/class');
-    var Method = require('../type/method');
-    var Parameter = require('../type/parameter');
-
     var parserUtil = require('../parserUtil/vcUtil');
-
-    var vcClass = new Class();
-
+    var vcClass = parserUtil.createClass();
     var onCreate = '';
     var onCreateView = '';
     var onDestroy = '';
-
-    //var buildProperties = require('./buildProperties');
 %}
 
 %start ConfigEntry
-
 
 %%
 
 ConfigEntry
     : '{' ConfigList '}'
         {
-            var onCreateMethod = new Method();
-            onCreateMethod.name = 'onCreate';
-            onCreateMethod.returnType = 'void';
-            var parameter = new Parameter();
-            parameter.type = 'Bundle';
-            parameter.name = 'savedInstanceState';
-            onCreateMethod.parameters.push(parameter);
-            onCreateMethod.body = onCreate;
-            onCreateMethod.annotations.push('@OVERRIDE');
-            vcClass.methods.push(onCreateMethod);
+            parserUtil.createEssentialMethod(vcClass, onCreate, onCreateView, onDestroy);
             return vcClass;
         }
     ;
 
 ConfigList
     : Config
-        {
-            $$ = $1;
-        }
     | ConfigList ',' Config
-        {
-            $$ = $1;
-            for(var k in $2) {
-                $$[k] = $2[k]
-            }
-        }
     ;
 
 Config
@@ -123,8 +96,8 @@ ImportList
 ViewModels
     : VIEWMODELS ':' '[' ViewModelList ']'
         {
-            vcClass.addFields(parserUtil.createViewModelsFiled($4));
-            onCreate = parserUtil.createViewModelsInit($4);
+            parserUtil.createViewModelsFiled(vcClass, $4)
+            onCreate += parserUtil.createViewModelsInit($4);
         }
     ;
 
@@ -137,31 +110,26 @@ ViewModelList
 
 ViewModel
     : '{' TYPE ':' JSONString ',' NAME ':' JSONString '}'
-        {
-            $$ = {};$$['type'] = $4; $$['name'] = $8; $$['defaultValue'] = null;
-        }
+        {$$ = {};$$['type'] = $4; $$['name'] = $8; $$['defaultValue'] = null;}
     | '{' TYPE ':' JSONString ',' NAME ':' JSONString ',' INIT ':' JSONObject '}'
-        {
-            $$ = {};$$['type'] = $4; $$['name'] = $8; $$['defaultValue'] = null;
-        }
+        {$$ = {};$$['type'] = $4; $$['name'] = $8; $$['defaultValue'] = null;}
     ;
 
 Content
     : CONTENT ':' Widget
-        {
-            $$ = $3;
-            //vcClass.content = $3
-        }
     ;
 
 Widget
     : '{' WidgetProperties '}'
-        {$$=$2}
+        {
+            $$=$2;
+            parserUtil.createEvents(vcClass, $$);
+        }
     ;
 
 WidgetProperties
     : WidgetProperty
-        {{$$ = {}; $$[$1[0]] = $1[1];}}
+        {$$ = {}; $$[$1[0]] = $1[1];}
     | WidgetProperties ',' WidgetProperty
         {$$ = $1; $1[$3[0]] = $3[1];}
     ;
@@ -174,7 +142,7 @@ WidgetProperty
 
 BindingProperty
     : JSONString ':' BINDINGPROP
-        {console.log('+++++++++');$$ = [$1, $3];}
+        {$$ = [$1, $3];}
     ;
 
 Units
@@ -191,7 +159,7 @@ WidgetList
 
 Events
     : EVENT ':' '{' EventList '}'
-        {console.log($4); $$ = [$1, $3];}
+        {$$ = [$1, $4]}
     ;
 
 EventList
@@ -221,7 +189,6 @@ JSONString
                      .replace(/\\f/g,'\f')
                      .replace(/\\b/g,'\b');
         }
-    | TYPE
     ;
 
 JSONNumber
@@ -265,6 +232,8 @@ JSONObject
 
 JSONMember
     : JSONString ':' JSONValue
+        {$$ = [$1, $3];}
+    | TYPE ':' JSONValue
         {$$ = [$1, $3];}
     ;
 

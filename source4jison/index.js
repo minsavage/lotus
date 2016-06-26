@@ -27,7 +27,7 @@ var str = stringify(model);
 var parser = require("./parser/viewController").parser;
 var ret = parser.parse(str);
 
-//console.log(ret);
+console.log(ret);
 
 var translator = require('./translator/class');
 var ret = translator.translate(ret);
