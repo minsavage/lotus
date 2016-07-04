@@ -45,8 +45,8 @@ var createOnCreateViewMethod = function(code) {
     var method = new Method();
 
     var body =
-        'binding = DataBindingUtil.inflate(inflater, R.layout.vc_post_detail_top, container, true);\r' +
-        'binding.setPdtVM(pdtVM);\r' +
+        'binding = DataBindingUtil.inflate(inflater, R.layout.vc_post_detail_top, container, true);' +
+        'binding.setPdtVM(pdtVM);' +
         'View view = binding.getRoot();';
 
     body = wrapNative(body) +
@@ -164,7 +164,27 @@ var createEvent = function (id, name, func) {
 }
 
 var wrapNative = function (code) {
-    return 'native(\'' + code + '\')';
+    return 'native(\'' + code + '\');';
+}
+
+var final = function(vcClass) {
+    for(var k in vcClass.methods) {
+        var m = vcClass.methods[k];
+        if(strUtil.isNotEmpty(m.body)) {
+            m.body = stringFuncToAST(m.body);
+        }
+    }
+}
+
+var stringFuncToAST = function (code) {
+    var reg = /function\s*\(\)\s*\{\s*(.*)\s*\}/g;
+    if(reg.test(code)) {
+        code = RegExp.$1;
+    }
+
+    var esprima = require('esprima');
+    var ast = esprima.parse(code);
+    return ast.body;
 }
 
 exports.createClass = createClass;
@@ -172,3 +192,4 @@ exports.createEssentialMethod = createEssentialMethod;
 exports.createViewModelsFiled = createViewModelsFiled;
 exports.createViewModelsInit = createViewModelsInit;
 exports.createEvents = createEvents;
+exports.final = final;

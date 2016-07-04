@@ -1,13 +1,21 @@
 /**
  * Created by danney on 16/6/25.
  */
+var map = null;
 
-var map = {
-    'field': require('./field'),
-    'method': require('./method')
+var getMap = function () {
+    return {
+        'field': require('./field'),
+        'method': require('./method'),
+        'codeBlock': require('./codeBlock')
+    }
 }
 
 var find = function (name) {
+    if(map == null) {
+        map = getMap();
+    }
+
     var translator = map[name];
     if(translator == undefined || translator == null) {
         return null;

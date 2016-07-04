@@ -20,6 +20,8 @@ frac  "."[0-9]+
 \"\@\{.*\}\"    yytext = yytext.substr(1,yyleng-2); return 'BINDINGPROP'
 /*function.*\(\).*\{.*?\} return 'FUNCTION'*/
 function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
+\"properties\" yytext = yytext.substr(1,yyleng-2); return 'PROPS'
+\"defaultValue\"    yytext = yytext.substr(1,yyleng-2); return 'DEFAULTVALUE'
 
 
 
@@ -43,11 +45,8 @@ function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
 /lex
 
 %{
-    var parserUtil = require('../parserUtil/vcUtil');
-    var vcClass = parserUtil.createClass();
-    var onCreate = '';
-    var onCreateView = '';
-    var onDestroy = '';
+    var parserUtil = require('../parserUtil/modelUtil');
+    var aClass = parserUtil.createClass();
 %}
 
 %start ConfigEntry
@@ -57,9 +56,7 @@ function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
 ConfigEntry
     : '{' ConfigList '}'
         {
-            parserUtil.createEssentialMethod(vcClass, onCreate, onCreateView, onDestroy);
-            parserUtil.final(vcClass);
-            return vcClass;
+            return aClass;
         }
     ;
 
@@ -71,20 +68,21 @@ ConfigList
 Config
     : ClassName
     | Import
-    | ViewModels
-    | Events
-    | Bind
-    | Content
+    | Properties
     ;
 
 ClassName
     : NAME ':' JSONString
-        { vcClass.name = $3; }
+        {
+            aClass.name = $3;
+        }
     ;
 
 Import
     : IMPORT ':' '[' ImportList ']'
-        { vcClass.import = $4;}
+        {
+            aClass.import = $4;
+        }
     ;
 
 ImportList
@@ -94,89 +92,41 @@ ImportList
         {$$=$1;$$.push($3)}
     ;
 
-ViewModels
-    : VIEWMODELS ':' '[' ViewModelList ']'
+Properties
+    : PROPS ':' '[' PropertyList ']'
         {
-            parserUtil.createViewModelsFiled(vcClass, $4)
-            onCreate += parserUtil.createViewModelsInit($4);
+            parserUtil.createFields(aClass, $4);
         }
     ;
 
-ViewModelList
-    : ViewModel
+PropertyList
+    : Property
         {$$ = [$1];}
-    | ViewModelList ',' ViewModel
+    | PropertyList ',' Property
         {$$=$1;$$.push($3);}
     ;
 
-ViewModel
-    : '{' TYPE ':' JSONString ',' NAME ':' JSONString '}'
-        {$$ = {};$$['type'] = $4; $$['name'] = $8; $$['defaultValue'] = null;}
-    | '{' TYPE ':' JSONString ',' NAME ':' JSONString ',' INIT ':' JSONObject '}'
-        {$$ = {};$$['type'] = $4; $$['name'] = $8; $$['defaultValue'] = null;}
+Property
+    : '{' PropertyMemberList '}'
+        {$$ = $2;}
     ;
 
-Content
-    : CONTENT ':' Widget
-    ;
-
-Widget
-    : '{' WidgetProperties '}'
-        {
-            $$=$2;
-            parserUtil.createEvents(vcClass, $$);
-        }
-    ;
-
-WidgetProperties
-    : WidgetProperty
+PropertyMemberList
+    : PropertyMember
         {$$ = {}; $$[$1[0]] = $1[1];}
-    | WidgetProperties ',' WidgetProperty
-        {$$ = $1; $1[$3[0]] = $3[1];}
+    | PropertyMemberList ',' PropertyMember
+       {$$ = $1; $1[$3[0]] = $3[1];}
     ;
 
-WidgetProperty
-    : JSONMember
-    | Units
-    | Events
-    ;
-
-BindingProperty
-    : JSONString ':' BINDINGPROP
+PropertyMember
+    : PropertyKey ':' JSONValue
         {$$ = [$1, $3];}
     ;
 
-Units
-    : UNITS ':' '[' WidgetList ']'
-        {$$ = [$1, $4];}
-    ;
-
-WidgetList
-    : Widget
-        {$$=[$1]}
-    | WidgetList ',' Widget
-        {$$ = $1; $$.push($3)}
-    ;
-
-Events
-    : EVENT ':' '{' EventList '}'
-        {$$ = [$1, $4]}
-    ;
-
-EventList
-    : Event
-        {{$$ = {}; $$[$1[0]] = $1[1];}}
-    | EventList ',' Event
-        {$$ = $1; $1[$3[0]] = $3[1];}
-    ;
-
-Event
-    : JSONString ':' JSONString
-        {$$ = [$1, $3];}
-    ;
-
-Bind
-    : BIND ':' '{' EventList '}'
+PropertyKey
+    : NAME
+    | TYPE
+    | DEFAULTVALUE
     ;
 
 JSONString

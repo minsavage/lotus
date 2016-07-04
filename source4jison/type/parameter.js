@@ -7,6 +7,7 @@ class Parameter {
     constructor() {
         this.type = null;
         this.name = '';
+        this.annotations = [];
     }
 }
 

@@ -35,6 +35,22 @@ var buildParams = R.compose(
     R.prop('parameters')
 );
 
+//var buildCodeBlock = translatorMgr.find('codeBlock').translate;
+
+var buildCodeBlock = function(env, body) {
+    return translatorMgr.find('codeBlock').translate({env: env, body: body});
+}
+
+var buildEnv = function (model) {
+    console.log('------env-----------')
+    console.log(model);
+    console.log('------env-----------')
+    return {env: null}
+}
+
+
+var buildBody = R.converge(buildCodeBlock, [buildEnv, R.prop('body')]);
+
 var translate = R.converge(
     render,
     [
@@ -42,7 +58,7 @@ var translate = R.converge(
         R.prop('returnType'),
         R.prop('name'),
         buildParams,
-        R.prop('body')
+        buildBody
     ]
 );
 

@@ -71,13 +71,13 @@
     recoverable: (boolean: TRUE when the parser has a error recovery rule available for this particular error)
   }
 */
-var viewController = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,11],$V1=[1,12],$V2=[1,13],$V3=[1,16],$V4=[1,14],$V5=[1,15],$V6=[6,8],$V7=[1,27],$V8=[1,33],$V9=[1,38],$Va=[1,49],$Vb=[1,50],$Vc=[8,21],$Vd=[1,57],$Ve=[6,8,21],$Vf=[1,83],$Vg=[1,84],$Vh=[1,78],$Vi=[1,82],$Vj=[1,79],$Vk=[1,80],$Vl=[1,81];
+var operator = (function(){
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,8],$V1=[1,9],$V2=[1,10],$V3=[6,8],$V4=[1,18],$V5=[1,26],$V6=[1,27],$V7=[1,28],$V8=[1,29],$V9=[8,18],$Va=[1,48],$Vb=[1,40],$Vc=[1,41],$Vd=[1,42],$Ve=[1,43],$Vf=[1,44],$Vg=[1,47],$Vh=[1,67],$Vi=[1,68],$Vj=[1,66],$Vk=[1,63],$Vl=[1,64],$Vm=[1,65],$Vn=[1,62],$Vo=[6,8,18];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"ConfigEntry":3,"{":4,"ConfigList":5,"}":6,"Config":7,",":8,"ClassName":9,"Import":10,"ViewModels":11,"Events":12,"Bind":13,"Content":14,"NAME":15,":":16,"JSONString":17,"IMPORT":18,"[":19,"ImportList":20,"]":21,"VIEWMODELS":22,"ViewModelList":23,"ViewModel":24,"TYPE":25,"INIT":26,"JSONObject":27,"CONTENT":28,"Widget":29,"WidgetProperties":30,"WidgetProperty":31,"JSONMember":32,"Units":33,"BindingProperty":34,"BINDINGPROP":35,"UNITS":36,"WidgetList":37,"EVENT":38,"EventList":39,"Event":40,"BIND":41,"STRING":42,"JSONNumber":43,"NUMBER":44,"JSONNullLiteral":45,"NULL":46,"JSONBooleanLiteral":47,"TRUE":48,"FALSE":49,"JSONText":50,"JSONValue":51,"EOF":52,"JSONArray":53,"JSONMemberList":54,"JSONElementList":55,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"{",6:"}",8:",",15:"NAME",16:":",18:"IMPORT",19:"[",21:"]",22:"VIEWMODELS",25:"TYPE",26:"INIT",28:"CONTENT",35:"BINDINGPROP",36:"UNITS",38:"EVENT",41:"BIND",42:"STRING",44:"NUMBER",46:"NULL",48:"TRUE",49:"FALSE",52:"EOF"},
-productions_: [0,[3,3],[5,1],[5,3],[7,1],[7,1],[7,1],[7,1],[7,1],[7,1],[9,3],[10,5],[20,1],[20,3],[11,5],[23,1],[23,3],[24,9],[24,13],[14,3],[29,3],[30,1],[30,3],[31,1],[31,1],[31,1],[34,3],[33,5],[37,1],[37,3],[12,5],[39,1],[39,3],[40,3],[13,5],[17,1],[43,1],[45,1],[47,1],[47,1],[50,2],[51,1],[51,1],[51,1],[51,1],[51,1],[51,1],[51,1],[27,2],[27,3],[32,3],[32,3],[54,1],[54,3],[53,2],[53,3],[55,1],[55,3]],
+symbols_: {"error":2,"ConfigEntry":3,"{":4,"ConfigList":5,"}":6,"Config":7,",":8,"ClassName":9,"Import":10,"Actions":11,"NAME":12,":":13,"JSONString":14,"IMPORT":15,"[":16,"ImportList":17,"]":18,"ACTION":19,"ActionList":20,"Action":21,"ActionKey":22,"ActionConfigList":23,"QUERY":24,"INSERT":25,"UPDATE":26,"DELETE":27,"ActionConfig":28,"UrlConfig":29,"MethodConfig":30,"ParametersConfig":31,"responseTypeConfig":32,"responseConverter":33,"JSONMember":34,"Properties":35,"PROPS":36,"PropertyList":37,"Property":38,"PropertyMemberList":39,"PropertyMember":40,"PropertyKey":41,"JSONValue":42,"TYPE":43,"DEFAULTVALUE":44,"STRING":45,"JSONNumber":46,"NUMBER":47,"JSONNullLiteral":48,"NULL":49,"JSONBooleanLiteral":50,"TRUE":51,"FALSE":52,"JSONText":53,"EOF":54,"JSONObject":55,"JSONArray":56,"BINDINGPROP":57,"JSONMemberList":58,"JSONElementList":59,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"{",6:"}",8:",",12:"NAME",13:":",15:"IMPORT",16:"[",18:"]",19:"ACTION",24:"QUERY",25:"INSERT",26:"UPDATE",27:"DELETE",29:"UrlConfig",30:"MethodConfig",31:"ParametersConfig",32:"responseTypeConfig",33:"responseConverter",36:"PROPS",43:"TYPE",44:"DEFAULTVALUE",45:"STRING",47:"NUMBER",49:"NULL",51:"TRUE",52:"FALSE",54:"EOF",57:"BINDINGPROP"},
+productions_: [0,[3,3],[5,1],[5,3],[7,1],[7,1],[7,1],[9,3],[10,5],[17,1],[17,3],[11,5],[20,1],[20,3],[21,5],[22,1],[22,1],[22,1],[22,1],[23,1],[23,3],[28,1],[28,1],[28,1],[28,1],[28,1],[28,1],[35,5],[37,1],[37,3],[38,3],[39,1],[39,3],[40,3],[41,1],[41,1],[41,1],[14,1],[46,1],[48,1],[50,1],[50,1],[53,2],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[55,2],[55,3],[34,3],[34,3],[34,3],[58,1],[58,3],[56,2],[56,3],[59,1],[59,3]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -85,66 +85,56 @@ var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
 
-            parserUtil.createEssentialMethod(vcClass, onCreate, onCreateView, onDestroy);
-            parserUtil.final(vcClass);
-            return vcClass;
+            return {
+                class: aClass,
+                serviceMethods: serviceMethods
+            }
         
 break;
-case 10:
- vcClass.name = $$[$0]; 
+case 7:
+
+            aClass.name = $$[$0];
+        
 break;
-case 11:
- vcClass.import = $$[$0-1];
+case 8:
+
+            aClass.import = $$[$0-1];
+        
 break;
-case 12: case 15: case 56:
+case 9: case 12: case 28: case 59:
 this.$ = [$$[$0]];
 break;
-case 13:
+case 10:
 this.$=$$[$0-2];this.$.push($$[$0])
+break;
+case 13: case 29:
+this.$=$$[$0-2];this.$.push($$[$0]);
 break;
 case 14:
 
-            parserUtil.createViewModelsFiled(vcClass, $$[$0-1])
-            onCreate += parserUtil.createViewModelsInit($$[$0-1]);
+            parserUtil.createQueryMethod(aClass, $$[$0-1]);
+            var method = parserUtil.createQueryMethodService($$[$0-1]);
+            serviceMethods.push(method);
         
 break;
-case 16:
-this.$=$$[$0-2];this.$.push($$[$0]);
-break;
-case 17:
-this.$ = {};this.$['type'] = $$[$0-5]; this.$['name'] = $$[$0-1]; this.$['defaultValue'] = null;
-break;
-case 18:
-this.$ = {};this.$['type'] = $$[$0-9]; this.$['name'] = $$[$0-5]; this.$['defaultValue'] = null;
-break;
-case 20:
-
-            this.$=$$[$0-1];
-            parserUtil.createEvents(vcClass, this.$);
-        
-break;
-case 21: case 31: case 52:
+case 19: case 31: case 55:
 this.$ = {}; this.$[$$[$0][0]] = $$[$0][1];
 break;
-case 22: case 32: case 53:
+case 20: case 32: case 56:
 this.$ = $$[$0-2]; $$[$0-2][$$[$0][0]] = $$[$0][1];
 break;
-case 26: case 33: case 50: case 51:
+case 27:
+
+            parserUtil.createFields(aClass, $$[$0-1]);
+        
+break;
+case 30: case 51: case 58:
+this.$ = $$[$0-1];
+break;
+case 33: case 52: case 53: case 54:
 this.$ = [$$[$0-2], $$[$0]];
 break;
-case 27:
-this.$ = [$$[$0-4], $$[$0-1]];
-break;
-case 28:
-this.$=[$$[$0]]
-break;
-case 29:
-this.$ = $$[$0-2]; this.$.push($$[$0])
-break;
-case 30:
-this.$ = [$$[$0-4], $$[$0-1]]
-break;
-case 35:
+case 37:
  // replace escaped characters with actual character
           this.$ = yytext.replace(/\\(\\|")/g, "$"+"1")
                      .replace(/\\n/g,'\n')
@@ -155,37 +145,34 @@ case 35:
                      .replace(/\\b/g,'\b');
         
 break;
-case 36:
+case 38:
 this.$ = Number(yytext);
 break;
-case 37:
+case 39:
 this.$ = null;
 break;
-case 38:
+case 40:
 this.$ = true;
 break;
-case 39:
+case 41:
 this.$ = false;
 break;
-case 40:
+case 42:
 return this.$ = $$[$0-1];
 break;
-case 48:
+case 50:
 this.$ = {};
 break;
-case 49: case 55:
-this.$ = $$[$0-1];
-break;
-case 54:
+case 57:
 this.$ = [];
 break;
-case 57:
+case 60:
 this.$ = $$[$0-2]; $$[$0-2].push($$[$0]);
 break;
 }
 },
-table: [{3:1,4:[1,2]},{1:[3]},{5:3,7:4,9:5,10:6,11:7,12:8,13:9,14:10,15:$V0,18:$V1,22:$V2,28:$V3,38:$V4,41:$V5},{6:[1,17],8:[1,18]},o($V6,[2,2]),o($V6,[2,4]),o($V6,[2,5]),o($V6,[2,6]),o($V6,[2,7]),o($V6,[2,8]),o($V6,[2,9]),{16:[1,19]},{16:[1,20]},{16:[1,21]},{16:[1,22]},{16:[1,23]},{16:[1,24]},{1:[2,1]},{7:25,9:5,10:6,11:7,12:8,13:9,14:10,15:$V0,18:$V1,22:$V2,28:$V3,38:$V4,41:$V5},{17:26,42:$V7},{19:[1,28]},{19:[1,29]},{4:[1,30]},{4:[1,31]},{4:$V8,29:32},o($V6,[2,3]),o($V6,[2,10]),o([6,8,16,21],[2,35]),{17:35,20:34,42:$V7},{4:$V9,23:36,24:37},{17:41,39:39,40:40,42:$V7},{17:41,39:42,40:40,42:$V7},o($V6,[2,19]),{12:47,17:48,25:$Va,30:43,31:44,32:45,33:46,36:$Vb,38:$V4,42:$V7},{8:[1,52],21:[1,51]},o($Vc,[2,12]),{8:[1,54],21:[1,53]},o($Vc,[2,15]),{25:[1,55]},{6:[1,56],8:$Vd},o($V6,[2,31]),{16:[1,58]},{6:[1,59],8:$Vd},{6:[1,60],8:[1,61]},o($V6,[2,21]),o($V6,[2,23]),o($V6,[2,24]),o($V6,[2,25]),{16:[1,62]},{16:[1,63]},{16:[1,64]},o($V6,[2,11]),{17:65,42:$V7},o($V6,[2,14]),{4:$V9,24:66},{16:[1,67]},o($V6,[2,30]),{17:41,40:68,42:$V7},{17:69,42:$V7},o($V6,[2,34]),o($Ve,[2,20]),{12:47,17:48,25:$Va,31:70,32:45,33:46,36:$Vb,38:$V4,42:$V7},{4:$Vf,17:74,19:$Vg,27:76,35:$Vh,42:$V7,43:75,44:$Vi,45:72,46:$Vj,47:73,48:$Vk,49:$Vl,51:71,53:77},{4:$Vf,17:74,19:$Vg,27:76,35:$Vh,42:$V7,43:75,44:$Vi,45:72,46:$Vj,47:73,48:$Vk,49:$Vl,51:85,53:77},{19:[1,86]},o($Vc,[2,13]),o($Vc,[2,16]),{17:87,42:$V7},o($V6,[2,32]),o($V6,[2,33]),o($V6,[2,22]),o($V6,[2,50]),o($Ve,[2,41]),o($Ve,[2,42]),o($Ve,[2,43]),o($Ve,[2,44]),o($Ve,[2,45]),o($Ve,[2,46]),o($Ve,[2,47]),o($Ve,[2,37]),o($Ve,[2,38]),o($Ve,[2,39]),o($Ve,[2,36]),{6:[1,88],17:48,25:$Va,32:90,42:$V7,54:89},{4:$Vf,17:74,19:$Vg,21:[1,91],27:76,35:$Vh,42:$V7,43:75,44:$Vi,45:72,46:$Vj,47:73,48:$Vk,49:$Vl,51:93,53:77,55:92},o($V6,[2,51]),{4:$V8,29:95,37:94},{8:[1,96]},o($Ve,[2,48]),{6:[1,97],8:[1,98]},o($V6,[2,52]),o($Ve,[2,54]),{8:[1,100],21:[1,99]},o($Vc,[2,56]),{8:[1,102],21:[1,101]},o($Vc,[2,28]),{15:[1,103]},o($Ve,[2,49]),{17:48,25:$Va,32:104,42:$V7},o($Ve,[2,55]),{4:$Vf,17:74,19:$Vg,27:76,35:$Vh,42:$V7,43:75,44:$Vi,45:72,46:$Vj,47:73,48:$Vk,49:$Vl,51:105,53:77},o($V6,[2,27]),{4:$V8,29:106},{16:[1,107]},o($V6,[2,53]),o($Vc,[2,57]),o($Vc,[2,29]),{17:108,42:$V7},{6:[1,109],8:[1,110]},o($Vc,[2,17]),{26:[1,111]},{16:[1,112]},{4:$Vf,27:113},{6:[1,114]},o($Vc,[2,18])],
-defaultActions: {17:[2,1]},
+table: [{3:1,4:[1,2]},{1:[3]},{5:3,7:4,9:5,10:6,11:7,12:$V0,15:$V1,19:$V2},{6:[1,11],8:[1,12]},o($V3,[2,2]),o($V3,[2,4]),o($V3,[2,5]),o($V3,[2,6]),{13:[1,13]},{13:[1,14]},{13:[1,15]},{1:[2,1]},{7:16,9:5,10:6,11:7,12:$V0,15:$V1,19:$V2},{14:17,45:$V4},{16:[1,19]},{4:[1,20]},o($V3,[2,3]),o($V3,[2,7]),o([6,8,13,18],[2,37]),{14:22,17:21,45:$V4},{20:23,21:24,22:25,24:$V5,25:$V6,26:$V7,27:$V8},{8:[1,31],18:[1,30]},o($V9,[2,9]),{6:[1,32],8:[1,33]},o($V3,[2,12]),{13:[1,34]},{13:[2,15]},{13:[2,16]},{13:[2,17]},{13:[2,18]},o($V3,[2,8]),{14:35,45:$V4},o($V3,[2,11]),{21:36,22:25,24:$V5,25:$V6,26:$V7,27:$V8},{4:[1,37]},o($V9,[2,10]),o($V3,[2,13]),{12:$Va,14:46,23:38,28:39,29:$Vb,30:$Vc,31:$Vd,32:$Ve,33:$Vf,34:45,43:$Vg,45:$V4},{6:[1,49],8:[1,50]},o($V3,[2,19]),o($V3,[2,21]),o($V3,[2,22]),o($V3,[2,23]),o($V3,[2,24]),o($V3,[2,25]),o($V3,[2,26]),{13:[1,51]},{13:[1,52]},{13:[1,53]},o($V3,[2,14]),{12:$Va,14:46,28:54,29:$Vb,30:$Vc,31:$Vd,32:$Ve,33:$Vf,34:45,43:$Vg,45:$V4},{4:$Vh,14:58,16:$Vi,42:55,45:$V4,46:59,47:$Vj,48:56,49:$Vk,50:57,51:$Vl,52:$Vm,55:60,56:61,57:$Vn},{4:$Vh,14:58,16:$Vi,42:69,45:$V4,46:59,47:$Vj,48:56,49:$Vk,50:57,51:$Vl,52:$Vm,55:60,56:61,57:$Vn},{4:$Vh,14:58,16:$Vi,42:70,45:$V4,46:59,47:$Vj,48:56,49:$Vk,50:57,51:$Vl,52:$Vm,55:60,56:61,57:$Vn},o($V3,[2,20]),o($V3,[2,52]),o($Vo,[2,43]),o($Vo,[2,44]),o($Vo,[2,45]),o($Vo,[2,46]),o($Vo,[2,47]),o($Vo,[2,48]),o($Vo,[2,49]),o($Vo,[2,39]),o($Vo,[2,40]),o($Vo,[2,41]),o($Vo,[2,38]),{6:[1,71],12:$Va,14:46,34:73,43:$Vg,45:$V4,58:72},{4:$Vh,14:58,16:$Vi,18:[1,74],42:76,45:$V4,46:59,47:$Vj,48:56,49:$Vk,50:57,51:$Vl,52:$Vm,55:60,56:61,57:$Vn,59:75},o($V3,[2,53]),o($V3,[2,54]),o($Vo,[2,50]),{6:[1,77],8:[1,78]},o($V3,[2,55]),o($Vo,[2,57]),{8:[1,80],18:[1,79]},o($V9,[2,59]),o($Vo,[2,51]),{12:$Va,14:46,34:81,43:$Vg,45:$V4},o($Vo,[2,58]),{4:$Vh,14:58,16:$Vi,42:82,45:$V4,46:59,47:$Vj,48:56,49:$Vk,50:57,51:$Vl,52:$Vm,55:60,56:61,57:$Vn},o($V3,[2,56]),o($V9,[2,60])],
+defaultActions: {11:[2,1],26:[2,15],27:[2,16],28:[2,17],29:[2,18]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -337,11 +324,9 @@ parse: function parse(input) {
     return true;
 }};
 
-    var parserUtil = require('../parserUtil/vcUtil');
-    var vcClass = parserUtil.createClass();
-    var onCreate = '';
-    var onCreateView = '';
-    var onDestroy = '';
+    var parserUtil = require('../parserUtil/operatorUtil');
+    var aClass = parserUtil.createClass();
+    var serviceMethods = [];
 /* generated by jison-lex 0.3.4 */
 var lexer = (function(){
 var lexer = ({
@@ -672,58 +657,72 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace */
 break;
-case 1:return 18
+case 1:return 15
 break;
-case 2:return 22
+case 2:return 'VIEWMODELS'
 break;
-case 3:return 28
+case 3:return 'CONTENT'
 break;
-case 4:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 36
+case 4:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'UNITS'
 break;
-case 5:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 38
+case 5:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'EVENT'
 break;
-case 6:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 41
+case 6:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'BIND'
 break;
-case 7:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 25
+case 7:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 43
 break;
-case 8:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 15
+case 8:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 12
 break;
-case 9:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 26
+case 9:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'INIT'
 break;
-case 10:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 35
+case 10:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 57
 break;
 case 11:return 'FUNCTION'
 break;
-case 12:return 44
+case 12:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 36
 break;
-case 13:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 42
+case 13:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 44
 break;
-case 14:return 4
+case 14:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 19
 break;
-case 15:return 6
+case 15:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 24
 break;
-case 16:return 19
+case 16:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 25
 break;
-case 17:return 21
+case 17:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 26
 break;
-case 18:return 8
+case 18:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 27
 break;
-case 19:return 16
+case 19:return 47
 break;
-case 20:return 48
+case 20:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 45
 break;
-case 21:return 49
+case 21:return 4
 break;
-case 22:return 46
+case 22:return 6
 break;
-case 23:return 52
+case 23:return 16
 break;
-case 24:return 'INVALID'
+case 24:return 18
+break;
+case 25:return 8
+break;
+case 26:return 13
+break;
+case 27:return 51
+break;
+case 28:return 52
+break;
+case 29:return 49
+break;
+case 30:return 54
+break;
+case 31:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:"import")/,/^(?:"viewModels")/,/^(?:"content")/,/^(?:"units")/,/^(?:"event")/,/^(?:"bind")/,/^(?:"type")/,/^(?:"name")/,/^(?:"init")/,/^(?:"@\{.*\}")/,/^(?:function\s*\(\)\s*\{\s*.*?\s*\})/,/^(?:(-?([0-9]|[1-9][0-9]+))(\.[0-9]+)?([eE][-+]?[0-9]+)?\b)/,/^(?:"(?:\\[\\"bfnrt\/]|\\u[a-fA-F0-9]{4}|[^\\\0-\x09\x0a-\x1f"])*")/,/^(?:\{)/,/^(?:\})/,/^(?:\[)/,/^(?:\])/,/^(?:,)/,/^(?::)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:null\b)/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:"import")/,/^(?:"viewModels")/,/^(?:"content")/,/^(?:"units")/,/^(?:"event")/,/^(?:"bind")/,/^(?:"type")/,/^(?:"name")/,/^(?:"init")/,/^(?:"@\{.*\}")/,/^(?:function\s*\(\)\s*\{\s*.*?\s*\})/,/^(?:"properties")/,/^(?:"defaultValue")/,/^(?:"action")/,/^(?:"query")/,/^(?:"insert")/,/^(?:"update")/,/^(?:"delete")/,/^(?:(-?([0-9]|[1-9][0-9]+))(\.[0-9]+)?([eE][-+]?[0-9]+)?\b)/,/^(?:"(?:\\[\\"bfnrt\/]|\\u[a-fA-F0-9]{4}|[^\\\0-\x09\x0a-\x1f"])*")/,/^(?:\{)/,/^(?:\})/,/^(?:\[)/,/^(?:\])/,/^(?:,)/,/^(?::)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:null\b)/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],"inclusive":true}}
 });
 return lexer;
 })();
@@ -737,9 +736,9 @@ return new Parser;
 
 
 if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
-exports.parser = viewController;
-exports.Parser = viewController.Parser;
-exports.parse = function () { return viewController.parse.apply(viewController, arguments); };
+exports.parser = operator;
+exports.Parser = operator.Parser;
+exports.parse = function () { return operator.parse.apply(operator, arguments); };
 exports.main = function commonjsMain(args) {
     if (!args[1]) {
         console.log('Usage: '+args[0]+' FILE');

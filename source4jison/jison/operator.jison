@@ -20,6 +20,13 @@ frac  "."[0-9]+
 \"\@\{.*\}\"    yytext = yytext.substr(1,yyleng-2); return 'BINDINGPROP'
 /*function.*\(\).*\{.*?\} return 'FUNCTION'*/
 function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
+\"properties\" yytext = yytext.substr(1,yyleng-2); return 'PROPS'
+\"defaultValue\"    yytext = yytext.substr(1,yyleng-2); return 'DEFAULTVALUE'
+\"action\"    yytext = yytext.substr(1,yyleng-2); return 'ACTION'
+\"query\"    yytext = yytext.substr(1,yyleng-2); return 'QUERY'
+\"insert\"    yytext = yytext.substr(1,yyleng-2); return 'INSERT'
+\"update\"    yytext = yytext.substr(1,yyleng-2); return 'UPDATE'
+\"delete\"    yytext = yytext.substr(1,yyleng-2); return 'DELETE'
 
 
 
@@ -43,11 +50,9 @@ function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
 /lex
 
 %{
-    var parserUtil = require('../parserUtil/vcUtil');
-    var vcClass = parserUtil.createClass();
-    var onCreate = '';
-    var onCreateView = '';
-    var onDestroy = '';
+    var parserUtil = require('../parserUtil/operatorUtil');
+    var aClass = parserUtil.createClass();
+    var serviceMethods = [];
 %}
 
 %start ConfigEntry
@@ -57,9 +62,10 @@ function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
 ConfigEntry
     : '{' ConfigList '}'
         {
-            parserUtil.createEssentialMethod(vcClass, onCreate, onCreateView, onDestroy);
-            parserUtil.final(vcClass);
-            return vcClass;
+            return {
+                class: aClass,
+                serviceMethods: serviceMethods
+            }
         }
     ;
 
@@ -71,20 +77,21 @@ ConfigList
 Config
     : ClassName
     | Import
-    | ViewModels
-    | Events
-    | Bind
-    | Content
+    | Actions
     ;
 
 ClassName
     : NAME ':' JSONString
-        { vcClass.name = $3; }
+        {
+            aClass.name = $3;
+        }
     ;
 
 Import
     : IMPORT ':' '[' ImportList ']'
-        { vcClass.import = $4;}
+        {
+            aClass.import = $4;
+        }
     ;
 
 ImportList
@@ -94,89 +101,86 @@ ImportList
         {$$=$1;$$.push($3)}
     ;
 
-ViewModels
-    : VIEWMODELS ':' '[' ViewModelList ']'
-        {
-            parserUtil.createViewModelsFiled(vcClass, $4)
-            onCreate += parserUtil.createViewModelsInit($4);
-        }
+Actions
+    : ACTION ':' '{' ActionList '}'
     ;
 
-ViewModelList
-    : ViewModel
+ActionList
+    : Action
         {$$ = [$1];}
-    | ViewModelList ',' ViewModel
+    | ActionList ',' Action
         {$$=$1;$$.push($3);}
     ;
 
-ViewModel
-    : '{' TYPE ':' JSONString ',' NAME ':' JSONString '}'
-        {$$ = {};$$['type'] = $4; $$['name'] = $8; $$['defaultValue'] = null;}
-    | '{' TYPE ':' JSONString ',' NAME ':' JSONString ',' INIT ':' JSONObject '}'
-        {$$ = {};$$['type'] = $4; $$['name'] = $8; $$['defaultValue'] = null;}
-    ;
-
-Content
-    : CONTENT ':' Widget
-    ;
-
-Widget
-    : '{' WidgetProperties '}'
+Action
+    : ActionKey ':' '{' ActionConfigList'}'
         {
-            $$=$2;
-            parserUtil.createEvents(vcClass, $$);
+            parserUtil.createQueryMethod(aClass, $4);
+            var method = parserUtil.createQueryMethodService($4);
+            serviceMethods.push(method);
         }
     ;
 
-WidgetProperties
-    : WidgetProperty
+ActionKey
+    : QUERY
+    | INSERT
+    | UPDATE
+    | DELETE
+    ;
+
+ActionConfigList
+    : ActionConfig
         {$$ = {}; $$[$1[0]] = $1[1];}
-    | WidgetProperties ',' WidgetProperty
+    | ActionConfigList ',' ActionConfig
         {$$ = $1; $1[$3[0]] = $3[1];}
     ;
 
-WidgetProperty
-    : JSONMember
-    | Units
-    | Events
+ActionConfig
+    : UrlConfig
+    | MethodConfig
+    | ParametersConfig
+    | responseTypeConfig
+    | responseConverter
+    | JSONMember
     ;
 
-BindingProperty
-    : JSONString ':' BINDINGPROP
+
+
+Properties
+    : PROPS ':' '[' PropertyList ']'
+        {
+            parserUtil.createFields(aClass, $4);
+        }
+    ;
+
+PropertyList
+    : Property
+        {$$ = [$1];}
+    | PropertyList ',' Property
+        {$$=$1;$$.push($3);}
+    ;
+
+Property
+    : '{' PropertyMemberList '}'
+        {$$ = $2;}
+    ;
+
+PropertyMemberList
+    : PropertyMember
+        {$$ = {}; $$[$1[0]] = $1[1];}
+    | PropertyMemberList ',' PropertyMember
+       {$$ = $1; $1[$3[0]] = $3[1];}
+    ;
+
+PropertyMember
+    : PropertyKey ':' JSONValue
         {$$ = [$1, $3];}
     ;
 
-Units
-    : UNITS ':' '[' WidgetList ']'
-        {$$ = [$1, $4];}
-    ;
-
-WidgetList
-    : Widget
-        {$$=[$1]}
-    | WidgetList ',' Widget
-        {$$ = $1; $$.push($3)}
-    ;
-
-Events
-    : EVENT ':' '{' EventList '}'
-        {$$ = [$1, $4]}
-    ;
-
-EventList
-    : Event
-        {{$$ = {}; $$[$1[0]] = $1[1];}}
-    | EventList ',' Event
-        {$$ = $1; $1[$3[0]] = $3[1];}
-    ;
-
-Event
-    : JSONString ':' JSONString
-        {$$ = [$1, $3];}
-    ;
-
-Bind
-    : BIND ':' '{' EventList '}'
+PropertyKey
+    : NAME
+    | TYPE
+    | DEFAULTVALUE
     ;
 
 JSONString
@@ -235,6 +239,8 @@ JSONMember
     : JSONString ':' JSONValue
         {$$ = [$1, $3];}
     | TYPE ':' JSONValue
+        {$$ = [$1, $3];}
+    | NAME ':' JSONValue
         {$$ = [$1, $3];}
     ;
 

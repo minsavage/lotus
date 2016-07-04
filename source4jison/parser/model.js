@@ -71,13 +71,13 @@
     recoverable: (boolean: TRUE when the parser has a error recovery rule available for this particular error)
   }
 */
-var viewController = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,11],$V1=[1,12],$V2=[1,13],$V3=[1,16],$V4=[1,14],$V5=[1,15],$V6=[6,8],$V7=[1,27],$V8=[1,33],$V9=[1,38],$Va=[1,49],$Vb=[1,50],$Vc=[8,21],$Vd=[1,57],$Ve=[6,8,21],$Vf=[1,83],$Vg=[1,84],$Vh=[1,78],$Vi=[1,82],$Vj=[1,79],$Vk=[1,80],$Vl=[1,81];
+var model = (function(){
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,8],$V1=[1,9],$V2=[1,10],$V3=[6,8],$V4=[1,18],$V5=[1,25],$V6=[8,18],$V7=[1,33],$V8=[1,34],$V9=[1,35],$Va=[1,54],$Vb=[1,55],$Vc=[1,53],$Vd=[1,50],$Ve=[1,51],$Vf=[1,52],$Vg=[1,49],$Vh=[6,8,18],$Vi=[1,60];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"ConfigEntry":3,"{":4,"ConfigList":5,"}":6,"Config":7,",":8,"ClassName":9,"Import":10,"ViewModels":11,"Events":12,"Bind":13,"Content":14,"NAME":15,":":16,"JSONString":17,"IMPORT":18,"[":19,"ImportList":20,"]":21,"VIEWMODELS":22,"ViewModelList":23,"ViewModel":24,"TYPE":25,"INIT":26,"JSONObject":27,"CONTENT":28,"Widget":29,"WidgetProperties":30,"WidgetProperty":31,"JSONMember":32,"Units":33,"BindingProperty":34,"BINDINGPROP":35,"UNITS":36,"WidgetList":37,"EVENT":38,"EventList":39,"Event":40,"BIND":41,"STRING":42,"JSONNumber":43,"NUMBER":44,"JSONNullLiteral":45,"NULL":46,"JSONBooleanLiteral":47,"TRUE":48,"FALSE":49,"JSONText":50,"JSONValue":51,"EOF":52,"JSONArray":53,"JSONMemberList":54,"JSONElementList":55,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"{",6:"}",8:",",15:"NAME",16:":",18:"IMPORT",19:"[",21:"]",22:"VIEWMODELS",25:"TYPE",26:"INIT",28:"CONTENT",35:"BINDINGPROP",36:"UNITS",38:"EVENT",41:"BIND",42:"STRING",44:"NUMBER",46:"NULL",48:"TRUE",49:"FALSE",52:"EOF"},
-productions_: [0,[3,3],[5,1],[5,3],[7,1],[7,1],[7,1],[7,1],[7,1],[7,1],[9,3],[10,5],[20,1],[20,3],[11,5],[23,1],[23,3],[24,9],[24,13],[14,3],[29,3],[30,1],[30,3],[31,1],[31,1],[31,1],[34,3],[33,5],[37,1],[37,3],[12,5],[39,1],[39,3],[40,3],[13,5],[17,1],[43,1],[45,1],[47,1],[47,1],[50,2],[51,1],[51,1],[51,1],[51,1],[51,1],[51,1],[51,1],[27,2],[27,3],[32,3],[32,3],[54,1],[54,3],[53,2],[53,3],[55,1],[55,3]],
+symbols_: {"error":2,"ConfigEntry":3,"{":4,"ConfigList":5,"}":6,"Config":7,",":8,"ClassName":9,"Import":10,"Properties":11,"NAME":12,":":13,"JSONString":14,"IMPORT":15,"[":16,"ImportList":17,"]":18,"PROPS":19,"PropertyList":20,"Property":21,"PropertyMemberList":22,"PropertyMember":23,"PropertyKey":24,"JSONValue":25,"TYPE":26,"DEFAULTVALUE":27,"STRING":28,"JSONNumber":29,"NUMBER":30,"JSONNullLiteral":31,"NULL":32,"JSONBooleanLiteral":33,"TRUE":34,"FALSE":35,"JSONText":36,"EOF":37,"JSONObject":38,"JSONArray":39,"BINDINGPROP":40,"JSONMemberList":41,"JSONMember":42,"JSONElementList":43,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"{",6:"}",8:",",12:"NAME",13:":",15:"IMPORT",16:"[",18:"]",19:"PROPS",26:"TYPE",27:"DEFAULTVALUE",28:"STRING",30:"NUMBER",32:"NULL",34:"TRUE",35:"FALSE",37:"EOF",40:"BINDINGPROP"},
+productions_: [0,[3,3],[5,1],[5,3],[7,1],[7,1],[7,1],[9,3],[10,5],[17,1],[17,3],[11,5],[20,1],[20,3],[21,3],[22,1],[22,3],[23,3],[24,1],[24,1],[24,1],[14,1],[29,1],[31,1],[33,1],[33,1],[36,2],[25,1],[25,1],[25,1],[25,1],[25,1],[25,1],[25,1],[38,2],[38,3],[42,3],[42,3],[41,1],[41,3],[39,2],[39,3],[43,1],[43,3]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -85,66 +85,43 @@ var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
 
-            parserUtil.createEssentialMethod(vcClass, onCreate, onCreateView, onDestroy);
-            parserUtil.final(vcClass);
-            return vcClass;
+            return aClass;
         
 break;
-case 10:
- vcClass.name = $$[$0]; 
+case 7:
+ aClass.name = $$[$0]; 
 break;
-case 11:
- vcClass.import = $$[$0-1];
+case 8:
+ aClass.import = $$[$0-1];
 break;
-case 12: case 15: case 56:
+case 9: case 12: case 42:
 this.$ = [$$[$0]];
 break;
-case 13:
+case 10:
 this.$=$$[$0-2];this.$.push($$[$0])
 break;
-case 14:
+case 11:
 
-            parserUtil.createViewModelsFiled(vcClass, $$[$0-1])
-            onCreate += parserUtil.createViewModelsInit($$[$0-1]);
+            console.log($$[$0-1]);
+            parserUtil.createFields(aClass, $$[$0-1]);
         
 break;
-case 16:
+case 13:
 this.$=$$[$0-2];this.$.push($$[$0]);
 break;
-case 17:
-this.$ = {};this.$['type'] = $$[$0-5]; this.$['name'] = $$[$0-1]; this.$['defaultValue'] = null;
+case 14: case 35: case 41:
+this.$ = $$[$0-1];
 break;
-case 18:
-this.$ = {};this.$['type'] = $$[$0-9]; this.$['name'] = $$[$0-5]; this.$['defaultValue'] = null;
-break;
-case 20:
-
-            this.$=$$[$0-1];
-            parserUtil.createEvents(vcClass, this.$);
-        
-break;
-case 21: case 31: case 52:
+case 15: case 38:
 this.$ = {}; this.$[$$[$0][0]] = $$[$0][1];
 break;
-case 22: case 32: case 53:
+case 16: case 39:
 this.$ = $$[$0-2]; $$[$0-2][$$[$0][0]] = $$[$0][1];
 break;
-case 26: case 33: case 50: case 51:
+case 17: case 36: case 37:
 this.$ = [$$[$0-2], $$[$0]];
 break;
-case 27:
-this.$ = [$$[$0-4], $$[$0-1]];
-break;
-case 28:
-this.$=[$$[$0]]
-break;
-case 29:
-this.$ = $$[$0-2]; this.$.push($$[$0])
-break;
-case 30:
-this.$ = [$$[$0-4], $$[$0-1]]
-break;
-case 35:
+case 21:
  // replace escaped characters with actual character
           this.$ = yytext.replace(/\\(\\|")/g, "$"+"1")
                      .replace(/\\n/g,'\n')
@@ -155,37 +132,34 @@ case 35:
                      .replace(/\\b/g,'\b');
         
 break;
-case 36:
+case 22:
 this.$ = Number(yytext);
 break;
-case 37:
+case 23:
 this.$ = null;
 break;
-case 38:
+case 24:
 this.$ = true;
 break;
-case 39:
+case 25:
 this.$ = false;
 break;
-case 40:
+case 26:
 return this.$ = $$[$0-1];
 break;
-case 48:
+case 34:
 this.$ = {};
 break;
-case 49: case 55:
-this.$ = $$[$0-1];
-break;
-case 54:
+case 40:
 this.$ = [];
 break;
-case 57:
+case 43:
 this.$ = $$[$0-2]; $$[$0-2].push($$[$0]);
 break;
 }
 },
-table: [{3:1,4:[1,2]},{1:[3]},{5:3,7:4,9:5,10:6,11:7,12:8,13:9,14:10,15:$V0,18:$V1,22:$V2,28:$V3,38:$V4,41:$V5},{6:[1,17],8:[1,18]},o($V6,[2,2]),o($V6,[2,4]),o($V6,[2,5]),o($V6,[2,6]),o($V6,[2,7]),o($V6,[2,8]),o($V6,[2,9]),{16:[1,19]},{16:[1,20]},{16:[1,21]},{16:[1,22]},{16:[1,23]},{16:[1,24]},{1:[2,1]},{7:25,9:5,10:6,11:7,12:8,13:9,14:10,15:$V0,18:$V1,22:$V2,28:$V3,38:$V4,41:$V5},{17:26,42:$V7},{19:[1,28]},{19:[1,29]},{4:[1,30]},{4:[1,31]},{4:$V8,29:32},o($V6,[2,3]),o($V6,[2,10]),o([6,8,16,21],[2,35]),{17:35,20:34,42:$V7},{4:$V9,23:36,24:37},{17:41,39:39,40:40,42:$V7},{17:41,39:42,40:40,42:$V7},o($V6,[2,19]),{12:47,17:48,25:$Va,30:43,31:44,32:45,33:46,36:$Vb,38:$V4,42:$V7},{8:[1,52],21:[1,51]},o($Vc,[2,12]),{8:[1,54],21:[1,53]},o($Vc,[2,15]),{25:[1,55]},{6:[1,56],8:$Vd},o($V6,[2,31]),{16:[1,58]},{6:[1,59],8:$Vd},{6:[1,60],8:[1,61]},o($V6,[2,21]),o($V6,[2,23]),o($V6,[2,24]),o($V6,[2,25]),{16:[1,62]},{16:[1,63]},{16:[1,64]},o($V6,[2,11]),{17:65,42:$V7},o($V6,[2,14]),{4:$V9,24:66},{16:[1,67]},o($V6,[2,30]),{17:41,40:68,42:$V7},{17:69,42:$V7},o($V6,[2,34]),o($Ve,[2,20]),{12:47,17:48,25:$Va,31:70,32:45,33:46,36:$Vb,38:$V4,42:$V7},{4:$Vf,17:74,19:$Vg,27:76,35:$Vh,42:$V7,43:75,44:$Vi,45:72,46:$Vj,47:73,48:$Vk,49:$Vl,51:71,53:77},{4:$Vf,17:74,19:$Vg,27:76,35:$Vh,42:$V7,43:75,44:$Vi,45:72,46:$Vj,47:73,48:$Vk,49:$Vl,51:85,53:77},{19:[1,86]},o($Vc,[2,13]),o($Vc,[2,16]),{17:87,42:$V7},o($V6,[2,32]),o($V6,[2,33]),o($V6,[2,22]),o($V6,[2,50]),o($Ve,[2,41]),o($Ve,[2,42]),o($Ve,[2,43]),o($Ve,[2,44]),o($Ve,[2,45]),o($Ve,[2,46]),o($Ve,[2,47]),o($Ve,[2,37]),o($Ve,[2,38]),o($Ve,[2,39]),o($Ve,[2,36]),{6:[1,88],17:48,25:$Va,32:90,42:$V7,54:89},{4:$Vf,17:74,19:$Vg,21:[1,91],27:76,35:$Vh,42:$V7,43:75,44:$Vi,45:72,46:$Vj,47:73,48:$Vk,49:$Vl,51:93,53:77,55:92},o($V6,[2,51]),{4:$V8,29:95,37:94},{8:[1,96]},o($Ve,[2,48]),{6:[1,97],8:[1,98]},o($V6,[2,52]),o($Ve,[2,54]),{8:[1,100],21:[1,99]},o($Vc,[2,56]),{8:[1,102],21:[1,101]},o($Vc,[2,28]),{15:[1,103]},o($Ve,[2,49]),{17:48,25:$Va,32:104,42:$V7},o($Ve,[2,55]),{4:$Vf,17:74,19:$Vg,27:76,35:$Vh,42:$V7,43:75,44:$Vi,45:72,46:$Vj,47:73,48:$Vk,49:$Vl,51:105,53:77},o($V6,[2,27]),{4:$V8,29:106},{16:[1,107]},o($V6,[2,53]),o($Vc,[2,57]),o($Vc,[2,29]),{17:108,42:$V7},{6:[1,109],8:[1,110]},o($Vc,[2,17]),{26:[1,111]},{16:[1,112]},{4:$Vf,27:113},{6:[1,114]},o($Vc,[2,18])],
-defaultActions: {17:[2,1]},
+table: [{3:1,4:[1,2]},{1:[3]},{5:3,7:4,9:5,10:6,11:7,12:$V0,15:$V1,19:$V2},{6:[1,11],8:[1,12]},o($V3,[2,2]),o($V3,[2,4]),o($V3,[2,5]),o($V3,[2,6]),{13:[1,13]},{13:[1,14]},{13:[1,15]},{1:[2,1]},{7:16,9:5,10:6,11:7,12:$V0,15:$V1,19:$V2},{14:17,28:$V4},{16:[1,19]},{16:[1,20]},o($V3,[2,3]),o($V3,[2,7]),o([6,8,13,18],[2,21]),{14:22,17:21,28:$V4},{4:$V5,20:23,21:24},{8:[1,27],18:[1,26]},o($V6,[2,9]),{8:[1,29],18:[1,28]},o($V6,[2,12]),{12:$V7,22:30,23:31,24:32,26:$V8,27:$V9},o($V3,[2,8]),{14:36,28:$V4},o($V3,[2,11]),{4:$V5,21:37},{6:[1,38],8:[1,39]},o($V3,[2,15]),{13:[1,40]},{13:[2,18]},{13:[2,19]},{13:[2,20]},o($V6,[2,10]),o($V6,[2,13]),o($V6,[2,14]),{12:$V7,23:41,24:32,26:$V8,27:$V9},{4:$Va,14:45,16:$Vb,25:42,28:$V4,29:46,30:$Vc,31:43,32:$Vd,33:44,34:$Ve,35:$Vf,38:47,39:48,40:$Vg},o($V3,[2,16]),o($V3,[2,17]),o($Vh,[2,27]),o($Vh,[2,28]),o($Vh,[2,29]),o($Vh,[2,30]),o($Vh,[2,31]),o($Vh,[2,32]),o($Vh,[2,33]),o($Vh,[2,23]),o($Vh,[2,24]),o($Vh,[2,25]),o($Vh,[2,22]),{6:[1,56],14:59,26:$Vi,28:$V4,41:57,42:58},{4:$Va,14:45,16:$Vb,18:[1,61],25:63,28:$V4,29:46,30:$Vc,31:43,32:$Vd,33:44,34:$Ve,35:$Vf,38:47,39:48,40:$Vg,43:62},o($Vh,[2,34]),{6:[1,64],8:[1,65]},o($V3,[2,38]),{13:[1,66]},{13:[1,67]},o($Vh,[2,40]),{8:[1,69],18:[1,68]},o($V6,[2,42]),o($Vh,[2,35]),{14:59,26:$Vi,28:$V4,42:70},{4:$Va,14:45,16:$Vb,25:71,28:$V4,29:46,30:$Vc,31:43,32:$Vd,33:44,34:$Ve,35:$Vf,38:47,39:48,40:$Vg},{4:$Va,14:45,16:$Vb,25:72,28:$V4,29:46,30:$Vc,31:43,32:$Vd,33:44,34:$Ve,35:$Vf,38:47,39:48,40:$Vg},o($Vh,[2,41]),{4:$Va,14:45,16:$Vb,25:73,28:$V4,29:46,30:$Vc,31:43,32:$Vd,33:44,34:$Ve,35:$Vf,38:47,39:48,40:$Vg},o($V3,[2,39]),o($V3,[2,36]),o($V3,[2,37]),o($V6,[2,43])],
+defaultActions: {11:[2,1],33:[2,18],34:[2,19],35:[2,20]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -337,11 +311,8 @@ parse: function parse(input) {
     return true;
 }};
 
-    var parserUtil = require('../parserUtil/vcUtil');
-    var vcClass = parserUtil.createClass();
-    var onCreate = '';
-    var onCreateView = '';
-    var onDestroy = '';
+    var parserUtil = require('../parserUtil/modelUtil');
+    var aClass = parserUtil.createClass();
 /* generated by jison-lex 0.3.4 */
 var lexer = (function(){
 var lexer = ({
@@ -672,58 +643,62 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace */
 break;
-case 1:return 18
+case 1:return 15
 break;
-case 2:return 22
+case 2:return 'VIEWMODELS'
 break;
-case 3:return 28
+case 3:return 'CONTENT'
 break;
-case 4:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 36
+case 4:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'UNITS'
 break;
-case 5:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 38
+case 5:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'EVENT'
 break;
-case 6:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 41
+case 6:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'BIND'
 break;
-case 7:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 25
+case 7:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 26
 break;
-case 8:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 15
+case 8:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 12
 break;
-case 9:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 26
+case 9:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'INIT'
 break;
-case 10:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 35
+case 10:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 40
 break;
 case 11:return 'FUNCTION'
 break;
-case 12:return 44
+case 12:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 19
 break;
-case 13:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 42
+case 13:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 27
 break;
-case 14:return 4
+case 14:return 30
 break;
-case 15:return 6
+case 15:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 28
 break;
-case 16:return 19
+case 16:return 4
 break;
-case 17:return 21
+case 17:return 6
 break;
-case 18:return 8
+case 18:return 16
 break;
-case 19:return 16
+case 19:return 18
 break;
-case 20:return 48
+case 20:return 8
 break;
-case 21:return 49
+case 21:return 13
 break;
-case 22:return 46
+case 22:return 34
 break;
-case 23:return 52
+case 23:return 35
 break;
-case 24:return 'INVALID'
+case 24:return 32
+break;
+case 25:return 37
+break;
+case 26:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:"import")/,/^(?:"viewModels")/,/^(?:"content")/,/^(?:"units")/,/^(?:"event")/,/^(?:"bind")/,/^(?:"type")/,/^(?:"name")/,/^(?:"init")/,/^(?:"@\{.*\}")/,/^(?:function\s*\(\)\s*\{\s*.*?\s*\})/,/^(?:(-?([0-9]|[1-9][0-9]+))(\.[0-9]+)?([eE][-+]?[0-9]+)?\b)/,/^(?:"(?:\\[\\"bfnrt\/]|\\u[a-fA-F0-9]{4}|[^\\\0-\x09\x0a-\x1f"])*")/,/^(?:\{)/,/^(?:\})/,/^(?:\[)/,/^(?:\])/,/^(?:,)/,/^(?::)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:null\b)/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:"import")/,/^(?:"viewModels")/,/^(?:"content")/,/^(?:"units")/,/^(?:"event")/,/^(?:"bind")/,/^(?:"type")/,/^(?:"name")/,/^(?:"init")/,/^(?:"@\{.*\}")/,/^(?:function\s*\(\)\s*\{\s*.*?\s*\})/,/^(?:"properties")/,/^(?:"defaultValue")/,/^(?:(-?([0-9]|[1-9][0-9]+))(\.[0-9]+)?([eE][-+]?[0-9]+)?\b)/,/^(?:"(?:\\[\\"bfnrt\/]|\\u[a-fA-F0-9]{4}|[^\\\0-\x09\x0a-\x1f"])*")/,/^(?:\{)/,/^(?:\})/,/^(?:\[)/,/^(?:\])/,/^(?:,)/,/^(?::)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:null\b)/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],"inclusive":true}}
 });
 return lexer;
 })();
@@ -737,9 +712,9 @@ return new Parser;
 
 
 if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
-exports.parser = viewController;
-exports.Parser = viewController.Parser;
-exports.parse = function () { return viewController.parse.apply(viewController, arguments); };
+exports.parser = model;
+exports.Parser = model.Parser;
+exports.parse = function () { return model.parse.apply(model, arguments); };
 exports.main = function commonjsMain(args) {
     if (!args[1]) {
         console.log('Usage: '+args[0]+' FILE');

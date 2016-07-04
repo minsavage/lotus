@@ -3,36 +3,33 @@
  */
 
 
-var stringify = function(obj, prop) {
-    var placeholder = '____PLACEHOLDER____';
-    var fns = [];
-    var json = JSON.stringify(obj, function(key, value) {
-        if (typeof value === 'function') {
-            fns.push(value);
-            return placeholder;
-        }
-        return value;
-    }, 2);
-    json = json.replace(new RegExp('"' + placeholder + '"', 'g'), function(_) {
-        return fns.shift();
-    });
-
-    return json;
-    //return 'this["' + prop + '"] = ' + json + ';';
-};
+var stringify = require('./util/stringify');
 
 var model = require('../project/ich0521/viewController/postsViewController');
 var str = stringify(model);
 
+var comment = require('../project/ich0521/model/comment');
+var modelStr = stringify(comment);
+
 var parser = require("./parser/viewController").parser;
 var ret = parser.parse(str);
 
-console.log(ret);
+//var modelParser = require("./parser/model").parser;
+//var modelRet = modelParser.parse(modelStr);
 
-var translator = require('./translator/class');
-var ret = translator.translate(ret);
 
-var fs = require('fs');
-fs.writeFileSync('test.java', ret);
+var operatorModel = require('../project/ich0521/operator/postsOperator');
+var operatorModelStr = stringify(operatorModel);
+
+var operatorParser = require("./parser/operator").parser;
+var modelRet = operatorParser.parse(operatorModelStr);
+
+console.log(modelRet);
+
+//var translator = require('./translator/class');
+//var ret = translator.translate(ret);
+//
+//var fs = require('fs');
+//fs.writeFileSync('test.java', modelRet);
 
 //console.log(ret);
