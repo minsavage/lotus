@@ -24,6 +24,12 @@ var operatorModelStr = stringify(operatorModel);
 var operatorParser = require("./parser/operator").parser;
 var modelRet = operatorParser.parse(operatorModelStr);
 
+var viewModel = require('../project/ich0521/viewModel/postsViewModel');
+var viewModelStr = stringify(viewModel);
+
+var viewModelParser = require("./parser/viewModel").parser;
+var modelRet = viewModelParser.parse(viewModelStr);
+
 console.log(modelRet);
 
 //var translator = require('./translator/class');

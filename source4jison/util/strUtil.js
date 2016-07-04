@@ -24,6 +24,15 @@ var firstCharToUppercase = function(str) {
     return str[0] < 97 ? str: str[0].toUpperCase() + str.substr(1);
 }
 
+var firstCharToLowercase = function(str) {
+    if(isEmpty(str)) {
+        throw 'string is empty, can not make first character to lowercase';
+    }
+
+    return str[0] >= 97 ? str: str[0].toLowerCase() + str.substr(1);
+}
+
 exports.isEmpty = isEmpty;
 exports.isNotEmpty = isNotEmpty;
 exports.firstCharToUppercase = firstCharToUppercase;
+exports.firstCharToLowercase = firstCharToLowercase;
