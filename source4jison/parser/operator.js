@@ -72,12 +72,12 @@
   }
 */
 var operator = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,8],$V1=[1,9],$V2=[1,10],$V3=[6,8],$V4=[1,18],$V5=[1,26],$V6=[1,27],$V7=[1,28],$V8=[1,29],$V9=[8,18],$Va=[1,48],$Vb=[1,40],$Vc=[1,41],$Vd=[1,42],$Ve=[1,43],$Vf=[1,44],$Vg=[1,47],$Vh=[1,67],$Vi=[1,68],$Vj=[1,66],$Vk=[1,63],$Vl=[1,64],$Vm=[1,65],$Vn=[1,62],$Vo=[6,8,18];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,9],$V1=[1,10],$V2=[1,12],$V3=[1,11],$V4=[6,8],$V5=[1,21],$V6=[1,36],$V7=[1,37],$V8=[1,35],$V9=[1,32],$Va=[1,33],$Vb=[1,34],$Vc=[1,31],$Vd=[1,43],$Ve=[1,44],$Vf=[1,45],$Vg=[1,46],$Vh=[6,8,19],$Vi=[1,52],$Vj=[1,51],$Vk=[8,19],$Vl=[1,78],$Vm=[1,79],$Vn=[1,80],$Vo=[1,81],$Vp=[1,82];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"ConfigEntry":3,"{":4,"ConfigList":5,"}":6,"Config":7,",":8,"ClassName":9,"Import":10,"Actions":11,"NAME":12,":":13,"JSONString":14,"IMPORT":15,"[":16,"ImportList":17,"]":18,"ACTION":19,"ActionList":20,"Action":21,"ActionKey":22,"ActionConfigList":23,"QUERY":24,"INSERT":25,"UPDATE":26,"DELETE":27,"ActionConfig":28,"UrlConfig":29,"MethodConfig":30,"ParametersConfig":31,"responseTypeConfig":32,"responseConverter":33,"JSONMember":34,"Properties":35,"PROPS":36,"PropertyList":37,"Property":38,"PropertyMemberList":39,"PropertyMember":40,"PropertyKey":41,"JSONValue":42,"TYPE":43,"DEFAULTVALUE":44,"STRING":45,"JSONNumber":46,"NUMBER":47,"JSONNullLiteral":48,"NULL":49,"JSONBooleanLiteral":50,"TRUE":51,"FALSE":52,"JSONText":53,"EOF":54,"JSONObject":55,"JSONArray":56,"BINDINGPROP":57,"JSONMemberList":58,"JSONElementList":59,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"{",6:"}",8:",",12:"NAME",13:":",15:"IMPORT",16:"[",18:"]",19:"ACTION",24:"QUERY",25:"INSERT",26:"UPDATE",27:"DELETE",29:"UrlConfig",30:"MethodConfig",31:"ParametersConfig",32:"responseTypeConfig",33:"responseConverter",36:"PROPS",43:"TYPE",44:"DEFAULTVALUE",45:"STRING",47:"NUMBER",49:"NULL",51:"TRUE",52:"FALSE",54:"EOF",57:"BINDINGPROP"},
-productions_: [0,[3,3],[5,1],[5,3],[7,1],[7,1],[7,1],[9,3],[10,5],[17,1],[17,3],[11,5],[20,1],[20,3],[21,5],[22,1],[22,1],[22,1],[22,1],[23,1],[23,3],[28,1],[28,1],[28,1],[28,1],[28,1],[28,1],[35,5],[37,1],[37,3],[38,3],[39,1],[39,3],[40,3],[41,1],[41,1],[41,1],[14,1],[46,1],[48,1],[50,1],[50,1],[53,2],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[55,2],[55,3],[34,3],[34,3],[34,3],[58,1],[58,3],[56,2],[56,3],[59,1],[59,3]],
+symbols_: {"error":2,"ConfigEntry":3,"{":4,"ConfigList":5,"}":6,"Config":7,",":8,"ClassName":9,"Import":10,"Actions":11,"Type":12,"NAME":13,":":14,"JSONString":15,"IMPORT":16,"[":17,"ImportList":18,"]":19,"TYPE":20,"JSONValue":21,"ACTION":22,"ActionList":23,"Action":24,"ActionKey":25,"ActionConfigList":26,"QUERY":27,"INSERT":28,"UPDATE":29,"DELETE":30,"ActionConfig":31,"UrlConfig":32,"MethodConfig":33,"ParametersConfig":34,"responseTypeConfig":35,"responseConverter":36,"JSONMember":37,"Properties":38,"PROPS":39,"PropertyList":40,"Property":41,"PropertyMemberList":42,"PropertyMember":43,"PropertyKey":44,"DEFAULTVALUE":45,"STRING":46,"JSONNumber":47,"NUMBER":48,"JSONNullLiteral":49,"NULL":50,"JSONBooleanLiteral":51,"TRUE":52,"FALSE":53,"JSONText":54,"EOF":55,"JSONObject":56,"JSONArray":57,"BINDINGPROP":58,"JSONMemberList":59,"JSONElementList":60,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"{",6:"}",8:",",13:"NAME",14:":",16:"IMPORT",17:"[",19:"]",20:"TYPE",22:"ACTION",27:"QUERY",28:"INSERT",29:"UPDATE",30:"DELETE",32:"UrlConfig",33:"MethodConfig",34:"ParametersConfig",35:"responseTypeConfig",36:"responseConverter",39:"PROPS",45:"DEFAULTVALUE",46:"STRING",48:"NUMBER",50:"NULL",52:"TRUE",53:"FALSE",55:"EOF",58:"BINDINGPROP"},
+productions_: [0,[3,3],[5,1],[5,3],[7,1],[7,1],[7,1],[7,1],[9,3],[10,5],[18,1],[18,3],[12,3],[11,5],[23,1],[23,3],[24,5],[25,1],[25,1],[25,1],[25,1],[26,1],[26,3],[31,1],[31,1],[31,1],[31,1],[31,1],[31,1],[38,5],[40,1],[40,3],[41,3],[42,1],[42,3],[43,3],[44,1],[44,1],[44,1],[15,1],[47,1],[49,1],[51,1],[51,1],[54,2],[21,1],[21,1],[21,1],[21,1],[21,1],[21,1],[21,1],[56,2],[56,3],[37,3],[37,3],[37,3],[59,1],[59,3],[57,2],[57,3],[60,1],[60,3]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -91,50 +91,50 @@ case 1:
             }
         
 break;
-case 7:
+case 8:
 
             aClass.name = $$[$0];
         
 break;
-case 8:
+case 9:
 
             aClass.import = $$[$0-1];
         
 break;
-case 9: case 12: case 28: case 59:
+case 10: case 14: case 30: case 61:
 this.$ = [$$[$0]];
 break;
-case 10:
+case 11:
 this.$=$$[$0-2];this.$.push($$[$0])
 break;
-case 13: case 29:
+case 15: case 31:
 this.$=$$[$0-2];this.$.push($$[$0]);
 break;
-case 14:
+case 16:
 
             parserUtil.createQueryMethod(aClass, $$[$0-1]);
             var method = parserUtil.createQueryMethodService($$[$0-1]);
             serviceMethods.push(method);
         
 break;
-case 19: case 31: case 55:
+case 21: case 33: case 57:
 this.$ = {}; this.$[$$[$0][0]] = $$[$0][1];
 break;
-case 20: case 32: case 56:
+case 22: case 34: case 58:
 this.$ = $$[$0-2]; $$[$0-2][$$[$0][0]] = $$[$0][1];
 break;
-case 27:
+case 29:
 
             parserUtil.createFields(aClass, $$[$0-1]);
         
 break;
-case 30: case 51: case 58:
+case 32: case 53: case 60:
 this.$ = $$[$0-1];
 break;
-case 33: case 52: case 53: case 54:
+case 35: case 54: case 55: case 56:
 this.$ = [$$[$0-2], $$[$0]];
 break;
-case 37:
+case 39:
  // replace escaped characters with actual character
           this.$ = yytext.replace(/\\(\\|")/g, "$"+"1")
                      .replace(/\\n/g,'\n')
@@ -145,34 +145,34 @@ case 37:
                      .replace(/\\b/g,'\b');
         
 break;
-case 38:
+case 40:
 this.$ = Number(yytext);
 break;
-case 39:
+case 41:
 this.$ = null;
 break;
-case 40:
+case 42:
 this.$ = true;
 break;
-case 41:
+case 43:
 this.$ = false;
 break;
-case 42:
+case 44:
 return this.$ = $$[$0-1];
 break;
-case 50:
+case 52:
 this.$ = {};
 break;
-case 57:
+case 59:
 this.$ = [];
 break;
-case 60:
+case 62:
 this.$ = $$[$0-2]; $$[$0-2].push($$[$0]);
 break;
 }
 },
-table: [{3:1,4:[1,2]},{1:[3]},{5:3,7:4,9:5,10:6,11:7,12:$V0,15:$V1,19:$V2},{6:[1,11],8:[1,12]},o($V3,[2,2]),o($V3,[2,4]),o($V3,[2,5]),o($V3,[2,6]),{13:[1,13]},{13:[1,14]},{13:[1,15]},{1:[2,1]},{7:16,9:5,10:6,11:7,12:$V0,15:$V1,19:$V2},{14:17,45:$V4},{16:[1,19]},{4:[1,20]},o($V3,[2,3]),o($V3,[2,7]),o([6,8,13,18],[2,37]),{14:22,17:21,45:$V4},{20:23,21:24,22:25,24:$V5,25:$V6,26:$V7,27:$V8},{8:[1,31],18:[1,30]},o($V9,[2,9]),{6:[1,32],8:[1,33]},o($V3,[2,12]),{13:[1,34]},{13:[2,15]},{13:[2,16]},{13:[2,17]},{13:[2,18]},o($V3,[2,8]),{14:35,45:$V4},o($V3,[2,11]),{21:36,22:25,24:$V5,25:$V6,26:$V7,27:$V8},{4:[1,37]},o($V9,[2,10]),o($V3,[2,13]),{12:$Va,14:46,23:38,28:39,29:$Vb,30:$Vc,31:$Vd,32:$Ve,33:$Vf,34:45,43:$Vg,45:$V4},{6:[1,49],8:[1,50]},o($V3,[2,19]),o($V3,[2,21]),o($V3,[2,22]),o($V3,[2,23]),o($V3,[2,24]),o($V3,[2,25]),o($V3,[2,26]),{13:[1,51]},{13:[1,52]},{13:[1,53]},o($V3,[2,14]),{12:$Va,14:46,28:54,29:$Vb,30:$Vc,31:$Vd,32:$Ve,33:$Vf,34:45,43:$Vg,45:$V4},{4:$Vh,14:58,16:$Vi,42:55,45:$V4,46:59,47:$Vj,48:56,49:$Vk,50:57,51:$Vl,52:$Vm,55:60,56:61,57:$Vn},{4:$Vh,14:58,16:$Vi,42:69,45:$V4,46:59,47:$Vj,48:56,49:$Vk,50:57,51:$Vl,52:$Vm,55:60,56:61,57:$Vn},{4:$Vh,14:58,16:$Vi,42:70,45:$V4,46:59,47:$Vj,48:56,49:$Vk,50:57,51:$Vl,52:$Vm,55:60,56:61,57:$Vn},o($V3,[2,20]),o($V3,[2,52]),o($Vo,[2,43]),o($Vo,[2,44]),o($Vo,[2,45]),o($Vo,[2,46]),o($Vo,[2,47]),o($Vo,[2,48]),o($Vo,[2,49]),o($Vo,[2,39]),o($Vo,[2,40]),o($Vo,[2,41]),o($Vo,[2,38]),{6:[1,71],12:$Va,14:46,34:73,43:$Vg,45:$V4,58:72},{4:$Vh,14:58,16:$Vi,18:[1,74],42:76,45:$V4,46:59,47:$Vj,48:56,49:$Vk,50:57,51:$Vl,52:$Vm,55:60,56:61,57:$Vn,59:75},o($V3,[2,53]),o($V3,[2,54]),o($Vo,[2,50]),{6:[1,77],8:[1,78]},o($V3,[2,55]),o($Vo,[2,57]),{8:[1,80],18:[1,79]},o($V9,[2,59]),o($Vo,[2,51]),{12:$Va,14:46,34:81,43:$Vg,45:$V4},o($Vo,[2,58]),{4:$Vh,14:58,16:$Vi,42:82,45:$V4,46:59,47:$Vj,48:56,49:$Vk,50:57,51:$Vl,52:$Vm,55:60,56:61,57:$Vn},o($V3,[2,56]),o($V9,[2,60])],
-defaultActions: {11:[2,1],26:[2,15],27:[2,16],28:[2,17],29:[2,18]},
+table: [{3:1,4:[1,2]},{1:[3]},{5:3,7:4,9:5,10:6,11:7,12:8,13:$V0,16:$V1,20:$V2,22:$V3},{6:[1,13],8:[1,14]},o($V4,[2,2]),o($V4,[2,4]),o($V4,[2,5]),o($V4,[2,6]),o($V4,[2,7]),{14:[1,15]},{14:[1,16]},{14:[1,17]},{14:[1,18]},{1:[2,1]},{7:19,9:5,10:6,11:7,12:8,13:$V0,16:$V1,20:$V2,22:$V3},{15:20,46:$V5},{17:[1,22]},{4:[1,23]},{4:$V6,15:27,17:$V7,21:24,46:$V5,47:28,48:$V8,49:25,50:$V9,51:26,52:$Va,53:$Vb,56:29,57:30,58:$Vc},o($V4,[2,3]),o($V4,[2,8]),o([6,8,14,19],[2,39]),{15:39,18:38,46:$V5},{23:40,24:41,25:42,27:$Vd,28:$Ve,29:$Vf,30:$Vg},o($V4,[2,12]),o($Vh,[2,45]),o($Vh,[2,46]),o($Vh,[2,47]),o($Vh,[2,48]),o($Vh,[2,49]),o($Vh,[2,50]),o($Vh,[2,51]),o($Vh,[2,41]),o($Vh,[2,42]),o($Vh,[2,43]),o($Vh,[2,40]),{6:[1,47],13:$Vi,15:50,20:$Vj,37:49,46:$V5,59:48},{4:$V6,15:27,17:$V7,19:[1,53],21:55,46:$V5,47:28,48:$V8,49:25,50:$V9,51:26,52:$Va,53:$Vb,56:29,57:30,58:$Vc,60:54},{8:[1,57],19:[1,56]},o($Vk,[2,10]),{6:[1,58],8:[1,59]},o($V4,[2,14]),{14:[1,60]},{14:[2,17]},{14:[2,18]},{14:[2,19]},{14:[2,20]},o($Vh,[2,52]),{6:[1,61],8:[1,62]},o($V4,[2,57]),{14:[1,63]},{14:[1,64]},{14:[1,65]},o($Vh,[2,59]),{8:[1,67],19:[1,66]},o($Vk,[2,61]),o($V4,[2,9]),{15:68,46:$V5},o($V4,[2,13]),{24:69,25:42,27:$Vd,28:$Ve,29:$Vf,30:$Vg},{4:[1,70]},o($Vh,[2,53]),{13:$Vi,15:50,20:$Vj,37:71,46:$V5},{4:$V6,15:27,17:$V7,21:72,46:$V5,47:28,48:$V8,49:25,50:$V9,51:26,52:$Va,53:$Vb,56:29,57:30,58:$Vc},{4:$V6,15:27,17:$V7,21:73,46:$V5,47:28,48:$V8,49:25,50:$V9,51:26,52:$Va,53:$Vb,56:29,57:30,58:$Vc},{4:$V6,15:27,17:$V7,21:74,46:$V5,47:28,48:$V8,49:25,50:$V9,51:26,52:$Va,53:$Vb,56:29,57:30,58:$Vc},o($Vh,[2,60]),{4:$V6,15:27,17:$V7,21:75,46:$V5,47:28,48:$V8,49:25,50:$V9,51:26,52:$Va,53:$Vb,56:29,57:30,58:$Vc},o($Vk,[2,11]),o($V4,[2,15]),{13:$Vi,15:50,20:$Vj,26:76,31:77,32:$Vl,33:$Vm,34:$Vn,35:$Vo,36:$Vp,37:83,46:$V5},o($V4,[2,58]),o($V4,[2,54]),o($V4,[2,55]),o($V4,[2,56]),o($Vk,[2,62]),{6:[1,84],8:[1,85]},o($V4,[2,21]),o($V4,[2,23]),o($V4,[2,24]),o($V4,[2,25]),o($V4,[2,26]),o($V4,[2,27]),o($V4,[2,28]),o($V4,[2,16]),{13:$Vi,15:50,20:$Vj,31:86,32:$Vl,33:$Vm,34:$Vn,35:$Vo,36:$Vp,37:83,46:$V5},o($V4,[2,22])],
+defaultActions: {13:[2,1],43:[2,17],44:[2,18],45:[2,19],46:[2,20]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -657,7 +657,7 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace */
 break;
-case 1:return 15
+case 1:return 16
 break;
 case 2:return 'VIEWMODELS'
 break;
@@ -669,53 +669,53 @@ case 5:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'EVENT'
 break;
 case 6:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'BIND'
 break;
-case 7:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 43
+case 7:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 20
 break;
-case 8:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 12
+case 8:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 13
 break;
 case 9:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'INIT'
 break;
-case 10:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 57
+case 10:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 58
 break;
 case 11:return 'FUNCTION'
 break;
-case 12:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 36
+case 12:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 39
 break;
-case 13:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 44
+case 13:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 45
 break;
-case 14:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 19
+case 14:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 22
 break;
-case 15:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 24
+case 15:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 27
 break;
-case 16:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 25
+case 16:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 28
 break;
-case 17:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 26
+case 17:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 29
 break;
-case 18:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 27
+case 18:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 30
 break;
-case 19:return 47
+case 19:return 48
 break;
-case 20:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 45
+case 20:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 46
 break;
 case 21:return 4
 break;
 case 22:return 6
 break;
-case 23:return 16
+case 23:return 17
 break;
-case 24:return 18
+case 24:return 19
 break;
 case 25:return 8
 break;
-case 26:return 13
+case 26:return 14
 break;
-case 27:return 51
+case 27:return 52
 break;
-case 28:return 52
+case 28:return 53
 break;
-case 29:return 49
+case 29:return 50
 break;
-case 30:return 54
+case 30:return 55
 break;
 case 31:return 'INVALID'
 break;

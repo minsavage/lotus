@@ -14,14 +14,16 @@ module.exports = {
     methods: {
         queryForums: {
             action: 'ForumsOperator.query',
-            response: {
-                onSuccess: function(ret) {
-                    forums = ret;
-                },
-                onFailure: function(err) {
-
+            responsePipe: [
+                {
+                    op : 'subscribe',
+                    onSuccess: function(ret) {
+                        forums = ret;
+                    },
+                    onFailure: function(err) {
+                    }
                 }
-            }
+            ]
         }
     }
 }

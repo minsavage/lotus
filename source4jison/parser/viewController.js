@@ -72,12 +72,12 @@
   }
 */
 var viewController = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,11],$V1=[1,12],$V2=[1,13],$V3=[1,16],$V4=[1,14],$V5=[1,15],$V6=[6,8],$V7=[1,27],$V8=[1,33],$V9=[1,38],$Va=[1,49],$Vb=[1,50],$Vc=[8,21],$Vd=[1,57],$Ve=[6,8,21],$Vf=[1,83],$Vg=[1,84],$Vh=[1,78],$Vi=[1,82],$Vj=[1,79],$Vk=[1,80],$Vl=[1,81];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,12],$V1=[1,13],$V2=[1,14],$V3=[1,17],$V4=[1,15],$V5=[1,16],$V6=[1,18],$V7=[6,8],$V8=[1,30],$V9=[1,36],$Va=[1,38],$Vb=[1,43],$Vc=[1,54],$Vd=[1,55],$Ve=[1,56],$Vf=[8,22],$Vg=[1,66],$Vh=[6,8,22],$Vi=[1,95],$Vj=[1,90],$Vk=[1,94],$Vl=[1,91],$Vm=[1,92],$Vn=[1,93];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"ConfigEntry":3,"{":4,"ConfigList":5,"}":6,"Config":7,",":8,"ClassName":9,"Import":10,"ViewModels":11,"Events":12,"Bind":13,"Content":14,"NAME":15,":":16,"JSONString":17,"IMPORT":18,"[":19,"ImportList":20,"]":21,"VIEWMODELS":22,"ViewModelList":23,"ViewModel":24,"TYPE":25,"INIT":26,"JSONObject":27,"CONTENT":28,"Widget":29,"WidgetProperties":30,"WidgetProperty":31,"JSONMember":32,"Units":33,"BindingProperty":34,"BINDINGPROP":35,"UNITS":36,"WidgetList":37,"EVENT":38,"EventList":39,"Event":40,"BIND":41,"STRING":42,"JSONNumber":43,"NUMBER":44,"JSONNullLiteral":45,"NULL":46,"JSONBooleanLiteral":47,"TRUE":48,"FALSE":49,"JSONText":50,"JSONValue":51,"EOF":52,"JSONArray":53,"JSONMemberList":54,"JSONElementList":55,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"{",6:"}",8:",",15:"NAME",16:":",18:"IMPORT",19:"[",21:"]",22:"VIEWMODELS",25:"TYPE",26:"INIT",28:"CONTENT",35:"BINDINGPROP",36:"UNITS",38:"EVENT",41:"BIND",42:"STRING",44:"NUMBER",46:"NULL",48:"TRUE",49:"FALSE",52:"EOF"},
-productions_: [0,[3,3],[5,1],[5,3],[7,1],[7,1],[7,1],[7,1],[7,1],[7,1],[9,3],[10,5],[20,1],[20,3],[11,5],[23,1],[23,3],[24,9],[24,13],[14,3],[29,3],[30,1],[30,3],[31,1],[31,1],[31,1],[34,3],[33,5],[37,1],[37,3],[12,5],[39,1],[39,3],[40,3],[13,5],[17,1],[43,1],[45,1],[47,1],[47,1],[50,2],[51,1],[51,1],[51,1],[51,1],[51,1],[51,1],[51,1],[27,2],[27,3],[32,3],[32,3],[54,1],[54,3],[53,2],[53,3],[55,1],[55,3]],
+symbols_: {"error":2,"ConfigEntry":3,"{":4,"ConfigList":5,"}":6,"Config":7,",":8,"ClassName":9,"Import":10,"ViewModels":11,"Events":12,"Bind":13,"Content":14,"VCConfig":15,"NAME":16,":":17,"JSONString":18,"IMPORT":19,"[":20,"ImportList":21,"]":22,"VIEWMODELS":23,"ViewModelList":24,"ViewModel":25,"TYPE":26,"INIT":27,"JSONObject":28,"CONTENT":29,"Widget":30,"WidgetProperties":31,"WidgetProperty":32,"JSONMember":33,"Units":34,"BindingProperty":35,"BINDINGPROP":36,"UNITS":37,"WidgetList":38,"EVENT":39,"EventList":40,"Event":41,"BIND":42,"VCCONFIG":43,"STRING":44,"JSONNumber":45,"NUMBER":46,"JSONNullLiteral":47,"NULL":48,"JSONBooleanLiteral":49,"TRUE":50,"FALSE":51,"JSONText":52,"JSONValue":53,"EOF":54,"JSONArray":55,"JSONMemberList":56,"JSONElementList":57,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"{",6:"}",8:",",16:"NAME",17:":",19:"IMPORT",20:"[",22:"]",23:"VIEWMODELS",26:"TYPE",27:"INIT",29:"CONTENT",36:"BINDINGPROP",37:"UNITS",39:"EVENT",42:"BIND",43:"VCCONFIG",44:"STRING",46:"NUMBER",48:"NULL",50:"TRUE",51:"FALSE",54:"EOF"},
+productions_: [0,[3,3],[5,1],[5,3],[7,1],[7,1],[7,1],[7,1],[7,1],[7,1],[7,1],[9,3],[10,5],[21,1],[21,3],[11,5],[24,1],[24,3],[25,9],[25,13],[14,3],[30,3],[31,1],[31,3],[32,1],[32,1],[32,1],[35,3],[34,5],[38,1],[38,3],[12,5],[40,1],[40,3],[41,3],[13,5],[15,3],[18,1],[45,1],[47,1],[49,1],[49,1],[52,2],[53,1],[53,1],[53,1],[53,1],[53,1],[53,1],[53,1],[28,2],[28,3],[33,3],[33,3],[33,3],[56,1],[56,3],[55,2],[55,3],[57,1],[57,3]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -90,61 +90,61 @@ case 1:
             return vcClass;
         
 break;
-case 10:
+case 11:
  vcClass.name = $$[$0]; 
 break;
-case 11:
+case 12:
  vcClass.import = $$[$0-1];
 break;
-case 12: case 15: case 56:
+case 13: case 16: case 59:
 this.$ = [$$[$0]];
 break;
-case 13:
+case 14:
 this.$=$$[$0-2];this.$.push($$[$0])
 break;
-case 14:
+case 15:
 
             parserUtil.createViewModelsFiled(vcClass, $$[$0-1])
             onCreate += parserUtil.createViewModelsInit($$[$0-1]);
         
 break;
-case 16:
+case 17:
 this.$=$$[$0-2];this.$.push($$[$0]);
 break;
-case 17:
+case 18:
 this.$ = {};this.$['type'] = $$[$0-5]; this.$['name'] = $$[$0-1]; this.$['defaultValue'] = null;
 break;
-case 18:
+case 19:
 this.$ = {};this.$['type'] = $$[$0-9]; this.$['name'] = $$[$0-5]; this.$['defaultValue'] = null;
 break;
-case 20:
+case 21:
 
             this.$=$$[$0-1];
             parserUtil.createEvents(vcClass, this.$);
         
 break;
-case 21: case 31: case 52:
+case 22: case 32: case 55:
 this.$ = {}; this.$[$$[$0][0]] = $$[$0][1];
 break;
-case 22: case 32: case 53:
+case 23: case 33: case 56:
 this.$ = $$[$0-2]; $$[$0-2][$$[$0][0]] = $$[$0][1];
 break;
-case 26: case 33: case 50: case 51:
+case 27: case 34: case 52: case 53: case 54:
 this.$ = [$$[$0-2], $$[$0]];
 break;
-case 27:
+case 28:
 this.$ = [$$[$0-4], $$[$0-1]];
 break;
-case 28:
+case 29:
 this.$=[$$[$0]]
 break;
-case 29:
+case 30:
 this.$ = $$[$0-2]; this.$.push($$[$0])
 break;
-case 30:
+case 31:
 this.$ = [$$[$0-4], $$[$0-1]]
 break;
-case 35:
+case 37:
  // replace escaped characters with actual character
           this.$ = yytext.replace(/\\(\\|")/g, "$"+"1")
                      .replace(/\\n/g,'\n')
@@ -155,37 +155,37 @@ case 35:
                      .replace(/\\b/g,'\b');
         
 break;
-case 36:
+case 38:
 this.$ = Number(yytext);
 break;
-case 37:
+case 39:
 this.$ = null;
 break;
-case 38:
+case 40:
 this.$ = true;
 break;
-case 39:
+case 41:
 this.$ = false;
 break;
-case 40:
+case 42:
 return this.$ = $$[$0-1];
 break;
-case 48:
+case 50:
 this.$ = {};
 break;
-case 49: case 55:
+case 51: case 58:
 this.$ = $$[$0-1];
 break;
-case 54:
+case 57:
 this.$ = [];
 break;
-case 57:
+case 60:
 this.$ = $$[$0-2]; $$[$0-2].push($$[$0]);
 break;
 }
 },
-table: [{3:1,4:[1,2]},{1:[3]},{5:3,7:4,9:5,10:6,11:7,12:8,13:9,14:10,15:$V0,18:$V1,22:$V2,28:$V3,38:$V4,41:$V5},{6:[1,17],8:[1,18]},o($V6,[2,2]),o($V6,[2,4]),o($V6,[2,5]),o($V6,[2,6]),o($V6,[2,7]),o($V6,[2,8]),o($V6,[2,9]),{16:[1,19]},{16:[1,20]},{16:[1,21]},{16:[1,22]},{16:[1,23]},{16:[1,24]},{1:[2,1]},{7:25,9:5,10:6,11:7,12:8,13:9,14:10,15:$V0,18:$V1,22:$V2,28:$V3,38:$V4,41:$V5},{17:26,42:$V7},{19:[1,28]},{19:[1,29]},{4:[1,30]},{4:[1,31]},{4:$V8,29:32},o($V6,[2,3]),o($V6,[2,10]),o([6,8,16,21],[2,35]),{17:35,20:34,42:$V7},{4:$V9,23:36,24:37},{17:41,39:39,40:40,42:$V7},{17:41,39:42,40:40,42:$V7},o($V6,[2,19]),{12:47,17:48,25:$Va,30:43,31:44,32:45,33:46,36:$Vb,38:$V4,42:$V7},{8:[1,52],21:[1,51]},o($Vc,[2,12]),{8:[1,54],21:[1,53]},o($Vc,[2,15]),{25:[1,55]},{6:[1,56],8:$Vd},o($V6,[2,31]),{16:[1,58]},{6:[1,59],8:$Vd},{6:[1,60],8:[1,61]},o($V6,[2,21]),o($V6,[2,23]),o($V6,[2,24]),o($V6,[2,25]),{16:[1,62]},{16:[1,63]},{16:[1,64]},o($V6,[2,11]),{17:65,42:$V7},o($V6,[2,14]),{4:$V9,24:66},{16:[1,67]},o($V6,[2,30]),{17:41,40:68,42:$V7},{17:69,42:$V7},o($V6,[2,34]),o($Ve,[2,20]),{12:47,17:48,25:$Va,31:70,32:45,33:46,36:$Vb,38:$V4,42:$V7},{4:$Vf,17:74,19:$Vg,27:76,35:$Vh,42:$V7,43:75,44:$Vi,45:72,46:$Vj,47:73,48:$Vk,49:$Vl,51:71,53:77},{4:$Vf,17:74,19:$Vg,27:76,35:$Vh,42:$V7,43:75,44:$Vi,45:72,46:$Vj,47:73,48:$Vk,49:$Vl,51:85,53:77},{19:[1,86]},o($Vc,[2,13]),o($Vc,[2,16]),{17:87,42:$V7},o($V6,[2,32]),o($V6,[2,33]),o($V6,[2,22]),o($V6,[2,50]),o($Ve,[2,41]),o($Ve,[2,42]),o($Ve,[2,43]),o($Ve,[2,44]),o($Ve,[2,45]),o($Ve,[2,46]),o($Ve,[2,47]),o($Ve,[2,37]),o($Ve,[2,38]),o($Ve,[2,39]),o($Ve,[2,36]),{6:[1,88],17:48,25:$Va,32:90,42:$V7,54:89},{4:$Vf,17:74,19:$Vg,21:[1,91],27:76,35:$Vh,42:$V7,43:75,44:$Vi,45:72,46:$Vj,47:73,48:$Vk,49:$Vl,51:93,53:77,55:92},o($V6,[2,51]),{4:$V8,29:95,37:94},{8:[1,96]},o($Ve,[2,48]),{6:[1,97],8:[1,98]},o($V6,[2,52]),o($Ve,[2,54]),{8:[1,100],21:[1,99]},o($Vc,[2,56]),{8:[1,102],21:[1,101]},o($Vc,[2,28]),{15:[1,103]},o($Ve,[2,49]),{17:48,25:$Va,32:104,42:$V7},o($Ve,[2,55]),{4:$Vf,17:74,19:$Vg,27:76,35:$Vh,42:$V7,43:75,44:$Vi,45:72,46:$Vj,47:73,48:$Vk,49:$Vl,51:105,53:77},o($V6,[2,27]),{4:$V8,29:106},{16:[1,107]},o($V6,[2,53]),o($Vc,[2,57]),o($Vc,[2,29]),{17:108,42:$V7},{6:[1,109],8:[1,110]},o($Vc,[2,17]),{26:[1,111]},{16:[1,112]},{4:$Vf,27:113},{6:[1,114]},o($Vc,[2,18])],
-defaultActions: {17:[2,1]},
+table: [{3:1,4:[1,2]},{1:[3]},{5:3,7:4,9:5,10:6,11:7,12:8,13:9,14:10,15:11,16:$V0,19:$V1,23:$V2,29:$V3,39:$V4,42:$V5,43:$V6},{6:[1,19],8:[1,20]},o($V7,[2,2]),o($V7,[2,4]),o($V7,[2,5]),o($V7,[2,6]),o($V7,[2,7]),o($V7,[2,8]),o($V7,[2,9]),o($V7,[2,10]),{17:[1,21]},{17:[1,22]},{17:[1,23]},{17:[1,24]},{17:[1,25]},{17:[1,26]},{17:[1,27]},{1:[2,1]},{7:28,9:5,10:6,11:7,12:8,13:9,14:10,15:11,16:$V0,19:$V1,23:$V2,29:$V3,39:$V4,42:$V5,43:$V6},{18:29,44:$V8},{20:[1,31]},{20:[1,32]},{4:[1,33]},{4:[1,34]},{4:$V9,30:35},{4:$Va,28:37},o($V7,[2,3]),o($V7,[2,11]),o([6,8,17,22],[2,37]),{18:40,21:39,44:$V8},{4:$Vb,24:41,25:42},{18:46,40:44,41:45,44:$V8},{18:46,40:47,41:45,44:$V8},o($V7,[2,20]),{12:52,18:53,26:$Vc,29:$Vd,31:48,32:49,33:50,34:51,37:$Ve,39:$V4,44:$V8},o($V7,[2,36]),{6:[1,57],18:53,26:$Vc,29:$Vd,33:59,44:$V8,56:58},{8:[1,61],22:[1,60]},o($Vf,[2,13]),{8:[1,63],22:[1,62]},o($Vf,[2,16]),{26:[1,64]},{6:[1,65],8:$Vg},o($V7,[2,32]),{17:[1,67]},{6:[1,68],8:$Vg},{6:[1,69],8:[1,70]},o($V7,[2,22]),o($V7,[2,24]),o($V7,[2,25]),o($V7,[2,26]),{17:[1,71]},{17:[1,72]},{17:[1,73]},{17:[1,74]},o($Vh,[2,50]),{6:[1,75],8:[1,76]},o($V7,[2,55]),o($V7,[2,12]),{18:77,44:$V8},o($V7,[2,15]),{4:$Vb,25:78},{17:[1,79]},o($V7,[2,31]),{18:46,41:80,44:$V8},{18:81,44:$V8},o($V7,[2,35]),o($Vh,[2,21]),{12:52,18:53,26:$Vc,29:$Vd,32:82,33:50,34:51,37:$Ve,39:$V4,44:$V8},{4:$Va,18:86,20:$Vi,28:88,36:$Vj,44:$V8,45:87,46:$Vk,47:84,48:$Vl,49:85,50:$Vm,51:$Vn,53:83,55:89},{4:$Va,18:86,20:$Vi,28:88,36:$Vj,44:$V8,45:87,46:$Vk,47:84,48:$Vl,49:85,50:$Vm,51:$Vn,53:96,55:89},{4:$Va,18:86,20:$Vi,28:88,36:$Vj,44:$V8,45:87,46:$Vk,47:84,48:$Vl,49:85,50:$Vm,51:$Vn,53:97,55:89},{20:[1,98]},o($Vh,[2,51]),{18:53,26:$Vc,29:$Vd,33:99,44:$V8},o($Vf,[2,14]),o($Vf,[2,17]),{18:100,44:$V8},o($V7,[2,33]),o($V7,[2,34]),o($V7,[2,23]),o($V7,[2,52]),o($Vh,[2,43]),o($Vh,[2,44]),o($Vh,[2,45]),o($Vh,[2,46]),o($Vh,[2,47]),o($Vh,[2,48]),o($Vh,[2,49]),o($Vh,[2,39]),o($Vh,[2,40]),o($Vh,[2,41]),o($Vh,[2,38]),{4:$Va,18:86,20:$Vi,22:[1,101],28:88,36:$Vj,44:$V8,45:87,46:$Vk,47:84,48:$Vl,49:85,50:$Vm,51:$Vn,53:103,55:89,57:102},o($V7,[2,53]),o($V7,[2,54]),{4:$V9,30:105,38:104},o($V7,[2,56]),{8:[1,106]},o($Vh,[2,57]),{8:[1,108],22:[1,107]},o($Vf,[2,59]),{8:[1,110],22:[1,109]},o($Vf,[2,29]),{16:[1,111]},o($Vh,[2,58]),{4:$Va,18:86,20:$Vi,28:88,36:$Vj,44:$V8,45:87,46:$Vk,47:84,48:$Vl,49:85,50:$Vm,51:$Vn,53:112,55:89},o($V7,[2,28]),{4:$V9,30:113},{17:[1,114]},o($Vf,[2,60]),o($Vf,[2,30]),{18:115,44:$V8},{6:[1,116],8:[1,117]},o($Vf,[2,18]),{27:[1,118]},{17:[1,119]},{4:$Va,28:120},{6:[1,121]},o($Vf,[2,19])],
+defaultActions: {19:[2,1]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -672,58 +672,60 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace */
 break;
-case 1:return 18
+case 1:return 19
 break;
-case 2:return 22
+case 2:return 23
 break;
-case 3:return 28
+case 3:return 29
 break;
-case 4:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 36
+case 4:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 37
 break;
-case 5:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 38
+case 5:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 39
 break;
-case 6:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 41
+case 6:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 42
 break;
-case 7:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 25
+case 7:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 26
 break;
-case 8:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 15
+case 8:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 16
 break;
-case 9:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 26
+case 9:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 27
 break;
-case 10:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 35
+case 10:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 43
 break;
-case 11:return 'FUNCTION'
+case 11:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 36
 break;
-case 12:return 44
+case 12:return 'FUNCTION'
 break;
-case 13:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 42
+case 13:return 46
 break;
-case 14:return 4
+case 14:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 44
 break;
-case 15:return 6
+case 15:return 4
 break;
-case 16:return 19
+case 16:return 6
 break;
-case 17:return 21
+case 17:return 20
 break;
-case 18:return 8
+case 18:return 22
 break;
-case 19:return 16
+case 19:return 8
 break;
-case 20:return 48
+case 20:return 17
 break;
-case 21:return 49
+case 21:return 50
 break;
-case 22:return 46
+case 22:return 51
 break;
-case 23:return 52
+case 23:return 48
 break;
-case 24:return 'INVALID'
+case 24:return 54
+break;
+case 25:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:"import")/,/^(?:"viewModels")/,/^(?:"content")/,/^(?:"units")/,/^(?:"event")/,/^(?:"bind")/,/^(?:"type")/,/^(?:"name")/,/^(?:"init")/,/^(?:"@\{.*\}")/,/^(?:function\s*\(\)\s*\{\s*.*?\s*\})/,/^(?:(-?([0-9]|[1-9][0-9]+))(\.[0-9]+)?([eE][-+]?[0-9]+)?\b)/,/^(?:"(?:\\[\\"bfnrt\/]|\\u[a-fA-F0-9]{4}|[^\\\0-\x09\x0a-\x1f"])*")/,/^(?:\{)/,/^(?:\})/,/^(?:\[)/,/^(?:\])/,/^(?:,)/,/^(?::)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:null\b)/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:"import")/,/^(?:"viewModels")/,/^(?:"content")/,/^(?:"units")/,/^(?:"event")/,/^(?:"bind")/,/^(?:"type")/,/^(?:"name")/,/^(?:"init")/,/^(?:"config")/,/^(?:"@\{.*\}")/,/^(?:function\s*\(\)\s*\{\s*.*?\s*\})/,/^(?:(-?([0-9]|[1-9][0-9]+))(\.[0-9]+)?([eE][-+]?[0-9]+)?\b)/,/^(?:"(?:\\[\\"bfnrt\/]|\\u[a-fA-F0-9]{4}|[^\\\0-\x09\x0a-\x1f"])*")/,/^(?:\{)/,/^(?:\})/,/^(?:\[)/,/^(?:\])/,/^(?:,)/,/^(?::)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:null\b)/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25],"inclusive":true}}
 });
 return lexer;
 })();

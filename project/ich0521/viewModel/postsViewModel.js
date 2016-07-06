@@ -23,14 +23,23 @@ module.exports = {
                 count: '@{count}',
                 forum_id: '@{forumId}'
             },
-            response: {
+            responsePipe: {
                 onSuccess: function(ret) {
                     posts = ret;
                 },
 
                 onFailure: function(err) {
                 }
-            }
+            },
+
+            responsePipe: [
+                {
+                    op : 'map',
+                    action: function() {
+                        closePage();
+                    }
+                }
+            ]
         }
     }
 }

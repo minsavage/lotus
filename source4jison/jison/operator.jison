@@ -78,6 +78,7 @@ Config
     : ClassName
     | Import
     | Actions
+    | Type
     ;
 
 ClassName
@@ -99,6 +100,10 @@ ImportList
         {$$ = [$1];}
     | ImportList ',' JSONString
         {$$=$1;$$.push($3)}
+    ;
+
+Type
+    : TYPE ':' JSONValue
     ;
 
 Actions

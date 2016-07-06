@@ -8,7 +8,6 @@ module.exports = {
         '$.model.Forum',
         'system.type.Array'
     ],
-    operatedModel: 'QueryForums',
     type: 'remote',
     action: {
         query: {
@@ -22,15 +21,15 @@ module.exports = {
                 actions: [
                     {
                         op: 'map',
-                        action: function(queryForums) {
-                            //if(queryPosts == null ||
-                            //    queryPosts.content == null ||
-                            //    queryPosts.content.posts == null) {
-                            //    error();
-                            //}
-
-                            return queryForums.content.recom;
-                        }
+                        //action: function(queryForums) {
+                        //    //if(queryPosts == null ||
+                        //    //    queryPosts.content == null ||
+                        //    //    queryPosts.content.posts == null) {
+                        //    //    error();
+                        //    //}
+                        //
+                        //    return queryForums.content.recom;
+                        //}
                     }
                 ]
             }

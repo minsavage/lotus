@@ -172,6 +172,8 @@ JSONValue
     | JSONObject
     | JSONArray
     | BINDINGPROP
+    | TYPE
+    | CONTENT
     ;
 
 JSONObject

@@ -17,6 +17,7 @@ frac  "."[0-9]+
 \"type\"        yytext = yytext.substr(1,yyleng-2); return 'TYPE'
 \"name\"        yytext = yytext.substr(1,yyleng-2); return 'NAME'
 \"init\"        yytext = yytext.substr(1,yyleng-2); return 'INIT'
+\"config\"        yytext = yytext.substr(1,yyleng-2); return 'VCCONFIG'
 \"\@\{.*\}\"    yytext = yytext.substr(1,yyleng-2); return 'BINDINGPROP'
 /*function.*\(\).*\{.*?\} return 'FUNCTION'*/
 function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
@@ -75,6 +76,7 @@ Config
     | Events
     | Bind
     | Content
+    | VCConfig
     ;
 
 ClassName
@@ -179,6 +181,10 @@ Bind
     : BIND ':' '{' EventList '}'
     ;
 
+VCConfig
+    : VCCONFIG ':' JSONObject
+    ;
+
 JSONString
     : STRING
         { // replace escaped characters with actual character
@@ -235,6 +241,8 @@ JSONMember
     : JSONString ':' JSONValue
         {$$ = [$1, $3];}
     | TYPE ':' JSONValue
+        {$$ = [$1, $3];}
+    | CONTENT ':' JSONValue
         {$$ = [$1, $3];}
     ;
 

@@ -25,9 +25,9 @@ module.exports = {
                 actions: [
                     {
                         op: 'map',
-                        action: function(queryComments) {
-                            return queryComments.content.replies;
-                        }
+                        //action: function(queryComments) {
+                        //    return queryComments.content.replies;
+                        //}
                     }
                 ]
             }

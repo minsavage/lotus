@@ -23,14 +23,18 @@ module.exports = {
                 count: '@{count}',
                 post_id: '@{pid}'
             },
-            response: {
-                onSuccess: function(ret) {
-                    comments = ret;
-                },
+            responsePipe: [
+                {
+                    op : 'subscribe',
 
-                onFailure: function(err) {
+                    onSuccess: function(ret) {
+                        comments = ret;
+                    },
+
+                    onFailure: function(err) {
+                    }
                 }
-            }
+            ]
         }
     }
 }

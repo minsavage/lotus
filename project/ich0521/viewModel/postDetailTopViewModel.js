@@ -16,14 +16,18 @@ module.exports = {
             parameters: {
                 pid: '@{pid}'
             },
-            response: {
-                onSuccess: function(ret) {
-                    post = ret;
-                },
+            responsePipe: [
+                {
+                    op : 'subscribe',
 
-                onFailure: function(err) {
+                    onSuccess: function(ret) {
+                        post = ret;
+                    },
+
+                    onFailure: function(err) {
+                    }
                 }
-            }
+            ]
         }
     }
 }

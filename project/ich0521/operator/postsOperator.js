@@ -8,8 +8,7 @@ module.exports = {
         '$.model.Post',
         'system.type.Array'
     ],
-    operatedModel: 'QueryPosts',
-    type: 'remote',
+    //type: 'remote',
     action: {
         query: {
             url: 'v1/forums',
@@ -26,15 +25,15 @@ module.exports = {
                 actions: [
                     {
                         op: 'map',
-                        action: function(queryPosts) {
-                            //if(queryPosts == null ||
-                            //    queryPosts.content == null ||
-                            //    queryPosts.content.posts == null) {
-                            //    error();
-                            //}
-
-                            return queryPosts.content.posts;
-                        }
+                        //action: function(queryPosts) {
+                        //    //if(queryPosts == null ||
+                        //    //    queryPosts.content == null ||
+                        //    //    queryPosts.content.posts == null) {
+                        //    //    error();
+                        //    //}
+                        //
+                        //    return queryPosts.content.posts;
+                        //}
                     }
                 ]
             }

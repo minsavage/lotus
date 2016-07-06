@@ -7,7 +7,7 @@ frac  "."[0-9]+
 %%
 \s+      /* skip whitespace */
 
-\"function\s*\(\)\s*\{\s*.*?\s*\}\"    return 'FUNCTION'
+\"function\s*\(\w*\)\s*\{\s*.*?\s*\}\"    return 'FUNCTION'
 \"import\"      return 'IMPORT'
 \"viewModels\"  return 'VIEWMODELS'
 \"content\"     return 'CONTENT'
@@ -25,6 +25,9 @@ frac  "."[0-9]+
 \"parameters\"      yytext = yytext.substr(1,yyleng-2); return 'PARAMETERS'
 \"responsePipe\"    yytext = yytext.substr(1,yyleng-2); return 'RESPONSE'
 \"op\"              yytext = yytext.substr(1,yyleng-2); return 'OP'
+\"onSuccess\"              yytext = yytext.substr(1,yyleng-2); return 'ONSUCCESS'
+\"onFailure\"              yytext = yytext.substr(1,yyleng-2); return 'ONFAILURE'
+
 
 
 
@@ -201,6 +204,8 @@ ResponseItemList
 ResponseItem
     : '{' OP ':'  JSONString ',' ACTION ':' FUNCTION '}'
         {$$={op: $4, action: $8}}
+    | '{' OP ':'  JSONString ',' ONSUCCESS ':' FUNCTION ',' ONFAILURE ':' FUNCTION '}'
+        {$$={op: $4, onSuccess: $8, onFailure: $12}}
     ;
 
 

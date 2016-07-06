@@ -21,9 +21,9 @@ module.exports = {
                 actions: [
                     {
                         op: 'map',
-                        action: function(queryPost) {
-                            return queryPost.content;
-                        }
+                        //action: function(queryPost) {
+                        //    return queryPost.content;
+                        //}
                     }
                 ]
             }
