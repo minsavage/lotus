@@ -9,12 +9,19 @@ var stringify = require('./util/stringify');
 var keys = ['model', 'operator', 'viewModel', 'viewController'];
 
 var loadParser = function () {
-    return [
-        require("./parser/model").parser,
-        require("./parser/operator").parser,
-        require("./parser/viewModel").parser,
-        require("./parser/viewController").parser
-    ]
+    return [{
+        parser: require("./parser/model").parser,
+        util: require("./parserUtil/modelUtil")
+    }, {
+        parser: require("./parser/operator").parser,
+        util: require("./parserUtil/operatorUtil")
+    }, {
+        parser: require("./parser/viewModel").parser,
+        util: require("./parserUtil/vmUtil")
+    }, {
+        parser: require("./parser/viewController").parser,
+        util: require("./parserUtil/vcUtil")
+    }]
 }
 
 var pathResolve = R.curry(function (modelPath, fileName) {
@@ -43,102 +50,36 @@ var loadModels = R.compose(
 
 var initParsers = R.compose(
     R.zipObj(keys),
-    R.map(x=>R.bind(x.parse, x)),
     loadParser
 );
 
-var trace = R.tap((x)=>{console.log(x)})
+var startParse = R.curry(function (parser, util, model) {
+    parser.yy.class = util.createClass();
+    parser.yy.onCreate = '';
+    parser.yy.onCreateView = '';
+    parser.yy.onDestroy = '';
+    return parser.parse(model);
+});
 
 var start = function (baseDir) {
     var modelsContainer = loadModels(baseDir);
     var parsers = initParsers();
 
-    //var parseModelByKey = R.converge(R.map, [R.prop(R.__, parsers), R.prop(R.__, modelsContainer)]);
-    
-    //var parseModelByKey = function (key) {
-    //    var models = modelsContainer[key];
-    //    var parse = parsers[key];
-    //    //var ret = R.map(parse, models);
-    //    var ret = [];
-    //    for(var i =0; i < models.length; i++) {
-    //
-    //        ret[i] = parse(models[i]);
-    //    }
-    //    return ret;
-    //}
-
-    //var x = R.map(parseModelByKey, keys);
-
-    for(var k in keys) {
-        var key = keys[k];
-
+    var parseModelsByKey = function (key) {
         var models = modelsContainer[key];
-        var parse = parsers[key];
-        var sss = [];
-        for(var j in models) {
-            var m = models[j];
-            var x = parse(m);
-            sss.push(x);
-        }
+        var parser = parsers[key].parser;
+        var util = parsers[key].util;
 
-        //var ret = R.map(parse, models);
+        var parseWithUtil = startParse(parser, util);
 
-        var x= 1;
-
-        //var ret = parseModelByKey(key);
-
+        return R.map(parseWithUtil, models)
     }
+
+    var x = R.map(parseModelsByKey, keys);
 
     console.log(x);
 }
 
 
-
 var projectDir = '../project/ich0521';
 start(projectDir);
-
-
-
-//var parsers = [
-//    require("./parser/model").parser.parse,
-//    require("./parser/operator").parser.parse,
-//    require("./parser/viewModel").parser.parse,
-//    require("./parser/viewController").parser.parse
-//]
-
-
-
-
-//var model = require('../project/ich0521/viewController/postsViewController');
-//var str = stringify(model);
-//
-//var comment = require('../project/ich0521/model/comment');
-//var modelStr = stringify(comment);
-//
-////var parser =
-////var ret = parser.parse(str);
-//
-////var modelParser =
-////var modelRet = modelParser.parse(modelStr);
-//
-//
-//var operatorModel = require('../project/ich0521/operator/postsOperator');
-//var operatorModelStr = stringify(operatorModel);
-//
-//var operatorParser =
-//var modelRet = operatorParser.parse(operatorModelStr);
-//
-//var viewModel = require('../project/ich0521/viewModel/postsViewModel');
-//var viewModelStr = stringify(viewModel);
-//
-//var viewModelParser =
-//var modelRet = viewModelParser.parse(viewModelStr);
-
-
-//var translator = require('./translator/class');
-//var ret = translator.translate(ret);
-//
-//var fs = require('fs');
-//fs.writeFileSync('test.java', modelRet);
-
-//console.log(ret);

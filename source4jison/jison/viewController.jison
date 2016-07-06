@@ -45,10 +45,6 @@ function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
 
 %{
     var parserUtil = require('../parserUtil/vcUtil');
-    var vcClass = parserUtil.createClass();
-    var onCreate = '';
-    var onCreateView = '';
-    var onDestroy = '';
 %}
 
 %start ConfigEntry
@@ -58,9 +54,9 @@ function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
 ConfigEntry
     : '{' ConfigList '}'
         {
-            parserUtil.createEssentialMethod(vcClass, onCreate, onCreateView, onDestroy);
-            parserUtil.final(vcClass);
-            return vcClass;
+            parserUtil.createEssentialMethod(yy.class, yy.onCreate, yy.onCreateView, yy.onDestroy);
+            parserUtil.final(yy.class);
+            return yy.class;
         }
     ;
 
@@ -81,12 +77,12 @@ Config
 
 ClassName
     : NAME ':' JSONString
-        { vcClass.name = $3; }
+        { yy.class.name = $3; }
     ;
 
 Import
     : IMPORT ':' '[' ImportList ']'
-        { vcClass.import = $4;}
+        { yy.class.import = $4;}
     ;
 
 ImportList
@@ -99,8 +95,8 @@ ImportList
 ViewModels
     : VIEWMODELS ':' '[' ViewModelList ']'
         {
-            parserUtil.createViewModelsFiled(vcClass, $4)
-            onCreate += parserUtil.createViewModelsInit($4);
+            parserUtil.createViewModelsFiled(yy.class, $4)
+            yy.onCreate += parserUtil.createViewModelsInit($4);
         }
     ;
 
@@ -126,7 +122,7 @@ Widget
     : '{' WidgetProperties '}'
         {
             $$=$2;
-            parserUtil.createEvents(vcClass, $$);
+            parserUtil.createEvents(yy.class, $$);
         }
     ;
 

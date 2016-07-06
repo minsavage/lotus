@@ -51,7 +51,6 @@ function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
 
 %{
     var parserUtil = require('../parserUtil/operatorUtil');
-    var aClass = parserUtil.createClass();
     var serviceMethods = [];
 %}
 
@@ -63,7 +62,7 @@ ConfigEntry
     : '{' ConfigList '}'
         {
             return {
-                class: aClass,
+                class: yy.class,
                 serviceMethods: serviceMethods
             }
         }
@@ -84,14 +83,14 @@ Config
 ClassName
     : NAME ':' JSONString
         {
-            aClass.name = $3;
+            yy.class.name = $3;
         }
     ;
 
 Import
     : IMPORT ':' '[' ImportList ']'
         {
-            aClass.import = $4;
+            yy.class.import = $4;
         }
     ;
 
@@ -120,7 +119,7 @@ ActionList
 Action
     : ActionKey ':' '{' ActionConfigList'}'
         {
-            parserUtil.createQueryMethod(aClass, $4);
+            parserUtil.createQueryMethod(yy.class, $4);
             var method = parserUtil.createQueryMethodService($4);
             serviceMethods.push(method);
         }
@@ -154,7 +153,7 @@ ActionConfig
 Properties
     : PROPS ':' '[' PropertyList ']'
         {
-            parserUtil.createFields(aClass, $4);
+            parserUtil.createFields(yy.class, $4);
         }
     ;
 

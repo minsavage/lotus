@@ -54,7 +54,6 @@ frac  "."[0-9]+
 
 %{
     var parserUtil = require('../parserUtil/vmUtil');
-    var aClass = parserUtil.createClass();
 %}
 
 %start ConfigEntry
@@ -63,7 +62,7 @@ frac  "."[0-9]+
 
 ConfigEntry
     : '{' ConfigList '}'
-        {return aClass;}
+        {return yy.class;}
     ;
 
 ConfigList
@@ -81,14 +80,14 @@ Config
 ClassName
     : NAME ':' JSONString
         {
-            aClass.name = $3;
+            yy.class.name = $3;
         }
     ;
 
 Import
     : IMPORT ':' '[' ImportList ']'
         {
-            aClass.import = $4;
+            yy.class.import = $4;
         }
     ;
 
@@ -102,7 +101,7 @@ ImportList
 Properties
     : PROPS ':' '[' PropertyList ']'
         {
-            parserUtil.createFields(aClass, $4);
+            parserUtil.createFields(yy.class, $4);
         }
     ;
 
@@ -150,7 +149,7 @@ MethodList
 Method
     : JSONString ':' '{' MethodConfigList '}'
         {
-            parserUtil.createOperatorMethod(aClass, $1, $4);
+            parserUtil.createOperatorMethod(yy.class, $1, $4);
         }
     ;
 

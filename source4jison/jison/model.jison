@@ -46,7 +46,6 @@ function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
 
 %{
     var parserUtil = require('../parserUtil/modelUtil');
-    var aClass = parserUtil.createClass();
 %}
 
 %start ConfigEntry
@@ -56,7 +55,7 @@ function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
 ConfigEntry
     : '{' ConfigList '}'
         {
-            return aClass;
+            return yy.class;
         }
     ;
 
@@ -74,14 +73,14 @@ Config
 ClassName
     : NAME ':' JSONString
         {
-            aClass.name = $3;
+            yy.class.name = $3;
         }
     ;
 
 Import
     : IMPORT ':' '[' ImportList ']'
         {
-            aClass.import = $4;
+            yy.class.import = $4;
         }
     ;
 
@@ -95,7 +94,7 @@ ImportList
 Properties
     : PROPS ':' '[' PropertyList ']'
         {
-            parserUtil.createFields(aClass, $4);
+            parserUtil.createFields(yy.class, $4);
         }
     ;
 
