@@ -76,6 +76,16 @@ var start = function (baseDir) {
     }
 
     var x = R.map(parseModelsByKey, keys);
+    x = R.zipObj(keys)(x);
+
+
+    //var m = x[3][1];
+
+    //var classLoader = require('./type/classLoader');
+    //classLoader.init(x);
+    //
+    //var translate = require('./translator/class').translate;
+    //translate(m);
 
     console.log(x);
 }

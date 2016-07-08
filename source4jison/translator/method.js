@@ -17,17 +17,11 @@ var render = function (annotations, returnType, name, parameters, content) {
     })
 }
 
+var buildAnnotations = R.compose(R.join('\r'), R.prop('annotations'));
+
 var buildParameter = function(param) {
     return param.type + ' ' + param.name;
 }
-
-var trace = function (x) {
-    console.log('-----------------');
-    console.log(x);
-    return x;
-}
-
-var buildAnnotations = R.compose(R.join('\r'), trace, trace, R.prop('annotations'));
 
 var buildParams = R.compose(
     R.join(', '),
@@ -35,21 +29,14 @@ var buildParams = R.compose(
     R.prop('parameters')
 );
 
-//var buildCodeBlock = translatorMgr.find('codeBlock').translate;
-
 var buildCodeBlock = function(env, body) {
-    return translatorMgr.find('codeBlock').translate({env: env, body: body});
+    return translatorMgr.find('codeBlock').translate(env, body);
 }
 
-var buildEnv = function (model) {
-    console.log('------env-----------')
-    console.log(model);
-    console.log('------env-----------')
-    return {env: null}
-}
-
-
-var buildBody = R.converge(buildCodeBlock, [buildEnv, R.prop('body')]);
+var buildBody = R.converge(
+    buildCodeBlock,
+    [R.nthArg(1), R.prop('body')]
+);
 
 var translate = R.converge(
     render,

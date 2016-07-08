@@ -1,10 +1,10 @@
 /**
  * Created by danney on 16/7/1.
  */
+var R = require('ramda');
+var Field = require('./field');
 var envExt = require('../translator/envExt');
 var find = envExt.find;
-
-var Field = require('./field');
 
 var pathToModel = function(path) {
     return null;
@@ -29,7 +29,43 @@ var buildProps = R.compose(
     R.prop('properties')
 );
 
-var load = function (path) {
-    var model = pathToModel()
-    
+
+
+var modelsContainer = null;
+
+var init = function (container) {
+    modelsContainer = container;
 }
+
+var load = function (fullType) {
+    var reg = /^\$\.(\w+)\.(\w+)$/g;
+    if(reg.test(fullType)) {
+        return loadInModels(RegExp.$1, RegExp.$2);
+    }
+    else {
+        return loadInFile();
+        
+    }
+}
+
+var loadInModels = function (modelType, modelName) {
+    var models = R.path([modelType], modelsContainer);
+    if(R.isNil(models)) {
+        return null;
+    }
+    else {
+        var ret = R.find(R.propEq('name', modelName))(models);
+        if(R.isNil(ret)) {
+            ret = null;
+        }
+        return ret;
+    }
+}
+
+var loadInFile = function () {
+
+}
+
+
+exports.init = init;
+exports.load = load;

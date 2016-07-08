@@ -9,6 +9,7 @@ class Class {
         this.fields = [];
         this.methods = [];
         this.superClass = '';
+        this.import = [];
     }
 
     addField(field) {

@@ -7,27 +7,22 @@ var translatorMgr = require('./translatorMgr');
 var strUtil = require('../util/strUtil');
 
 var translateOne = function (env, ast) {
-    return '------translateOne-----------';
+    var translate = translatorMgr.find(ast.type).translate;
+    return translate(env,ast);
+
+    //return '------translateOne-----------';
 }
 
-var trace = function (x, y ) {
-    console.log('-------trace-------');
-    console.log(x);
-    console.log(y);
-    return x;
+var translate = function (env, codeBlock) {
+    var translateOneWithEnv = R.curry(translateOne)(env);
+
+    var start = R.compose(
+        R.join('\r'),
+        R.map(translateOneWithEnv)
+    );
+
+    var ret = start(codeBlock);
+    return ret;
 }
-
-//var translate = function(x) {
-//    var translateWithEnv = R.curry(translateOne)(x.env);
-//    var translateCompose = R.compose(R.join('\r\r'), R.map(translateWithEnv), R.prop('body'));
-//    return translateCompose(x)
-//}
-
-var map = R.compose(R.map, R.curry(translateOne), R.prop('env'));
-
-var translate = R.compose(
-    R.join('\r'),
-    R.converge(R.call, [map, R.prop('body')])
-);
 
 exports.translate = translate;
