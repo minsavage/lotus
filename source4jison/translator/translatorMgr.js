@@ -12,7 +12,8 @@ var getMap = function () {
         'codeBlock': require('./codeBlock'),
         'ExpressionStatement': require('./expression'),
         'CallExpression': require('./expressionCall'),
-        'MemberExpression': require('./expressionMember')
+        'MemberExpression': require('./expressionMember'),
+        'Identifier': require('./identifier')
     }
 }
 
