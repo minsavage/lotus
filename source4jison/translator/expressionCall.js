@@ -21,7 +21,8 @@ var translate = function (env, ast) {
 var findSystemFunction = function (name) {
     var map = {
         'showPage': showPage,
-        'closePage': closePage
+        'closePage': closePage,
+        'native': native
     }
 
     return map[name];
@@ -34,6 +35,10 @@ var showPage = function () {
 
 var closePage = function () {
 
+}
+
+var native = function (ast) {
+    
 }
 
 exports.translate = translate;

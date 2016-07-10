@@ -55,7 +55,7 @@ describe('MemberExpression', function () {
             muk(envExt, 'find', realFind);
         });
 
-        var translate = require('../translator/memberExpression').translate;
+        var translate = require('../translator/expressionMember').translate;
 
         it('getter, like: \'user.name\'', function () {
             var ast = genAst('user.name');

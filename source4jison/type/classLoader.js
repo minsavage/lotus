@@ -2,9 +2,13 @@
  * Created by danney on 16/7/1.
  */
 var R = require('ramda');
+var pathUtil = require('path');
+var Class = require('./class');
 var Field = require('./field');
 var envExt = require('../translator/envExt');
 var find = envExt.find;
+var baseDir = '../meta';
+
 
 var pathToModel = function(path) {
     return null;
@@ -43,8 +47,7 @@ var load = function (fullType) {
         return loadInModels(RegExp.$1, RegExp.$2);
     }
     else {
-        return loadInFile();
-        
+        return loadInFile(fullType);
     }
 }
 
@@ -62,10 +65,29 @@ var loadInModels = function (modelType, modelName) {
     }
 }
 
-var loadInFile = function () {
-
+var absTypePath = function (typePath) {
+    return pathUtil.resolve(__dirname, baseDir, typePath);
 }
 
+var metaToClass = function (meta) {
+    var aClass = new Class();
+    aClass.name = meta.name;
+
+    var mapToField = function (prop) {
+        var field = new Field();
+        field.name = prop.name;
+        field.type = prop.type;
+        return field;
+    }
+
+    var getFields = R.compose(R.map(mapToField), R.prop('fields'));
+
+    aClass.addFields(getFields(meta));
+    return aClass;
+}
+
+var metaPath = R.compose(absTypePath, R.join('/'), R.split('.'));
+var loadInFile = R.compose(metaToClass, require, metaPath);
 
 exports.init = init;
 exports.load = load;

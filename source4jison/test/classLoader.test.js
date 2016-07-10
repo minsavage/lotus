@@ -73,5 +73,15 @@ describe('ClassLoader', function () {
             var ret = classLoader.load(fullType)
             expect(ret).to.equal(null);
         })
+
+        it('load class success by full type in file', function () {
+            var fullType = 'system.type.Array';
+            var ret = classLoader.load(fullType)
+
+            var expectedResult = new Class();
+            expectedResult.name = 'Array';
+
+            expect(ret).to.deep.equal(expectedResult);
+        })
     });
 });
