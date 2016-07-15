@@ -1,1 +1,0 @@
-class PostDetailTopViewModel extends ViewModel{ private int pid;private Post post;private PostOperator postOperator; void queryPost() { HashMap map = new HashMap<String, Object>();map.put("pid", pid);postOperator.query(map);}}

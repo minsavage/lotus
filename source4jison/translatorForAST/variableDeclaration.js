@@ -3,6 +3,7 @@
  */
 var R = require('ramda');
 var translatorMgr = require('./translatorMgr');
+var classTranslatorMgr = require('./classTranslatorMgr');
 var envExt = require('./envExt');
 var mustache = require('mustache');
 
@@ -19,11 +20,15 @@ var translate = function (env, ast) {
     var initCode = initRet[0];
     var type = initRet[1];
 
-    env.unshift({name: id.name, type: type.name});
+    //env.unshift({name: id.name, type: type.name});
+    env.unshift({name: id.name, type: type});
+
+    var classTranslator = classTranslatorMgr.find(type.fullName);
+    var javaClassName = classTranslator.translateClassName(env, type);
 
     var tpl = '{{type}} {{name}} = {{init}}';
     return mustache.render(tpl, {
-        type: type.name,
+        type: javaClassName,
         name: id.name,
         init: initCode,
     });

@@ -4,36 +4,37 @@ var envExt = require('./envExt');
 var mustache = require('mustache');
 var classTranslatorMgr = require('./classTranslatorMgr');
 var javaClassTranslator = require('./javaClassTranslator');
+var generics = require('../translatorForJavaClass/generics');
 
+var translateClassName = function (env, objClass) {
+    return javaClassTranslator.translateClassName(env, objClass);
+}
 
-var translateMethod = function (objClass, objName, methodName, args) {
+var translateMethod = function (env, objClass, objName, methodName, args) {
     if(methodName == 'new') {
-        return handleNewMethod(objClass, objName, methodName, args);
+        return handleNewMethod(env, objClass, objName, methodName, args);
     }
     else {
-        return javaClassTranslator.translateMethod(objClass, objName, methodName, args);
+        return javaClassTranslator.translateMethod(env, objClass, objName, methodName, args);
     }
 }
 
-var mapToJavaType = R.curry(function (env, name) {
-    let nameWithoutQ = name.substr(1, name.length-2)
-    let aCLass = envExt.find(env, nameWithoutQ);
-    var translator = classTranslatorMgr.find(aCLass.fullName);
-    return translator.translateClassName(aCLass);
-});
-
-var handleNewMethod = function (objClass, objName, methodName, args) {
-    if(args.length != 2) {
+var handleNewMethod = function (env, objClass, objName, methodName, args) {
+    if(args.length < 2) {
         throw 'HashMap constructor arguments error, the first and second type should be generics type';
     }
 
-    let env = envExt.createEnv(objClass);
-    let argsForJavaType = R.map(mapToJavaType(env), args);
-    let genericsArgs = R.join(', ', argsForJavaType);
+    let getInstanceClass = R.pipe(
+        R.take(2),
+        R.map(x=>x.substr(1, x.length-2)),
+        R.curry(generics.instance)(objClass)
+    )
 
-    let tpl = 'new HashMap<{{generics}}>()'
-    let code = mustache.render(tpl, {generics: genericsArgs});
-    return [code, objClass]
+    let instanceClass = getInstanceClass(args);
+    var javaClassName = javaClassTranslator.translateClassName(env, instanceClass);
+    let code = 'new ' + javaClassName + '()';
+    return [code, instanceClass];
 }
 
 exports.translateMethod = translateMethod;
+exports.translateClassName = translateClassName;

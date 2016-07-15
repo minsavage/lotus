@@ -33,8 +33,6 @@ var buildProps = R.compose(
     R.prop('properties')
 );
 
-
-
 var modelsContainer = null;
 
 var init = function (container) {
@@ -93,6 +91,7 @@ var metaToClass = function (meta) {
         var method = new Method();
         method.name = m.name;
         method.returnType = m.returnType;
+        method.parameters = m.parameters;
         return method;
     }
 
@@ -101,6 +100,7 @@ var metaToClass = function (meta) {
 
     aClass.addFields(getFields(meta));
     aClass.addMethods(getMethods(meta));
+    aClass.generics = meta.generics;
     
     return aClass;
 }

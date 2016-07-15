@@ -14,7 +14,7 @@ var translate = function (env, ast) {
     
     let classTranslatorMgr = require('./classTranslatorMgr');
     let classTranslator = classTranslatorMgr.find(type.fullName);
-    ret = classTranslator.translateMethod(type, null, 'new', args);
+    ret = classTranslator.translateMethod(env, type, null, 'new', args);
     return ret;
 }
 

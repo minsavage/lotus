@@ -41,7 +41,7 @@ var handleMemberCall = function (env, ast) {
 
     var classTranslatorMgr = require('./classTranslatorMgr');
     var classTranslator = classTranslatorMgr.find(objType.fullName);
-    var ret = classTranslator.translateMethod(objType, objName, calleeProp.name, arguments);
+    var ret = classTranslator.translateMethod(env, objType, objName, calleeProp.name, arguments);
     return ret;
 }
 
