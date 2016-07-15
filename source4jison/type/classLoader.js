@@ -6,10 +6,9 @@ var pathUtil = require('path');
 var Class = require('./class');
 var Field = require('./field');
 var Method = require('./method');
-var envExt = require('../translator/envExt');
+var envExt = require('../translatorForAST/envExt');
 var find = envExt.find;
 var baseDir = '../meta';
-
 
 var pathToModel = function(path) {
     return null;
