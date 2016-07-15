@@ -25,15 +25,15 @@ module.exports = {
                 actions: [
                     {
                         op: 'map',
-                        action: function(queryPosts) {
-                            //if(queryPosts == null ||
-                            //    queryPosts.content == null ||
-                            //    queryPosts.content.posts == null) {
-                            //    error();
-                            //}
-
-                            return queryPosts.content.posts;
-                        }
+                        //action: function(queryPosts) {
+                        //    //if(queryPosts == null ||
+                        //    //    queryPosts.content == null ||
+                        //    //    queryPosts.content.posts == null) {
+                        //    //    error();
+                        //    //}
+                        //
+                        //    return queryPosts.content.posts;
+                        //}
                     }
                 ]
             }

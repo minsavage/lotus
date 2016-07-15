@@ -6,6 +6,7 @@
 class Class {
     constructor() {
         this.name = '';
+        this.fullName = '';
         this.fields = [];
         this.methods = [];
         this.superClass = '';

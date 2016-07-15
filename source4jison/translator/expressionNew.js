@@ -1,14 +1,21 @@
+'use strict'
+var R = require('ramda');
 var translatorMgr =require('./translatorMgr');
 
+var mapArg = R.curry(function (env, ast) {
+        return translatorMgr.findAndTranslate(env, ast)[0];
+    });
+
 var translate = function (env, ast) {
-    var ret = translatorMgr.findAndTranslate(env, ast.callee);
-    var name = ret[0];
-    var type = ret[1];
+    let ret = translatorMgr.findAndTranslate(env, ast.callee);
+    let name = ret[0];
+    let type = ret[1];
+    let args = R.map(mapArg(env), ast.arguments);
     
-    var classTranslatorMgr = require('./classTranslatorMgr');
-    var classTranslator = classTranslatorMgr.find(type.fullName);
-    
-    var ret = classTranslator.translateMethod(type, null, 'new');
+    let classTranslatorMgr = require('./classTranslatorMgr');
+    let classTranslator = classTranslatorMgr.find(type.fullName);
+    ret = classTranslator.translateMethod(type, null, 'new', args);
     return ret;
 }
+
 exports.translate = translate;

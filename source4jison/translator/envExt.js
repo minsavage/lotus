@@ -24,6 +24,11 @@ var find = function (env, name) {
     var fullType = null;
 
     do {
+        if(classLoader.isBuiltInType(name)) {
+            fullType = name;
+            break;
+        }
+
         info = findInLocal(env);
         if(!R.isNil(info)) {
             break;
