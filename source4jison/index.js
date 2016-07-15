@@ -72,20 +72,34 @@ var start = function (baseDir) {
 
         var parseWithUtil = startParse(parser, util);
 
-        return R.map(parseWithUtil, models)
+        var ret = R.map(parseWithUtil, models);
+
+        if(key == 'operator') {
+            ret = R.map(R.prop('class'), ret);
+        }
+        return ret;
     }
 
     var x = R.map(parseModelsByKey, keys);
+
+    var m = x[3][1];
+
+
     x = R.zipObj(keys)(x);
 
+    m = x.viewModel[0];
 
-    //var m = x[3][1];
 
-    //var classLoader = require('./type/classLoader');
-    //classLoader.init(x);
-    //
-    //var translate = require('./translator/class').translate;
-    //translate(m);
+
+
+    var classLoader = require('./type/classLoader');
+    classLoader.init(x);
+
+    var translate = require('./translator/class').translate;
+    var ret = translate(m);
+
+    fs.writeFileSync('test.java', ret);
+
 
     console.log(x);
 }

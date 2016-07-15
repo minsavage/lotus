@@ -4,7 +4,8 @@
 module.exports = {
     name: 'PostDetailTopViewModel',
     import: [
-        '$.model.Post'
+        '$.model.Post',
+        '$.operator.PostOperator'
     ],
     properties: [
         {name: 'pid', type: 'int', defaultValue: 2910},

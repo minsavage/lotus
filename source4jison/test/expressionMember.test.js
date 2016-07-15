@@ -29,6 +29,8 @@ muk(translatorMgr, 'find', function(name){
     }
 })
 
+var realFind = envExt.find;
+
 var mockFind = function () {
     var Class = require('../type/class');
     var personClass = new Class();
@@ -45,8 +47,6 @@ var genAst = function (code) {
 
 describe('MemberExpression', function () {
     describe('#translate()', function(){
-        var realFind = envExt.find;
-
         before(function() {
             muk(envExt, 'find', mockFind);
         });

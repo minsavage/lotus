@@ -62,7 +62,10 @@ frac  "."[0-9]+
 
 ConfigEntry
     : '{' ConfigList '}'
-        {return yy.class;}
+        {
+            parserUtil.final(yy.class);
+            return yy.class;
+        }
     ;
 
 ConfigList

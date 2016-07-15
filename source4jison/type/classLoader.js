@@ -5,6 +5,7 @@ var R = require('ramda');
 var pathUtil = require('path');
 var Class = require('./class');
 var Field = require('./field');
+var Method = require('./method');
 var envExt = require('../translator/envExt');
 var find = envExt.find;
 var baseDir = '../meta';
@@ -41,14 +42,23 @@ var init = function (container) {
     modelsContainer = container;
 }
 
-var load = function (fullType) {
+var load = function (fullName) {
+    var aClass = null;
     var reg = /^\$\.(\w+)\.(\w+)$/g;
-    if(reg.test(fullType)) {
-        return loadInModels(RegExp.$1, RegExp.$2);
+    if(reg.test(fullName)) {
+        aClass = loadInModels(RegExp.$1, RegExp.$2);
     }
     else {
-        return loadInFile(fullType);
+        if(isBuiltInType(fullName)) {
+            fullName = 'system.type.' + fullName;
+        }
+        aClass = loadInFile(fullName);
     }
+
+    if(aClass != null) {
+        aClass.fullName = fullName;
+    }
+    return aClass;
 }
 
 var loadInModels = function (modelType, modelName) {
@@ -80,14 +90,35 @@ var metaToClass = function (meta) {
         return field;
     }
 
+    var mapToMethod = function (m) {
+        var method = new Method();
+        method.name = m.name;
+        method.returnType = m.returnType;
+        return method;
+    }
+
     var getFields = R.compose(R.map(mapToField), R.prop('fields'));
+    var getMethods = R.compose(R.map(mapToMethod), R.prop('methods'));
 
     aClass.addFields(getFields(meta));
+    aClass.addMethods(getMethods(meta));
+    
     return aClass;
 }
 
 var metaPath = R.compose(absTypePath, R.join('/'), R.split('.'));
 var loadInFile = R.compose(metaToClass, require, metaPath);
 
+var isBuiltInType = function (type) {
+    if(type == 'int' || type == 'string' || type == 'bool')
+    {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 exports.init = init;
 exports.load = load;
+exports.isBuiltInType = isBuiltInType;

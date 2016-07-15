@@ -23,8 +23,16 @@ var parameterToMap = function (x) {
     });
 }
 
+//var argument = R.compose(
+//    (x)=> { return 'HashMap<String, Object> map = new HashMap<>();\r' + x},
+//    R.join('\r'),
+//    R.map(parameterToMap),
+//    R.toPairs,
+//    R.prop('parameters')
+//);
+
 var argument = R.compose(
-    (x)=> { return 'HashMap<String, Object> map = new HashMap<>();\r' + x},
+    (x)=> { return 'var map = new HashMap("string", "object");\r' + x},
     R.join('\r'),
     R.map(parameterToMap),
     R.toPairs,
@@ -83,9 +91,21 @@ var buildMethod = function (name, body) {
 }
 
 var createOperatorMethod = function(aClass, name, model) {
+    createOperatorField(aClass, model);
+
     var body = methodBody(model);
     var method = buildMethod(name, body);
     aClass.addMethod(method);
+    aClass.import.push('system.type.HashMap');
+}
+
+var createOperatorField = function(aClass, model){
+    var array = model.action.split('.');
+    var operatorName = array[0];
+    var field = new Field();
+    field.type = operatorName;
+    field.name = strUtil.firstCharToLowercase(operatorName);
+    aClass.addField(field);
 }
 
 var createFields = function (aClass, props) {
@@ -103,6 +123,27 @@ var createFiled = function (prop) {
     return filed;
 }
 
+var final = function(aClass) {
+    for(var k in aClass.methods) {
+        var m = aClass.methods[k];
+        if(strUtil.isNotEmpty(m.body)) {
+            m.body = stringFuncToAST(m.body);
+        }
+    }
+}
+
+var stringFuncToAST = function (code) {
+    var reg = /function\s*\(\)\s*\{\s*(.*)\s*\}/g;
+    if(reg.test(code)) {
+        code = RegExp.$1;
+    }
+
+    var esprima = require('esprima');
+    var ast = esprima.parse(code);
+    return ast.body;
+}
+
 exports.createClass = createClass;
 exports.createFields = createFields;
 exports.createOperatorMethod = createOperatorMethod;
+exports.final = final;

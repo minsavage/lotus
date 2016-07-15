@@ -11,3 +11,5 @@ var translate = function (env, ast) {
         envExt.find(env, ast.name)
     ]
 }
+
+exports.translate = translate;

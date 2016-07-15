@@ -13,7 +13,10 @@ var getMap = function () {
         'ExpressionStatement': require('./expression'),
         'CallExpression': require('./expressionCall'),
         'MemberExpression': require('./expressionMember'),
-        'Identifier': require('./identifier')
+        'VariableDeclaration': require('./variableDeclaration'),
+        'NewExpression': require('./expressionNew'),
+        'Identifier': require('./identifier'),
+        'Literal': require('./literal')
     }
 }
 
@@ -31,14 +34,15 @@ var find = function (name) {
     }
 }
 
-class x {
-    constructor() {
-        this.f = null;
+var findAndTranslate = function (env, ast) {
+    var translator = find(ast.type);
+    if(translator != null) {
+        return translator.translate(env, ast);
     }
-
-    f() {
-
+    else {
+        return null;
     }
 }
 
 exports.find = find;
+exports.findAndTranslate = findAndTranslate;

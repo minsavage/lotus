@@ -5,12 +5,6 @@ var R = require('ramda');
 var translatorMgr = require('./translatorMgr');
 var envExt = require('./envExt');
 
-var trace = function (x, y) {
-    console.log(x);
-    console.log(y);
-    return x;
-}
-
 var translate = function (env, ast) {
     var callee = ast.callee;
     if(callee.type == 'Identifier') {
@@ -19,38 +13,36 @@ var translate = function (env, ast) {
             return handler(ast);
         }
     }
-    else {
+    else if(callee.type == 'MemberExpression') {
         return handleMemberCall(env, ast);
+    }
+    else {
+        throw 'can not support callee type for call expression: ' + callee.type;
     }
 }
 
-var translateByType = function (env, ast) {
-    var translator = translatorMgr.find(ast.type);
-    if(R.isNil(translator)) {
-        return null;
-    }
-    else {
-        return translator.translate(env, ast)
-    }
-};
-
 var mapArg = R.curry(function (env, ast) {
-    return translateByType(env, ast)[0];
+    return translatorMgr.findAndTranslate(env, ast)[0];
 });
 
 var mapArgWithEnv = R.compose(mapArg, R.nthArg(0));
 var argsProp = R.compose(R.prop('arguments'), R.nthArg(1));
 var args = R.converge(R.map, [mapArgWithEnv, argsProp]);
-var argsStr = R.compose(R.join(', '), args);
 
 var handleMemberCall = function (env, ast) {
-    var ret = translateByType(env, ast.callee);
-    var callee = ret[0];
-    var returnType = ret[1];
+    var calleeObj = ast.callee.object;
+    var calleeProp = ast.callee.property;
 
-    var args = argsStr(env, ast);
-    var code = callee + '(' + args + ')';
-    return [code, returnType];
+    var calleeObjRet = translatorMgr.findAndTranslate(env, calleeObj);
+    var objName = calleeObjRet[0];
+    var objType = calleeObjRet[1];
+
+    var arguments = args(env, ast);
+
+    var classTranslatorMgr = require('./classTranslatorMgr');
+    var classTranslator = classTranslatorMgr.find(objType.fullName);
+    var ret = classTranslator.translateMethod(objType, objName, calleeProp.name, arguments);
+    return ret;
 }
 
 var findSystemFunction = function (name) {

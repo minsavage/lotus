@@ -5,6 +5,7 @@ module.exports = {
     name: 'PostsViewModel',
     import: [
         '$.viewModel.PostItemViewModel',
+        '$.operator.PostsOperator',
         '$.model.QueryPosts',
         '$.model.Post',
         'system.type.Array'

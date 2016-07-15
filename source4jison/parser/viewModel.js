@@ -84,7 +84,10 @@ performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* actio
 var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
-return yy.class;
+
+            parserUtil.final(yy.class);
+            return yy.class;
+        
 break;
 case 8:
 

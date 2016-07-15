@@ -13,7 +13,7 @@ var render = function(name, fields, methods, superClass) {
         superClass = 'extends ' + superClass;
     }
 
-    var tpl = 'class {{name}} {{superClass}}\r{\r {{fields}}\r\r {{methods}}\r}'
+    var tpl = 'class {{name}} {{superClass}}\r{\r {{fields}}\r{{methods}}\r}'
     return mustache.render(tpl, {
         name: name,
         fields: fields,
@@ -49,7 +49,7 @@ var buildMethods = function(aClass) {
 
 var buildField = translatorMgr.find('field').translate;
 
-var buildFields = R.compose(R.map(buildField), R.prop('fields'));
+var buildFields = R.compose(R.join('\r'), R.map(buildField), R.prop('fields'));
 
 var translate = R.converge(render, [R.prop('name'), buildFields, buildMethods, R.prop('superClass')]);
 

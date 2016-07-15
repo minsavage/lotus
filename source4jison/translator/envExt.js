@@ -19,27 +19,77 @@ var find = function (env, name) {
 
     var findInLocal = R.find(R.propEq('name', name));
 
-    var findInClass = R.compose(
+    var info = null;
+    var isFromImport = false;
+    var fullType = null;
+
+    do {
+        info = findInLocal(env);
+        if(!R.isNil(info)) {
+            break;
+        }
+
+        info = findInClass(name, aClass);
+        if(!R.isNil(info)) {
+            break;
+        }
+
+        fullType = findInImport(name, aClass);
+        if(R.isNil(fullType)) {
+            return null;
+        }
+    } while (0);
+
+    if(fullType == null) {
+        var type = R.path(['type'], info)
+        if(R.isNil(type)) {
+            return null;
+        }
+
+        if(classLoader.isBuiltInType(type)) {
+            fullType = type;
+        }
+        else {
+            fullType = findInImport(type, aClass);
+        }
+    }
+
+    if(fullType == null) {
+        return null;
+    }
+
+    return classLoader.load(fullType);
+}
+
+var findInClass = function (name, aClass) {
+    var findFieldInClass = R.compose(
         R.find(R.propEq('name', name)),
         R.prop('fields')
     );
 
-    var info = findInLocal(env);
-    if(R.isNil(info)) {
-        info = findInClass(aClass);
-    }
+    var findMethodInClass = R.compose(
+        R.find(R.propEq('name', name)),
+        R.prop('methods')
+    );
 
-    var type = R.path(['type'], info)
-    if(R.isNil(type)) {
-        return null;
+    var ret = findFieldInClass(aClass);
+    if(R.isNil(ret)) {
+        ret = findMethodInClass(aClass);
     }
+    return ret;
+}
 
-    var reg = '^((\\w+|\\$)\\.)?(\\w+\\.)*(item)$'.replace('item', type);
+
+
+var findInImport = function (typeName, aClass) {
+    var reg = '^((\\w+|\\$)\\.)?(\\w+\\.)*(item)$'.replace('item', typeName);
     reg = new RegExp(reg);
 
     var fullType = R.find((x)=>reg.test(x), aClass.import)
-    return classLoader.load(fullType);
+    return fullType;
 }
+
+
 
 exports.createEnv = createEnv;
 exports.add = add;
