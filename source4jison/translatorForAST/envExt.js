@@ -106,8 +106,44 @@ var findInImport = function (typeName, aClass) {
     return fullType;
 }
 
+var findMethodReturnType = function (env, methodName, argTypes) {
+    let aClass = R.takeLast(1, env)[0];
+    if(!(aClass instanceof Class)) {
+        throw 'there is no class in env';
+    }
 
+    let findMethodInClass = R.compose(
+        R.find(R.propEq('name', methodName)),
+        R.prop('methods')
+    );
+
+    let ret = findMethodInClass(aClass);
+    if(R.isNil(ret)) {
+        ret = null;
+    }
+    let type = ret.returnType;
+
+    if(type instanceof Class) {
+        return type;
+    }
+
+    let fullName = null;
+    if(classLoader.isBuiltInType(type)) {
+        fullName = type;
+    }
+    else {
+        fullName = findInImport(type, aClass);
+    }
+
+    if(fullName == null) {
+        return null;
+    }
+    else {
+        return classLoader.load(fullName);
+    }
+}
 
 exports.createEnv = createEnv;
 exports.add = add;
 exports.find = find;
+exports.findMethodReturnType = findMethodReturnType;

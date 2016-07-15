@@ -3,14 +3,16 @@
  */
 module.exports = {
     name: 'Observable',
-    fields: [
-
-    ],
+    generics:{
+        parameters:['T']
+    },
+    fields: [],
     methods: [{
         name: 'map',
         returnType: 'Observable<T>',
         parameters:[{
-            
+            type: 'string',
+            name: 'func'
         }]
     }]
 }

@@ -8,8 +8,8 @@ var strUtil = require('../util/strUtil');
 
 var translateOne = function (env, ast) {
     var translate = translatorMgr.find(ast.type).translate;
-    var ret = translate(env,ast) + ';';
-    return ret;
+    var ret = translate(env,ast);
+    return ret[0] + ';';
 }
 
 var translate = function (env, codeBlock) {

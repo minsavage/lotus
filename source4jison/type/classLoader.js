@@ -109,7 +109,8 @@ var metaPath = R.compose(absTypePath, R.join('/'), R.split('.'));
 var loadInFile = R.compose(metaToClass, require, metaPath);
 
 var isBuiltInType = function (type) {
-    if(type == 'int' || type == 'string' || type == 'bool' || type == 'object')
+    if(type == 'int' || type == 'string' || type == 'bool' || type == 'object' ||
+       type == 'void')
     {
         return true;
     }

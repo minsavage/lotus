@@ -1,6 +1,7 @@
 /**
  * Created by danney on 16/6/26.
  */
+'use strict'
 var R = require('ramda');
 var translatorMgr = require('./translatorMgr');
 var classTranslatorMgr = require('./classTranslatorMgr');
@@ -27,11 +28,13 @@ var translate = function (env, ast) {
     var javaClassName = classTranslator.translateClassName(env, type);
 
     var tpl = '{{type}} {{name}} = {{init}}';
-    return mustache.render(tpl, {
+    let code = mustache.render(tpl, {
         type: javaClassName,
         name: id.name,
         init: initCode,
     });
+
+    return [code, type];
 }
 
 exports.translate = translate;

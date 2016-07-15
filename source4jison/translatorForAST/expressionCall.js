@@ -41,8 +41,12 @@ var handleMemberCall = function (env, ast) {
 
     var classTranslatorMgr = require('./classTranslatorMgr');
     var classTranslator = classTranslatorMgr.find(objType.fullName);
-    var ret = classTranslator.translateMethod(env, objType, objName, calleeProp.name, arguments);
-    return ret;
+    var code = classTranslator.translateMethod(env, objType, objName, calleeProp.name, arguments);
+
+    var classEnv = envExt.createEnv(objType);
+    var methodReturnType = envExt.findMethodReturnType(classEnv, calleeProp.name);
+
+    return [code, methodReturnType];
 }
 
 var findSystemFunction = function (name) {

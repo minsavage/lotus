@@ -55,6 +55,8 @@ var translateBulitInClassName = function (name) {
             return 'boolean';
         case 'object':
             return 'Object';
+        case 'void':
+            return 'void';            
     
         default:
             return null;
