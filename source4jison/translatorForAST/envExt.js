@@ -121,8 +121,8 @@ var findMethodReturnType = function (env, methodName, argTypes) {
     if(R.isNil(ret)) {
         ret = null;
     }
-    let type = ret.returnType;
 
+    let type = ret.returnType;
     if(type instanceof Class) {
         return type;
     }
@@ -139,7 +139,12 @@ var findMethodReturnType = function (env, methodName, argTypes) {
         return null;
     }
     else {
-        return classLoader.load(fullName);
+        let aClass = classLoader.load(fullName);
+        if(generics.isParameterizedGenericClass(type)) {
+            let ret = generics.parseClassName(type);
+            aClass = generics.instance(aClass, ret.types);
+        }
+        return aClass;
     }
 }
 

@@ -23,14 +23,6 @@ var parameterToMap = function (x) {
     });
 }
 
-//var argument = R.compose(
-//    (x)=> { return 'HashMap<String, Object> map = new HashMap<>();\r' + x},
-//    R.join('\r'),
-//    R.map(parameterToMap),
-//    R.toPairs,
-//    R.prop('parameters')
-//);
-
 var argument = R.compose(
     (x)=> { return 'var map = new HashMap("string", "object");\r' + x},
     R.join('\r'),

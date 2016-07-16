@@ -28,6 +28,10 @@ class Class {
     addMethods(methods) {
         this.methods = this.methods.concat(methods);
     }
+
+    findMethods(name) {
+        return R.find(R.propEq('name', name), this.methods);
+    }
 }
 
 module.exports = Class;

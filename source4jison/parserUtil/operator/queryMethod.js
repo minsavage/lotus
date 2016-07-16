@@ -41,7 +41,7 @@ var buildQueryMethod = (name, returnType, parameter, body) => {
 var make = R.converge(
     buildQueryMethod,
     [
-        queryMethodName,
+        R.always('query'),
         observableReturnType,
         queryParameter,
         makeMethodBody

@@ -4,6 +4,7 @@
 var R = require('ramda');
 var translatorMgr = require('./translatorMgr');
 var envExt = require('./envExt');
+var memberCallTranslator = require('./expressionMemberCall');
 
 var translate = function (env, ast) {
     var callee = ast.callee;
@@ -14,40 +15,40 @@ var translate = function (env, ast) {
         }
     }
     else if(callee.type == 'MemberExpression') {
-        return handleMemberCall(env, ast);
+        return memberCallTranslator.translate(env, ast);
     }
     else {
         throw 'can not support callee type for call expression: ' + callee.type;
     }
 }
 
-var mapArg = R.curry(function (env, ast) {
-    return translatorMgr.findAndTranslate(env, ast)[0];
-});
+// var mapArg = R.curry(function (env, ast) {
+//     return translatorMgr.findAndTranslate(env, ast)[0];
+// });
 
-var mapArgWithEnv = R.compose(mapArg, R.nthArg(0));
-var argsProp = R.compose(R.prop('arguments'), R.nthArg(1));
-var args = R.converge(R.map, [mapArgWithEnv, argsProp]);
+// var mapArgWithEnv = R.compose(mapArg, R.nthArg(0));
+// var argsProp = R.compose(R.prop('arguments'), R.nthArg(1));
+// var args = R.converge(R.map, [mapArgWithEnv, argsProp]);
 
-var handleMemberCall = function (env, ast) {
-    var calleeObj = ast.callee.object;
-    var calleeProp = ast.callee.property;
+// var handleMemberCall = function (env, ast) {
+//     var calleeObj = ast.callee.object;
+//     var calleeProp = ast.callee.property;
 
-    var calleeObjRet = translatorMgr.findAndTranslate(env, calleeObj);
-    var objName = calleeObjRet[0];
-    var objType = calleeObjRet[1];
+//     var calleeObjRet = translatorMgr.findAndTranslate(env, calleeObj);
+//     var objName = calleeObjRet[0];
+//     var objType = calleeObjRet[1];
 
-    var arguments = args(env, ast);
+//     var arguments = args(env, ast);
 
-    var classTranslatorMgr = require('./classTranslatorMgr');
-    var classTranslator = classTranslatorMgr.find(objType.fullName);
-    var code = classTranslator.translateMethod(env, objType, objName, calleeProp.name, arguments);
+//     var classTranslatorMgr = require('./classTranslatorMgr');
+//     var classTranslator = classTranslatorMgr.find(objType.fullName);
+//     var code = classTranslator.translateMethod(env, objType, objName, calleeProp.name, arguments);
 
-    var classEnv = envExt.createEnv(objType);
-    var methodReturnType = envExt.findMethodReturnType(classEnv, calleeProp.name);
+//     var classEnv = envExt.createEnv(objType);
+//     var methodReturnType = envExt.findMethodReturnType(classEnv, calleeProp.name);
 
-    return [code, methodReturnType];
-}
+//     return [code, methodReturnType];
+// }
 
 var findSystemFunction = function (name) {
     var map = {

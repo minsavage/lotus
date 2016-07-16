@@ -9,10 +9,22 @@ module.exports = {
     fields: [],
     methods: [{
         name: 'map',
-        returnType: 'Observable<T>',
+        returnType: 'Observable<R>',
         parameters:[{
-            type: 'string',
+            type: 'MapFunc<T, R>',
             name: 'func'
         }]
     }]
 }
+
+// x = {
+//     type: 'method',
+//     generics: {
+//         parameters: ['T', 'R']
+//     },
+//     name: 'MapFunc',
+//     parameters: [{
+//         type: 'T'
+//     }],
+//     returnType: 'R'
+// }
