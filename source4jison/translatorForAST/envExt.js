@@ -14,62 +14,40 @@ var add = function (env, local) {
 }
 
 var find = function (env, name) {
-    var aClass = R.takeLast(1, env)[0];
+    if(classLoader.isBuiltInType(name)) {
+        return classLoader.load(name);
+    }
+
+    let aClass = R.takeLast(1, env)[0];
     if(!(aClass instanceof Class)) {
         throw 'there is no class in env';
     }
 
-    var findInLocal = R.find(R.propEq('name', name));
-
-    var info = null;
-    var isFromImport = false;
-    var fullType = null;
+    let type = null;
 
     do {
-        if(classLoader.isBuiltInType(name)) {
-            fullType = name;
+        //find in local scope
+        let ret = R.find(R.propEq('name', name), env); 
+        type = R.path(['type'], ret)
+        if(!R.isNil(type)) {
             break;
         }
 
-        info = findInLocal(env);
-        if(!R.isNil(info)) {
+        ret = findInClass(name, aClass);
+        type = R.path(['type'], ret)
+        if(!R.isNil(type)) {
             break;
         }
 
-        info = findInClass(name, aClass);
-        if(!R.isNil(info)) {
-            break;
-        }
-
-        fullType = findInImport(name, aClass);
-        if(R.isNil(fullType)) {
-            return null;
-        }
+        // maybe 'name' is a type Name , not a variable name 
+        type = name;
     } while (0);
 
-    if(fullType == null) {
-        var type = R.path(['type'], info)
-        if(R.isNil(type)) {
-            return null;
-        }
-
-        if(type instanceof Class) {
-            return type;
-        }
-
-        if(classLoader.isBuiltInType(type)) {
-            fullType = type;
-        }
-        else {
-            fullType = findInImport(type, aClass);
-        }
+    if(type instanceof Class) {
+        return type;
     }
 
-    if(fullType == null) {
-        return null;
-    }
-
-    return classLoader.load(fullType);
+    return aClass.loadType(type);
 }
 
 var findInClass = function (name, aClass) {
@@ -92,19 +70,19 @@ var findInClass = function (name, aClass) {
 
 
 
-var findInImport = function (typeName, aClass) {
-    let name = typeName;
-    if(generics.isParameterizedGenericClass(typeName)) {
-        var ret = generics.parseClassName(typeName);
-        name = ret.name;
-    }
+// var findInImport = function (typeName, aClass) {
+//     let name = typeName;
+//     if(generics.isParameterizedGenericClass(typeName)) {
+//         var ret = generics.parseClassName(typeName);
+//         name = ret.name;
+//     }
 
-    var reg = '^((\\w+|\\$)\\.)?(\\w+\\.)*(item)$'.replace('item', name);
-    reg = new RegExp(reg);
+//     var reg = '^((\\w+|\\$)\\.)?(\\w+\\.)*(item)$'.replace('item', name);
+//     reg = new RegExp(reg);
 
-    var fullType = R.find((x)=>reg.test(x), aClass.import)
-    return fullType;
-}
+//     var fullType = R.find((x)=>reg.test(x), aClass.import)
+//     return fullType;
+// }
 
 var findMethodReturnType = function (env, methodName, argTypes) {
     let aClass = R.takeLast(1, env)[0];

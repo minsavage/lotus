@@ -1,12 +1,16 @@
 'use strict'
 var R = require('ramda');
 var mustache = require('mustache');
+var Method = require('../type/method');
 
 var instance = function (aClass, instanceTypes) {
-    var ret = R.zip(aClass.generics.parameters, instanceTypes);
-    R.map(instanceOne(aClass), ret); 
+    let startInstance = R.pipe(
+        R.zip(aClass.generics.parameters),
+        R.filter(x=>x[0]!=x[1]),
+        R.map(instanceOne(aClass))
+    );
 
-    var mapToInstanceTypes = function(type, index){
+    let mapToInstanceTypes = function(type, index){
         let instanceType = instanceTypes[index]
         if(R.isNil(instanceType)) {
             return type;
@@ -16,17 +20,16 @@ var instance = function (aClass, instanceTypes) {
         }
     };
 
-    let className = aClass.name;
-
     let getInstancedClassName = R.pipe(
         R.path(['generics', 'parameters']),
         R.addIndex(R.map)(mapToInstanceTypes),
         R.join(', '),
         R.of,
-        R.map(x=>className + '<'+ x + '>'),
+        R.map(x=>aClass.name + '<'+ x + '>'),
         R.join('')
     )
 
+    startInstance(instanceTypes);
     aClass.name = getInstancedClassName(aClass);
     return aClass;
 }
@@ -35,20 +38,20 @@ var instanceOne = R.curry(function (aClass, genericsInfo) {
     let genericsType = genericsInfo[0];
     let instanceType = genericsInfo[1]; 
 
-    var mapField = function (field) {
+    let mapField = function (field) {
         if(isGenericsType(field.type, genericsType)) {
             field.type = getInstanceType(genericsType, instanceType);
         }
     }
 
-    var instanceFileds = R.compose(R.map(mapField), R.prop('fields'));
+    let instanceFileds = R.compose(R.map(mapField), R.prop('fields'));
 
-    var mapMethod = function (method) {
+    let mapMethod = function (method) {
         if(isGenericsType(method.returnType, genericsType)) {
             method.returnType = getInstanceType(method.returnType, genericsType, instanceType);
         }
 
-        var mapParams = function (arg) {
+        let mapParams = function (arg) {
             if(isGenericsType(arg.type, genericsType)) {
                 arg.type = getInstanceType(arg.type, genericsType, instanceType);
             }
@@ -58,10 +61,15 @@ var instanceOne = R.curry(function (aClass, genericsInfo) {
         R.map(mapParams, method.parameters);
     }
 
-    var instanceMethods = R.compose(R.map(mapMethod), R.prop('methods'));
+    let instanceMethods = R.compose(R.map(mapMethod), R.prop('methods'));
 
-    instanceFileds(aClass);
-    instanceMethods(aClass);
+    if(aClass instanceof Method) {
+        mapMethod(aClass);
+    }
+    else {
+        instanceFileds(aClass);
+        instanceMethods(aClass);
+    }
 });
 
 var isGenericsType = function (type, genericsType) {

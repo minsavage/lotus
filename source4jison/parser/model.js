@@ -649,7 +649,7 @@ case 1:return 15
 break;
 case 2:return 'VIEWMODELS'
 break;
-case 3:return 41
+case 3:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 41
 break;
 case 4:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'UNITS'
 break;

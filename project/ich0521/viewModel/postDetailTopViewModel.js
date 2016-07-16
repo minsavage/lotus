@@ -4,6 +4,7 @@
 module.exports = {
     name: 'PostDetailTopViewModel',
     import: [
+        '$.model.QueryPost',
         '$.model.Post',
         '$.operator.PostOperator'
     ],

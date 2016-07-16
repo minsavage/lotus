@@ -76,31 +76,37 @@ var absTypePath = function (typePath) {
     return pathUtil.resolve(__dirname, baseDir, typePath);
 }
 
+var mapToField = function (prop) {
+    var field = new Field();
+    field.name = prop.name;
+    field.type = prop.type;
+    return field;
+}
+
+var metaToMethod = function (m) {
+    var method = new Method();
+    method.name = m.name;
+    method.returnType = m.returnType;
+    method.parameters = m.parameters;
+    method.generics = m.generics;
+    return method;
+}
+
 var metaToClass = function (meta) {
+    if(meta.type == 'method') {
+        return metaToMethod(meta);
+    }
+
     var aClass = new Class();
     aClass.name = meta.name;
 
-    var mapToField = function (prop) {
-        var field = new Field();
-        field.name = prop.name;
-        field.type = prop.type;
-        return field;
-    }
-
-    var mapToMethod = function (m) {
-        var method = new Method();
-        method.name = m.name;
-        method.returnType = m.returnType;
-        method.parameters = m.parameters;
-        return method;
-    }
-
     var getFields = R.compose(R.map(mapToField), R.prop('fields'));
-    var getMethods = R.compose(R.map(mapToMethod), R.prop('methods'));
+    var getMethods = R.compose(R.map(metaToMethod), R.prop('methods'));
 
     aClass.addFields(getFields(meta));
     aClass.addMethods(getMethods(meta));
     aClass.generics = meta.generics;
+    aClass.import = meta.import;
     
     return aClass;
 }

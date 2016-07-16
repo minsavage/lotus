@@ -23,7 +23,7 @@ var observableReturnType = R.compose(
 //build parameter
 var queryParameter = () => {
     var parameter = new Parameter();
-    parameter.type = 'Map<String, Object>';
+    parameter.type = 'HashMap<string, object>';
     parameter.name = 'parameters';
     return parameter;
 };

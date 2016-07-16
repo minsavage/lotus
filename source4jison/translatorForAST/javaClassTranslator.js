@@ -25,9 +25,8 @@ var translateClassName = function (env, objClass) {
 }
 
 var translateFiled = function (objClass, objName, fieldName, isSetter) {
-    var env = createEnv(objClass);
-    var fieldType = findTypeInEnv(env, fieldName);
-    if(fieldType.isProperty == true) {
+    let field = objClass.findField(fieldName);
+    if(field.isProperty == true) {
         return codeGenUtil.genGetterCall(objName, fieldName)
     }
     else {

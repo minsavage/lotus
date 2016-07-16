@@ -5,15 +5,18 @@ module.exports = {
     name: 'HashMap',
     generics: {
         size: 2,
-        parameters:['T', 'K']
+        parameters:['K', 'V']
     },
     fields: [],
     methods: [{
         name: 'put', 
         returnType: 'void', 
         parameters: [{
-            type: 'T',
+            type: 'K',
             name: 'key'
+        }, {
+            type: 'V',
+            name: 'value'
         }]
     }]
 }

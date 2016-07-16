@@ -16,7 +16,10 @@ var getMap = function () {
         'VariableDeclaration': require('./variableDeclaration'),
         'NewExpression': require('./expressionNew'),
         'Identifier': require('./identifier'),
-        'Literal': require('./literal')
+        'Literal': require('./literal'),
+        'ArrowFunctionExpression': require('./expressionFunction'),
+        'FunctionExpression': require('./expressionFunction'),
+        'ReturnStatement': require('./returnStatement'),
     }
 }
 

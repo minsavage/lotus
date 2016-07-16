@@ -11,24 +11,18 @@ var translate = function (env, ast, isSetter) {
     let object = ast.object;
     let property = ast.property;
 
-    let objName = null;
-    let objType = null;
+    let ret = translatorMgr.findAndTranslate(env, object);
+    let objName = ret[0];
+    let objType = ret[1];
 
-    if(object.type == 'Identifier') {
-        objType = envExt.find(env, object.name);
-        objName = object.name;
-    }
-    else {
-        let translate = translatorMgr.find(object.type).translate;
-        let ret = translate(env, object);
-        objName = ret[0];
-        objType = ret[1];
-    }
+    let field = objType.findField(property.name);
+    let fieldType = objType.loadType(field.type);
 
     let classTranslatorMgr = require('./classTranslatorMgr');
     let classTranslator = classTranslatorMgr.find(objType.fullName);
-    let ret = translator.translateFiled(objType, objName, property.name, isSetter);
-    return ret;
+    let code = classTranslator.translateFiled(objType, objName, property.name, isSetter);
+    
+    return [code, fieldType];
 }
 
 exports.translate = translate;

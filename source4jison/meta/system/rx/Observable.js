@@ -2,6 +2,7 @@
  * Created by danney on 16/7/14.
  */
 module.exports = {
+    import:['system.rx.MapFunc'],
     name: 'Observable',
     generics:{
         parameters:['T']
@@ -16,15 +17,3 @@ module.exports = {
         }]
     }]
 }
-
-// x = {
-//     type: 'method',
-//     generics: {
-//         parameters: ['T', 'R']
-//     },
-//     name: 'MapFunc',
-//     parameters: [{
-//         type: 'T'
-//     }],
-//     returnType: 'R'
-// }

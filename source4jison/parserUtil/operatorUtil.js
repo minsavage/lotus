@@ -13,7 +13,8 @@ var queryMethodService = require('./operator/queryMethodService');
 
 var createQueryMethod = function (aClass, model) {
     aClass.addMethod(queryMethod.make(model));
-    aClass.import.push('system.Observable');
+    aClass.import.push('system.rx.Observable');
+    aClass.import.push('system.type.HashMap');
 }
 
 var createQueryMethodService = function (model) {
