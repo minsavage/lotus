@@ -4,7 +4,6 @@
 module.exports = {
     name: 'HashMap',
     generics: {
-        size: 2,
         parameters:['K', 'V']
     },
     fields: [],

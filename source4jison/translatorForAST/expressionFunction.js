@@ -2,6 +2,7 @@
 var R = require('ramda');
 var envExt = require('./envExt');
 var translatorMgr = require('./translatorMgr');
+var mustache = require('mustache');
 
 var translate = function(env, functionSignature, ast) {
     if(ast.params.length != functionSignature.parameters.length) {
@@ -22,7 +23,21 @@ var translate = function(env, functionSignature, ast) {
 
     let translator = translatorMgr.find('codeBlock');
     let ret = translator.translate(currentEnv, ast.body.body);
-    return ret;
+
+    let namesStr = R.join(', ', names);
+    
+    let tpl = '{{names}} -> { {{code}} }';
+    let tpl2 = '({{names}}) -> { {{code}} }';
+    if(names.length > 1) {
+        tpl = tpl2;
+    }
+
+    let code = mustache.render(tpl, {
+        names: namesStr,
+        code: ret[0]
+    })
+
+    return [code, ret[1]];
 }
 
 exports.translate = translate;

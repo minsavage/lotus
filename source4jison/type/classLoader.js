@@ -6,6 +6,7 @@ var pathUtil = require('path');
 var Class = require('./class');
 var Field = require('./field');
 var Method = require('./method');
+var FuncSignature = require('./funcSignature');
 var envExt = require('../translatorForAST/envExt');
 var find = envExt.find;
 var baseDir = '../meta';
@@ -88,13 +89,33 @@ var metaToMethod = function (m) {
     method.name = m.name;
     method.returnType = m.returnType;
     method.parameters = m.parameters;
-    method.generics = m.generics;
+    if(!R.isNil(m.generics)) {
+        method.generics = m.generics;
+        method.generics.name = m.name;
+    }
     return method;
 }
 
+var metaToFuncSignature = function (m) {
+    var funcSignature = new FuncSignature();
+    funcSignature.name = m.name;
+    funcSignature.returnType = m.returnType;
+    funcSignature.parameters = m.parameters;
+    if(!R.isNil(m.generics)) {
+        funcSignature.generics = m.generics;
+        funcSignature.generics.name = m.name;
+    }
+    return funcSignature;
+}
+
 var metaToClass = function (meta) {
-    if(meta.type == 'method') {
+    meta = R.clone(meta);
+
+    if(meta.type == 'Method') {
         return metaToMethod(meta);
+    }
+    else if(meta.type == 'FuncSignature') {
+        return metaToFuncSignature(meta);
     }
 
     var aClass = new Class();
@@ -105,9 +126,12 @@ var metaToClass = function (meta) {
 
     aClass.addFields(getFields(meta));
     aClass.addMethods(getMethods(meta));
-    aClass.generics = meta.generics;
     aClass.import = meta.import;
-    
+
+    if(!R.isNil(meta.generics)) {
+        aClass.generics = meta.generics;
+        aClass.generics.name = meta.name;
+    }
     return aClass;
 }
 

@@ -30,7 +30,7 @@ var buildParams = R.compose(
 );
 
 var buildCodeBlock = function(env, body) {
-    return translatorMgr.find('codeBlock').translate(env, body);
+    return translatorMgr.find('codeBlock').translate(env, body)[0];
 }
 
 var buildBody = R.converge(

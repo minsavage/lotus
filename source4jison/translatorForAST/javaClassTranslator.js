@@ -16,7 +16,7 @@ var translateClassName = function (env, objClass) {
     if(classLoader.isBuiltInType(name)) {
         return translateBulitInClassName(name);
     }
-    else if(generics.isParameterizedGenericClass(name)) {
+    else if(generics.isParameterizedClassName(name)) {
         return translateGenericClassName(env, name);
     }
     else {
@@ -35,7 +35,7 @@ var translateFiled = function (objClass, objName, fieldName, isSetter) {
 }
 
 var translateMethod = function (env, objClass, objName, methodName, args) {
-    var argsStr = R.join(', ', args);
+    let argsStr = R.join(', ')(R.map(R.nth(0), args))
     var tpl = '{{name}}.{{method}}({{args}})'
     return mustache.render(tpl, {
         name: objName,

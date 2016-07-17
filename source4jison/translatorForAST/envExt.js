@@ -118,9 +118,9 @@ var findMethodReturnType = function (env, methodName, argTypes) {
     }
     else {
         let aClass = classLoader.load(fullName);
-        if(generics.isParameterizedGenericClass(type)) {
+        if(generics.isParameterizedClassName(type)) {
             let ret = generics.parseClassName(type);
-            aClass = generics.instance(aClass, ret.types);
+            aClass = generics.instantiate(aClass, ret.types);
         }
         return aClass;
     }

@@ -27,7 +27,7 @@ var handleNewMethod = function (env, objClass, objName, methodName, args) {
     let getInstanceClass = R.pipe(
         R.take(2),
         R.map(x=>x.substr(1, x.length-2)),
-        R.curry(generics.instance)(objClass)
+        R.curry(generics.instantiate)(objClass)
     )
 
     let instanceClass = getInstanceClass(args);

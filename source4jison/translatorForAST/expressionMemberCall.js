@@ -5,6 +5,7 @@
 var R = require('ramda');
 var translatorMgr = require('./translatorMgr');
 var envExt = require('./envExt');
+var generics = require('../translatorForJavaClass/generics');
 
 var translate = function (env, ast) {
     let calleeObj = ast.callee.object;
@@ -40,9 +41,16 @@ var translateArgWithMethodParams = R.curry(function (env, objType, argWithParamP
     let ret = null;
     if('FunctionExpression' == argAST.type ||
        'ArrowFunctionExpression' == argAST.type ) {
-           let translator = translatorMgr.find(argAST.type);
-           ret = translator.translate(env, paramPrototypeClass, argAST);
-           return ret;
+            let translator = translatorMgr.find(argAST.type);
+            ret = translator.translate(env, paramPrototypeClass, argAST);
+
+            if(generics.isTypeParameter(paramPrototypeClass, paramPrototypeClass.returnType)) {
+                let tuple = {};
+                tuple[paramPrototypeClass.returnType] = ret[1].name;
+                generics.instantiate(paramPrototypeClass, tuple);
+            }
+           
+           return [ret[0], paramPrototypeClass];
     }
     else {
         ret = translatorMgr.findAndTranslate(env, argAST);
@@ -62,7 +70,7 @@ var translateArgsWithMethod = R.curry(function (env, objType, argsAST, method) {
         return null;
     }
 
-    let translate = R.pipe( 
+    let translateArgs = R.pipe( 
         R.prop('parameters'),
         R.zip(argsAST),
         R.map(translateArgWithMethodParams(env, objType))
@@ -70,8 +78,9 @@ var translateArgsWithMethod = R.curry(function (env, objType, argsAST, method) {
 
     try {
         //any error will be thrown , so here only successful result would be return
-        let ret = translate(method);  
-        return [ret, method]
+        let argsRet = translateArgs(method);
+        checkNeedDeriveType(method, argsRet);
+        return [argsRet, method]
     }
     catch(err) {
         console.log(err);
@@ -92,6 +101,31 @@ var translateArgsAndVerifyMethodsPrototype = function (env, objType, argsAST, me
     else {
         throw 'can not found any method prototype for arguments AST'
     }
+}
+
+let checkNeedDeriveType = function (method, args) {
+    if(!generics.isGenericClass(method)) {
+        return;
+    }
+
+    let paramTypes = R.map(R.prop('type'), method.parameters);
+    let argTypes = R.map(R.nth(1), args);
+    let pairs = R.zip(paramTypes, argTypes);
+
+    let T = method.generics.parameters[0];
+    let getValueOfType = function (x) {
+        return generics.getValueOfTypeParameterFrom(T, x[0], x[1].name);
+    };
+
+    let find = R.pipe(
+        R.map(getValueOfType),
+        R.filter(x=>x!=null),
+        R.nth(0)
+    )
+    let valueOfType = find(pairs);
+    let t = {};
+    t[T] = valueOfType;
+    generics.instantiate(method, t);
 }
 
 exports.translate = translate;

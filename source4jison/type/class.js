@@ -58,9 +58,9 @@ class Class {
 
         let aClass = classLoader.load(fullName);
         let generics = require('../translatorForJavaClass/generics');
-        if(generics.isParameterizedGenericClass(typeName)) {
+        if(generics.isParameterizedClassName(typeName)) {
             let ret = generics.parseClassName(typeName);
-            aClass = generics.instance(aClass, ret.types);
+            aClass = generics.instantiate(aClass, ret.types);
         }
         return aClass;
     }
@@ -83,7 +83,7 @@ class Class {
     findInImport (typeName) {
         let name = typeName;
         let generics = require('../translatorForJavaClass/generics');
-        if(generics.isParameterizedGenericClass(typeName)) {
+        if(generics.isParameterizedClassName(typeName)) {
             let ret = generics.parseClassName(typeName);
             name = ret.name;
         }
@@ -91,7 +91,13 @@ class Class {
         var reg = '^((\\w+|\\$)\\.)?(\\w+\\.)*(item)$'.replace('item', name);
         reg = new RegExp(reg);
 
-        return R.find((x)=>reg.test(x), this.import)
+        let ret = R.find((x)=>reg.test(x), this.import)
+        if(R.isNil(ret)) {
+            if(reg.test(this.fullName)) {
+                return this.fullName;
+            }
+        }
+        return ret;
     }
 }
 
