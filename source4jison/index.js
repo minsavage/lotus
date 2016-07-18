@@ -95,7 +95,7 @@ var start = function (baseDir) {
     var classLoader = require('./type/classLoader');
     classLoader.init(x);
 
-    var translate = require('./translatorForAST/class').translate;
+    var translate = require('./parserAST/class').translate;
     var ret = translate(m);
 
     fs.writeFileSync('test.java', ret);

@@ -5,7 +5,7 @@
 var R = require('ramda');
 var Class = require('../type/class');
 var classLoader = require('../type/classLoader');
-var generics = require('../translatorForJavaClass/generics');
+var generics = require('../translator/generics');
 
 var createEnv = R.concat([]);
 
@@ -67,22 +67,6 @@ var findInClass = function (name, aClass) {
     }
     return ret;
 }
-
-
-
-// var findInImport = function (typeName, aClass) {
-//     let name = typeName;
-//     if(generics.isParameterizedGenericClass(typeName)) {
-//         var ret = generics.parseClassName(typeName);
-//         name = ret.name;
-//     }
-
-//     var reg = '^((\\w+|\\$)\\.)?(\\w+\\.)*(item)$'.replace('item', name);
-//     reg = new RegExp(reg);
-
-//     var fullType = R.find((x)=>reg.test(x), aClass.import)
-//     return fullType;
-// }
 
 var findMethodReturnType = function (env, methodName, argTypes) {
     let aClass = R.takeLast(1, env)[0];

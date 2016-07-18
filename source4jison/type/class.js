@@ -57,7 +57,7 @@ class Class {
         }
 
         let aClass = classLoader.load(fullName);
-        let generics = require('../translatorForJavaClass/generics');
+        let generics = require('../translator/generics');
         if(generics.isParameterizedClassName(typeName)) {
             let ret = generics.parseClassName(typeName);
             aClass = generics.instantiate(aClass, ret.types);
@@ -82,7 +82,7 @@ class Class {
 
     findInImport (typeName) {
         let name = typeName;
-        let generics = require('../translatorForJavaClass/generics');
+        let generics = require('../translator/generics');
         if(generics.isParameterizedClassName(typeName)) {
             let ret = generics.parseClassName(typeName);
             name = ret.name;

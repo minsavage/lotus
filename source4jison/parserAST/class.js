@@ -3,7 +3,7 @@
  */
 var R = require('ramda');
 var mustache = require('mustache');
-var translatorMgr = require('./translatorMgr');
+var translatorMgr = require('./parserMgr');
 var strUtil = require('../util/strUtil');
 var createEnv = require('./envExt').createEnv;
 var addEnv = require('./envExt').add;

@@ -1,7 +1,7 @@
 'use strict'
 var R = require('ramda');
 var envExt = require('./envExt');
-var translatorMgr = require('./translatorMgr');
+var translatorMgr = require('./parserMgr');
 var mustache = require('mustache');
 
 var translate = function(env, functionSignature, ast) {

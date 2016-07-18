@@ -1,7 +1,7 @@
 /**
  * Created by danney on 16/6/26.
  */
-var translatorMgr = require('./translatorMgr');
+var translatorMgr = require('./parserMgr');
 
 var translate = function (env, ast) {
     var exp = ast.expression;

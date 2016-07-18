@@ -1,5 +1,5 @@
 'use strict'
-let translatorMgr = require('./translatorMgr');
+let translatorMgr = require('./parserMgr');
 
 let translate = function (env, ast) {
     let ret = translatorMgr.findAndTranslate(env, ast.argument);

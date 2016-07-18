@@ -1,10 +1,9 @@
 'use strict'
 var R = require('ramda');
-var envExt = require('./envExt');
+var envExt = require('../parserAST/envExt');
 var mustache = require('mustache');
-var classTranslatorMgr = require('./classTranslatorMgr');
-var javaClassTranslator = require('./javaClassTranslator');
-var generics = require('../translatorForJavaClass/generics');
+var javaClassTranslator = require('./default');
+var generics = require('./generics');
 
 var translateClassName = function (env, objClass) {
     return javaClassTranslator.translateClassName(env, objClass);

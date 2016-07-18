@@ -3,7 +3,7 @@
  */
 var R = require('ramda');
 var mustache = require('mustache');
-var translatorMgr = require('./translatorMgr');
+var translatorMgr = require('./parserMgr');
 
 var render = function (annotations, returnType, name, parameters, content) {
     var tpl = '{{annotations}}\r {{returnType}} {{name}}({{parameters}}) {\r {{content}}\r}'

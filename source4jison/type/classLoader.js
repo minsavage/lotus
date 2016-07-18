@@ -7,7 +7,7 @@ var Class = require('./class');
 var Field = require('./field');
 var Method = require('./method');
 var FuncSignature = require('./funcSignature');
-var envExt = require('../translatorForAST/envExt');
+var envExt = require('../parserAST/envExt');
 var find = envExt.find;
 var baseDir = '../meta';
 

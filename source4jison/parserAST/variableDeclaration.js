@@ -3,8 +3,8 @@
  */
 'use strict'
 var R = require('ramda');
-var translatorMgr = require('./translatorMgr');
-var classTranslatorMgr = require('./classTranslatorMgr');
+var translatorMgr = require('./parserMgr');
+var classTranslatorMgr = require('../translator/translatorMgr');
 var envExt = require('./envExt');
 var mustache = require('mustache');
 

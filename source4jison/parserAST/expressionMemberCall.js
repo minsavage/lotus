@@ -3,9 +3,9 @@
  */
 'use strict'
 var R = require('ramda');
-var translatorMgr = require('./translatorMgr');
+var translatorMgr = require('./parserMgr');
 var envExt = require('./envExt');
-var generics = require('../translatorForJavaClass/generics');
+var generics = require('../translator/generics');
 
 var translate = function (env, ast) {
     let calleeObj = ast.callee.object;
@@ -26,7 +26,7 @@ var translate = function (env, ast) {
     let method = ret[1];
     let methodReturnType = objType.loadType(method.returnType);
 
-    let classTranslatorMgr = require('./classTranslatorMgr');
+    let classTranslatorMgr = require('../translator/translatorMgr');
     let classTranslator = classTranslatorMgr.find(objType.fullName);
     let code = classTranslator.translateMethod(env, objType, objName, calleeProp.name, argsRet);
 

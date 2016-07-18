@@ -1,6 +1,6 @@
 'use strict'
 var R = require('ramda');
-var translatorMgr =require('./translatorMgr');
+var translatorMgr =require('./parserMgr');
 
 var mapArg = R.curry(function (env, ast) {
         return translatorMgr.findAndTranslate(env, ast)[0];
@@ -12,7 +12,7 @@ var translate = function (env, ast) {
     let type = ret[1];
     let args = R.map(mapArg(env), ast.arguments);
     
-    let classTranslatorMgr = require('./classTranslatorMgr');
+    let classTranslatorMgr = require('../translator/translatorMgr');
     let classTranslator = classTranslatorMgr.find(type.fullName);
     ret = classTranslator.translateMethod(env, type, null, 'new', args);
     return ret;

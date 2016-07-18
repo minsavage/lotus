@@ -2,7 +2,7 @@
  * Created by danney on 16/6/25.
  */
 var mustache = require('mustache');
-var translatorMgr = require('./translatorMgr');
+var translatorMgr = require('./parserMgr');
 
 var translate = function (field) {
     var tpl = '{{modifier}} {{type}} {{name}};'

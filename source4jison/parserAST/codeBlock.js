@@ -4,7 +4,7 @@
 'use strict'
 var R = require('ramda');
 var mustache = require('mustache');
-var translatorMgr = require('./translatorMgr');
+var translatorMgr = require('./parserMgr');
 var strUtil = require('../util/strUtil');
 
 var translateOne = R.curry(function (env, ast) {

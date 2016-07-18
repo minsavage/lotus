@@ -3,22 +3,22 @@
  */
 'use strict'
 var R = require('ramda');
-var translatorMgr = require('./translatorMgr');
-var classTranslatorMgr = require('./classTranslatorMgr');
+var parserMgr = require('./parserMgr');
+var classTranslatorMgr = require('../translator/translatorMgr');
 var envExt = require('./envExt');
 
 var translate = function (env, ast, isSetter) {
     let object = ast.object;
     let property = ast.property;
 
-    let ret = translatorMgr.findAndTranslate(env, object);
+    let ret = parserMgr.findAndTranslate(env, object);
     let objName = ret[0];
     let objType = ret[1];
 
     let field = objType.findField(property.name);
     let fieldType = objType.loadType(field.type);
 
-    let classTranslatorMgr = require('./classTranslatorMgr');
+    let classTranslatorMgr = require('../translator/translatorMgr');
     let classTranslator = classTranslatorMgr.find(objType.fullName);
     let code = classTranslator.translateFiled(objType, objName, property.name, isSetter);
     
