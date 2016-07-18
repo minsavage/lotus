@@ -672,7 +672,7 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace */
 break;
-case 1:return 46
+case 1:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 46
 break;
 case 2:return 16
 break;
@@ -740,7 +740,7 @@ case 33:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:"function\s*\(\w*\)\s*\{\s*.*?\s*\}")/,/^(?:"import")/,/^(?:"viewModels")/,/^(?:"content")/,/^(?:"units")/,/^(?:"event")/,/^(?:"bind")/,/^(?:"type")/,/^(?:"name")/,/^(?:"init")/,/^(?:"@\{.*\}")/,/^(?:"properties")/,/^(?:"defaultValue")/,/^(?:"methods")/,/^(?:"action")/,/^(?:"parameters")/,/^(?:"responsePipe")/,/^(?:"op")/,/^(?:"onSuccess")/,/^(?:"onFailure")/,/^(?:(-?([0-9]|[1-9][0-9]+))(\.[0-9]+)?([eE][-+]?[0-9]+)?\b)/,/^(?:"(?:\\[\\"bfnrt\/]|\\u[a-fA-F0-9]{4}|[^\\\0-\x09\x0a-\x1f"])*")/,/^(?:\{)/,/^(?:\})/,/^(?:\[)/,/^(?:\])/,/^(?:,)/,/^(?::)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:null\b)/,/^(?:$)/,/^(?:.)/],
+rules: [/^(?:\s+)/,/^(?:"function\s*\(\w*\)\s*\{\s*(.*\s*)*?\}")/,/^(?:"import")/,/^(?:"viewModels")/,/^(?:"content")/,/^(?:"units")/,/^(?:"event")/,/^(?:"bind")/,/^(?:"type")/,/^(?:"name")/,/^(?:"init")/,/^(?:"@\{.*\}")/,/^(?:"properties")/,/^(?:"defaultValue")/,/^(?:"methods")/,/^(?:"action")/,/^(?:"parameters")/,/^(?:"responsePipe")/,/^(?:"op")/,/^(?:"onSuccess")/,/^(?:"onFailure")/,/^(?:(-?([0-9]|[1-9][0-9]+))(\.[0-9]+)?([eE][-+]?[0-9]+)?\b)/,/^(?:"(?:\\[\\"bfnrt\/]|\\u[a-fA-F0-9]{4}|[^\\\0-\x09\x0a-\x1f"])*")/,/^(?:\{)/,/^(?:\})/,/^(?:\[)/,/^(?:\])/,/^(?:,)/,/^(?::)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:null\b)/,/^(?:$)/,/^(?:.)/],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33],"inclusive":true}}
 });
 return lexer;

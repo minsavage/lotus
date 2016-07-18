@@ -8,6 +8,7 @@ frac  "."[0-9]+
 \s+      /* skip whitespace */
 
 
+\"function\s*\(\w*\)\s*\{\s*(.*\s*)*?\}\"    yytext = yytext.substr(1,yyleng-2); return 'FUNCTION'
 \"import\"      return 'IMPORT'
 \"viewModels\"  return 'VIEWMODELS'
 \"content\"     return 'CONTENT'
@@ -18,8 +19,7 @@ frac  "."[0-9]+
 \"name\"        yytext = yytext.substr(1,yyleng-2); return 'NAME'
 \"init\"        yytext = yytext.substr(1,yyleng-2); return 'INIT'
 \"\@\{.*\}\"    yytext = yytext.substr(1,yyleng-2); return 'BINDINGPROP'
-/*function.*\(\).*\{.*?\} return 'FUNCTION'*/
-function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
+/*\"function\s*\(\w*\)\s*\{\s*.*?\s*\}\"    yytext = yytext.substr(1,yyleng-2); return 'FUNCTION'*/
 \"properties\" yytext = yytext.substr(1,yyleng-2); return 'PROPS'
 \"defaultValue\"    yytext = yytext.substr(1,yyleng-2); return 'DEFAULTVALUE'
 \"action\"    yytext = yytext.substr(1,yyleng-2); return 'ACTION'
@@ -27,7 +27,10 @@ function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
 \"insert\"    yytext = yytext.substr(1,yyleng-2); return 'INSERT'
 \"update\"    yytext = yytext.substr(1,yyleng-2); return 'UPDATE'
 \"delete\"    yytext = yytext.substr(1,yyleng-2); return 'DELETE'
-
+\"responseConverter\"    yytext = yytext.substr(1,yyleng-2); return 'RC'
+\"convertedType\"    yytext = yytext.substr(1,yyleng-2); return 'CT'
+\"actions\"    yytext = yytext.substr(1,yyleng-2); return 'ACTIONS'
+\"op\"    yytext = yytext.substr(1,yyleng-2); return 'OP'
 
 
 {int}{frac}?{exp}?\b    return 'NUMBER'
@@ -50,8 +53,8 @@ function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
 /lex
 
 %{
+    var R = require('ramda');
     var parserUtil = require('../parserUtil/operatorUtil');
-    var serviceMethods = [];
 %}
 
 %start ConfigEntry
@@ -61,10 +64,8 @@ function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
 ConfigEntry
     : '{' ConfigList '}'
         {
-            return {
-                class: yy.class,
-                serviceMethods: serviceMethods
-            }
+            parserUtil.final(yy.class);
+            return yy.class;
         }
     ;
 
@@ -121,7 +122,7 @@ Action
         {
             parserUtil.createQueryMethod(yy.class, $4);
             var method = parserUtil.createQueryMethodService($4);
-            serviceMethods.push(method);
+            yy.serviceMethods.push(method);
         }
     ;
 
@@ -144,11 +145,51 @@ ActionConfig
     | MethodConfig
     | ParametersConfig
     | responseTypeConfig
-    | responseConverter
+    | ResponseConverterConfig
     | JSONMember
     ;
 
+ResponseConverterConfig
+    : RC ':' '{' RCMemberList '}'
+        {$$ = [$1, $4]}
+    ;
 
+RCMemberList
+    : RCMember
+        {$$ = {}; $$[$1[0]] = $1[1];}
+    | RCMemberList ',' RCMember
+       {$$ = $1; $1[$3[0]] = $3[1];}
+    ;
+
+RCMember
+    : ConvertedType
+    | ResponseActions
+    ;
+
+ConvertedType
+    : CT ':' JSONString
+        {$$ = [$1, $3];}
+    ;
+
+ResponseActions
+    : ACTIONS ':' '[' ResponseActionList ']'
+        {$$ = [$1, R.join('.', $4)]}
+    ;
+
+ResponseActionList     
+    : ResponseAction
+        {$$ = [$1];}
+    | ResponseActionList ',' ResponseAction
+        {$$ = $1; $1.push($3);}
+    ;
+
+ResponseAction
+    : '{' OP ':' JSONString ',' ACTION ':' FUNCTION '}'
+        {
+            var c = {};c['op'] = $4; c['action'] = $8;
+            $$ = parserUtil.createConverter(c);
+        }
+    ;
 
 Properties
     : PROPS ':' '[' PropertyList ']'

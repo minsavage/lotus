@@ -56,7 +56,7 @@ var render = function(operatorInfo, argument, argumentInit) {
     code += argumentInit + '\r';
     code = code.trim();
 
-    var tpl = '{{name}}.{{method}}({{arg}}).map(x=>{return x.content});'
+    var tpl = '{{name}}.{{method}}({{arg}});'
     code += mustache.render(tpl, {
         name: operator,
         method: method,

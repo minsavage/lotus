@@ -6,8 +6,7 @@ module.exports = stringify = function (obj, prop) {
     var fns = [];
     var json = JSON.stringify(obj, function(key, value) {
         if (typeof value === 'function') {
-            var x = value.toString().replace(/\r|\n/g, '');
-            fns.push(x);
+            fns.push(value.toString());
             return placeholder;
         }
         return value;

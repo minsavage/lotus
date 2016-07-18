@@ -72,10 +72,13 @@ var start = function (baseDir) {
 
         var parseWithUtil = startParse(parser, util);
 
+        parser.yy.serviceMethods = [];
         var ret = R.map(parseWithUtil, models);
 
         if(key == 'operator') {
-            ret = R.map(R.prop('class'), ret);
+            var methods = parser.yy.serviceMethods;
+            var interface = util.createRemoteServiceInterface(methods);
+            ret.push(interface);
         }
         return ret;
     }
@@ -87,7 +90,8 @@ var start = function (baseDir) {
 
     x = R.zipObj(keys)(x);
 
-    m = x.viewModel[0];
+    //m = x.viewModel[0];
+    m = x.operator[4];
 
 
 
@@ -101,7 +105,7 @@ var start = function (baseDir) {
     fs.writeFileSync('test.java', ret);
 
 
-    console.log(x);
+    console.log('------------done--------------');
 }
 
 

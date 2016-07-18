@@ -7,7 +7,8 @@ frac  "."[0-9]+
 %%
 \s+      /* skip whitespace */
 
-\"function\s*\(\w*\)\s*\{\s*.*?\s*\}\"    return 'FUNCTION'
+/*\"function\s*\(\w*\)\s*\{\s*.*?\s*\}\"    return 'FUNCTION'*/
+\"function\s*\(\w*\)\s*\{\s*(.*\s*)*?\}\"    yytext = yytext.substr(1,yyleng-2); return 'FUNCTION'
 \"import\"      return 'IMPORT'
 \"viewModels\"  return 'VIEWMODELS'
 \"content\"     return 'CONTENT'
@@ -27,9 +28,6 @@ frac  "."[0-9]+
 \"op\"              yytext = yytext.substr(1,yyleng-2); return 'OP'
 \"onSuccess\"              yytext = yytext.substr(1,yyleng-2); return 'ONSUCCESS'
 \"onFailure\"              yytext = yytext.substr(1,yyleng-2); return 'ONFAILURE'
-
-
-
 
 
 

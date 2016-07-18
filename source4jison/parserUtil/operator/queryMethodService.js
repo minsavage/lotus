@@ -77,18 +77,16 @@ var makeAnnotation = R.converge(annotationWithUrl, [httpMethodAnnotation, R.prop
 
 //return type
 var observableReturnTypeForService = R.compose(
-    R.join(''),
-    R.map(x=>{return 'Observable<' + x + '>'}),
-    R.of,
+    x => 'Observable<' + x + '>',
     R.prop('responseType')
 );
 
 //build method
-var buildQueryMethodForService = (name, returnType, parameter, annotaion) => {
+var buildQueryMethodForService = (name, returnType, parameters, annotaion) => {
     var method = new Method();
     method.name = name;
     method.returnType = returnType;
-    method.parameters.push(parameter);
+    method.parameters = parameters;
     method.annotations.push(annotaion);
     return method;
 }

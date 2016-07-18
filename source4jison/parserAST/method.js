@@ -1,12 +1,17 @@
 /**
  * Created by danney on 16/6/25.
  */
+'use strict'
 var R = require('ramda');
 var mustache = require('mustache');
 var translatorMgr = require('./parserMgr');
 
 var render = function (annotations, returnType, name, parameters, content) {
     var tpl = '{{annotations}}\r {{returnType}} {{name}}({{parameters}}) {\r {{content}}\r}'
+    var tplInterface = '{{annotations}}\r {{returnType}} {{name}}({{parameters}});'
+    if(content == false) {
+        tpl = tplInterface;
+    }
 
     return mustache.render(tpl, {
         annotations: annotations,
@@ -20,7 +25,12 @@ var render = function (annotations, returnType, name, parameters, content) {
 var buildAnnotations = R.compose(R.join('\r'), R.prop('annotations'));
 
 var buildParameter = function(param) {
-    return param.type + ' ' + param.name;
+    let annos = '';
+    if(!R.isNil(param.annotations) && param.annotations.length > 0) {
+        annos = R.join(' ', param.annotations);
+        annos += ' ';
+    }
+    return annos + param.type + ' ' + param.name;
 }
 
 var buildParams = R.compose(
@@ -49,4 +59,16 @@ var translate = R.converge(
     ]
 );
 
+var translateInterface = R.converge(
+    render,
+    [
+        buildAnnotations,
+        R.prop('returnType'),
+        R.prop('name'),
+        buildParams,
+        R.always(false)
+    ]
+);
+
 exports.translate = translate;
+exports.translateInterface = translateInterface;

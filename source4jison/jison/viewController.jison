@@ -7,7 +7,7 @@ frac  "."[0-9]+
 %%
 \s+      /* skip whitespace */
 
-
+\"function\s*\(\w*\)\s*\{\s*(.*\s*)*?\}\"    yytext = yytext.substr(1,yyleng-2); return 'FUNCTION'
 \"import\"      return 'IMPORT'
 \"viewModels\"  return 'VIEWMODELS'
 \"content\"     return 'CONTENT'
@@ -20,7 +20,7 @@ frac  "."[0-9]+
 \"config\"        yytext = yytext.substr(1,yyleng-2); return 'VCCONFIG'
 \"\@\{.*\}\"    yytext = yytext.substr(1,yyleng-2); return 'BINDINGPROP'
 /*function.*\(\).*\{.*?\} return 'FUNCTION'*/
-function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
+/*function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'*/
 
 
 
@@ -169,7 +169,7 @@ EventList
     ;
 
 Event
-    : JSONString ':' JSONString
+    : JSONString ':' FUNCTION
         {$$ = [$1, $3];}
     ;
 

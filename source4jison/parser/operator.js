@@ -72,12 +72,12 @@
   }
 */
 var operator = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,9],$V1=[1,10],$V2=[1,12],$V3=[1,11],$V4=[6,8],$V5=[1,21],$V6=[1,36],$V7=[1,37],$V8=[1,35],$V9=[1,32],$Va=[1,33],$Vb=[1,34],$Vc=[1,31],$Vd=[1,43],$Ve=[1,44],$Vf=[1,45],$Vg=[1,46],$Vh=[6,8,19],$Vi=[1,52],$Vj=[1,51],$Vk=[8,19],$Vl=[1,78],$Vm=[1,79],$Vn=[1,80],$Vo=[1,81],$Vp=[1,82];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,9],$V1=[1,10],$V2=[1,12],$V3=[1,11],$V4=[6,8],$V5=[1,21],$V6=[1,36],$V7=[1,37],$V8=[1,35],$V9=[1,32],$Va=[1,33],$Vb=[1,34],$Vc=[1,31],$Vd=[1,43],$Ve=[1,44],$Vf=[1,45],$Vg=[1,46],$Vh=[6,8,19],$Vi=[1,52],$Vj=[1,51],$Vk=[8,19],$Vl=[1,78],$Vm=[1,79],$Vn=[1,80],$Vo=[1,81],$Vp=[1,84],$Vq=[1,94],$Vr=[1,95],$Vs=[1,105];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"ConfigEntry":3,"{":4,"ConfigList":5,"}":6,"Config":7,",":8,"ClassName":9,"Import":10,"Actions":11,"Type":12,"NAME":13,":":14,"JSONString":15,"IMPORT":16,"[":17,"ImportList":18,"]":19,"TYPE":20,"JSONValue":21,"ACTION":22,"ActionList":23,"Action":24,"ActionKey":25,"ActionConfigList":26,"QUERY":27,"INSERT":28,"UPDATE":29,"DELETE":30,"ActionConfig":31,"UrlConfig":32,"MethodConfig":33,"ParametersConfig":34,"responseTypeConfig":35,"responseConverter":36,"JSONMember":37,"Properties":38,"PROPS":39,"PropertyList":40,"Property":41,"PropertyMemberList":42,"PropertyMember":43,"PropertyKey":44,"DEFAULTVALUE":45,"STRING":46,"JSONNumber":47,"NUMBER":48,"JSONNullLiteral":49,"NULL":50,"JSONBooleanLiteral":51,"TRUE":52,"FALSE":53,"JSONText":54,"EOF":55,"JSONObject":56,"JSONArray":57,"BINDINGPROP":58,"JSONMemberList":59,"JSONElementList":60,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"{",6:"}",8:",",13:"NAME",14:":",16:"IMPORT",17:"[",19:"]",20:"TYPE",22:"ACTION",27:"QUERY",28:"INSERT",29:"UPDATE",30:"DELETE",32:"UrlConfig",33:"MethodConfig",34:"ParametersConfig",35:"responseTypeConfig",36:"responseConverter",39:"PROPS",45:"DEFAULTVALUE",46:"STRING",48:"NUMBER",50:"NULL",52:"TRUE",53:"FALSE",55:"EOF",58:"BINDINGPROP"},
-productions_: [0,[3,3],[5,1],[5,3],[7,1],[7,1],[7,1],[7,1],[9,3],[10,5],[18,1],[18,3],[12,3],[11,5],[23,1],[23,3],[24,5],[25,1],[25,1],[25,1],[25,1],[26,1],[26,3],[31,1],[31,1],[31,1],[31,1],[31,1],[31,1],[38,5],[40,1],[40,3],[41,3],[42,1],[42,3],[43,3],[44,1],[44,1],[44,1],[15,1],[47,1],[49,1],[51,1],[51,1],[54,2],[21,1],[21,1],[21,1],[21,1],[21,1],[21,1],[21,1],[56,2],[56,3],[37,3],[37,3],[37,3],[59,1],[59,3],[57,2],[57,3],[60,1],[60,3]],
+symbols_: {"error":2,"ConfigEntry":3,"{":4,"ConfigList":5,"}":6,"Config":7,",":8,"ClassName":9,"Import":10,"Actions":11,"Type":12,"NAME":13,":":14,"JSONString":15,"IMPORT":16,"[":17,"ImportList":18,"]":19,"TYPE":20,"JSONValue":21,"ACTION":22,"ActionList":23,"Action":24,"ActionKey":25,"ActionConfigList":26,"QUERY":27,"INSERT":28,"UPDATE":29,"DELETE":30,"ActionConfig":31,"UrlConfig":32,"MethodConfig":33,"ParametersConfig":34,"responseTypeConfig":35,"ResponseConverterConfig":36,"JSONMember":37,"RC":38,"RCMemberList":39,"RCMember":40,"ConvertedType":41,"ResponseActions":42,"CT":43,"ACTIONS":44,"ResponseActionList":45,"ResponseAction":46,"OP":47,"FUNCTION":48,"Properties":49,"PROPS":50,"PropertyList":51,"Property":52,"PropertyMemberList":53,"PropertyMember":54,"PropertyKey":55,"DEFAULTVALUE":56,"STRING":57,"JSONNumber":58,"NUMBER":59,"JSONNullLiteral":60,"NULL":61,"JSONBooleanLiteral":62,"TRUE":63,"FALSE":64,"JSONText":65,"EOF":66,"JSONObject":67,"JSONArray":68,"BINDINGPROP":69,"JSONMemberList":70,"JSONElementList":71,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"{",6:"}",8:",",13:"NAME",14:":",16:"IMPORT",17:"[",19:"]",20:"TYPE",22:"ACTION",27:"QUERY",28:"INSERT",29:"UPDATE",30:"DELETE",32:"UrlConfig",33:"MethodConfig",34:"ParametersConfig",35:"responseTypeConfig",38:"RC",43:"CT",44:"ACTIONS",47:"OP",48:"FUNCTION",50:"PROPS",56:"DEFAULTVALUE",57:"STRING",59:"NUMBER",61:"NULL",63:"TRUE",64:"FALSE",66:"EOF",69:"BINDINGPROP"},
+productions_: [0,[3,3],[5,1],[5,3],[7,1],[7,1],[7,1],[7,1],[9,3],[10,5],[18,1],[18,3],[12,3],[11,5],[23,1],[23,3],[24,5],[25,1],[25,1],[25,1],[25,1],[26,1],[26,3],[31,1],[31,1],[31,1],[31,1],[31,1],[31,1],[36,5],[39,1],[39,3],[40,1],[40,1],[41,3],[42,5],[45,1],[45,3],[46,9],[49,5],[51,1],[51,3],[52,3],[53,1],[53,3],[54,3],[55,1],[55,1],[55,1],[15,1],[58,1],[60,1],[62,1],[62,1],[65,2],[21,1],[21,1],[21,1],[21,1],[21,1],[21,1],[21,1],[67,2],[67,3],[37,3],[37,3],[37,3],[70,1],[70,3],[68,2],[68,3],[71,1],[71,3]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -85,10 +85,8 @@ var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
 
-            return {
-                class: yy.class,
-                serviceMethods: serviceMethods
-            }
+            parserUtil.final(yy.class);
+            return yy.class;
         
 break;
 case 8:
@@ -101,40 +99,55 @@ case 9:
             yy.class.import = $$[$0-1];
         
 break;
-case 10: case 14: case 30: case 61:
+case 10: case 14: case 36: case 40: case 71:
 this.$ = [$$[$0]];
 break;
 case 11:
 this.$=$$[$0-2];this.$.push($$[$0])
 break;
-case 15: case 31:
+case 15: case 41:
 this.$=$$[$0-2];this.$.push($$[$0]);
 break;
 case 16:
 
             parserUtil.createQueryMethod(yy.class, $$[$0-1]);
             var method = parserUtil.createQueryMethodService($$[$0-1]);
-            serviceMethods.push(method);
+            yy.serviceMethods.push(method);
         
 break;
-case 21: case 33: case 57:
+case 21: case 30: case 43: case 67:
 this.$ = {}; this.$[$$[$0][0]] = $$[$0][1];
 break;
-case 22: case 34: case 58:
+case 22: case 31: case 44: case 68:
 this.$ = $$[$0-2]; $$[$0-2][$$[$0][0]] = $$[$0][1];
 break;
 case 29:
+this.$ = [$$[$0-4], $$[$0-1]]
+break;
+case 34: case 45: case 64: case 65: case 66:
+this.$ = [$$[$0-2], $$[$0]];
+break;
+case 35:
+this.$ = [$$[$0-4], R.join('.', $$[$0-1])]
+break;
+case 37: case 72:
+this.$ = $$[$0-2]; $$[$0-2].push($$[$0]);
+break;
+case 38:
+
+            var c = {};c['op'] = $$[$0-5]; c['action'] = $$[$0-1];
+            this.$ = parserUtil.createConverter(c);
+        
+break;
+case 39:
 
             parserUtil.createFields(yy.class, $$[$0-1]);
         
 break;
-case 32: case 53: case 60:
+case 42: case 63: case 70:
 this.$ = $$[$0-1];
 break;
-case 35: case 54: case 55: case 56:
-this.$ = [$$[$0-2], $$[$0]];
-break;
-case 39:
+case 49:
  // replace escaped characters with actual character
           this.$ = yytext.replace(/\\(\\|")/g, "$"+"1")
                      .replace(/\\n/g,'\n')
@@ -145,33 +158,30 @@ case 39:
                      .replace(/\\b/g,'\b');
         
 break;
-case 40:
+case 50:
 this.$ = Number(yytext);
 break;
-case 41:
+case 51:
 this.$ = null;
 break;
-case 42:
+case 52:
 this.$ = true;
 break;
-case 43:
+case 53:
 this.$ = false;
 break;
-case 44:
+case 54:
 return this.$ = $$[$0-1];
 break;
-case 52:
+case 62:
 this.$ = {};
 break;
-case 59:
+case 69:
 this.$ = [];
-break;
-case 62:
-this.$ = $$[$0-2]; $$[$0-2].push($$[$0]);
 break;
 }
 },
-table: [{3:1,4:[1,2]},{1:[3]},{5:3,7:4,9:5,10:6,11:7,12:8,13:$V0,16:$V1,20:$V2,22:$V3},{6:[1,13],8:[1,14]},o($V4,[2,2]),o($V4,[2,4]),o($V4,[2,5]),o($V4,[2,6]),o($V4,[2,7]),{14:[1,15]},{14:[1,16]},{14:[1,17]},{14:[1,18]},{1:[2,1]},{7:19,9:5,10:6,11:7,12:8,13:$V0,16:$V1,20:$V2,22:$V3},{15:20,46:$V5},{17:[1,22]},{4:[1,23]},{4:$V6,15:27,17:$V7,21:24,46:$V5,47:28,48:$V8,49:25,50:$V9,51:26,52:$Va,53:$Vb,56:29,57:30,58:$Vc},o($V4,[2,3]),o($V4,[2,8]),o([6,8,14,19],[2,39]),{15:39,18:38,46:$V5},{23:40,24:41,25:42,27:$Vd,28:$Ve,29:$Vf,30:$Vg},o($V4,[2,12]),o($Vh,[2,45]),o($Vh,[2,46]),o($Vh,[2,47]),o($Vh,[2,48]),o($Vh,[2,49]),o($Vh,[2,50]),o($Vh,[2,51]),o($Vh,[2,41]),o($Vh,[2,42]),o($Vh,[2,43]),o($Vh,[2,40]),{6:[1,47],13:$Vi,15:50,20:$Vj,37:49,46:$V5,59:48},{4:$V6,15:27,17:$V7,19:[1,53],21:55,46:$V5,47:28,48:$V8,49:25,50:$V9,51:26,52:$Va,53:$Vb,56:29,57:30,58:$Vc,60:54},{8:[1,57],19:[1,56]},o($Vk,[2,10]),{6:[1,58],8:[1,59]},o($V4,[2,14]),{14:[1,60]},{14:[2,17]},{14:[2,18]},{14:[2,19]},{14:[2,20]},o($Vh,[2,52]),{6:[1,61],8:[1,62]},o($V4,[2,57]),{14:[1,63]},{14:[1,64]},{14:[1,65]},o($Vh,[2,59]),{8:[1,67],19:[1,66]},o($Vk,[2,61]),o($V4,[2,9]),{15:68,46:$V5},o($V4,[2,13]),{24:69,25:42,27:$Vd,28:$Ve,29:$Vf,30:$Vg},{4:[1,70]},o($Vh,[2,53]),{13:$Vi,15:50,20:$Vj,37:71,46:$V5},{4:$V6,15:27,17:$V7,21:72,46:$V5,47:28,48:$V8,49:25,50:$V9,51:26,52:$Va,53:$Vb,56:29,57:30,58:$Vc},{4:$V6,15:27,17:$V7,21:73,46:$V5,47:28,48:$V8,49:25,50:$V9,51:26,52:$Va,53:$Vb,56:29,57:30,58:$Vc},{4:$V6,15:27,17:$V7,21:74,46:$V5,47:28,48:$V8,49:25,50:$V9,51:26,52:$Va,53:$Vb,56:29,57:30,58:$Vc},o($Vh,[2,60]),{4:$V6,15:27,17:$V7,21:75,46:$V5,47:28,48:$V8,49:25,50:$V9,51:26,52:$Va,53:$Vb,56:29,57:30,58:$Vc},o($Vk,[2,11]),o($V4,[2,15]),{13:$Vi,15:50,20:$Vj,26:76,31:77,32:$Vl,33:$Vm,34:$Vn,35:$Vo,36:$Vp,37:83,46:$V5},o($V4,[2,58]),o($V4,[2,54]),o($V4,[2,55]),o($V4,[2,56]),o($Vk,[2,62]),{6:[1,84],8:[1,85]},o($V4,[2,21]),o($V4,[2,23]),o($V4,[2,24]),o($V4,[2,25]),o($V4,[2,26]),o($V4,[2,27]),o($V4,[2,28]),o($V4,[2,16]),{13:$Vi,15:50,20:$Vj,31:86,32:$Vl,33:$Vm,34:$Vn,35:$Vo,36:$Vp,37:83,46:$V5},o($V4,[2,22])],
+table: [{3:1,4:[1,2]},{1:[3]},{5:3,7:4,9:5,10:6,11:7,12:8,13:$V0,16:$V1,20:$V2,22:$V3},{6:[1,13],8:[1,14]},o($V4,[2,2]),o($V4,[2,4]),o($V4,[2,5]),o($V4,[2,6]),o($V4,[2,7]),{14:[1,15]},{14:[1,16]},{14:[1,17]},{14:[1,18]},{1:[2,1]},{7:19,9:5,10:6,11:7,12:8,13:$V0,16:$V1,20:$V2,22:$V3},{15:20,57:$V5},{17:[1,22]},{4:[1,23]},{4:$V6,15:27,17:$V7,21:24,57:$V5,58:28,59:$V8,60:25,61:$V9,62:26,63:$Va,64:$Vb,67:29,68:30,69:$Vc},o($V4,[2,3]),o($V4,[2,8]),o([6,8,14,19],[2,49]),{15:39,18:38,57:$V5},{23:40,24:41,25:42,27:$Vd,28:$Ve,29:$Vf,30:$Vg},o($V4,[2,12]),o($Vh,[2,55]),o($Vh,[2,56]),o($Vh,[2,57]),o($Vh,[2,58]),o($Vh,[2,59]),o($Vh,[2,60]),o($Vh,[2,61]),o($Vh,[2,51]),o($Vh,[2,52]),o($Vh,[2,53]),o($Vh,[2,50]),{6:[1,47],13:$Vi,15:50,20:$Vj,37:49,57:$V5,70:48},{4:$V6,15:27,17:$V7,19:[1,53],21:55,57:$V5,58:28,59:$V8,60:25,61:$V9,62:26,63:$Va,64:$Vb,67:29,68:30,69:$Vc,71:54},{8:[1,57],19:[1,56]},o($Vk,[2,10]),{6:[1,58],8:[1,59]},o($V4,[2,14]),{14:[1,60]},{14:[2,17]},{14:[2,18]},{14:[2,19]},{14:[2,20]},o($Vh,[2,62]),{6:[1,61],8:[1,62]},o($V4,[2,67]),{14:[1,63]},{14:[1,64]},{14:[1,65]},o($Vh,[2,69]),{8:[1,67],19:[1,66]},o($Vk,[2,71]),o($V4,[2,9]),{15:68,57:$V5},o($V4,[2,13]),{24:69,25:42,27:$Vd,28:$Ve,29:$Vf,30:$Vg},{4:[1,70]},o($Vh,[2,63]),{13:$Vi,15:50,20:$Vj,37:71,57:$V5},{4:$V6,15:27,17:$V7,21:72,57:$V5,58:28,59:$V8,60:25,61:$V9,62:26,63:$Va,64:$Vb,67:29,68:30,69:$Vc},{4:$V6,15:27,17:$V7,21:73,57:$V5,58:28,59:$V8,60:25,61:$V9,62:26,63:$Va,64:$Vb,67:29,68:30,69:$Vc},{4:$V6,15:27,17:$V7,21:74,57:$V5,58:28,59:$V8,60:25,61:$V9,62:26,63:$Va,64:$Vb,67:29,68:30,69:$Vc},o($Vh,[2,70]),{4:$V6,15:27,17:$V7,21:75,57:$V5,58:28,59:$V8,60:25,61:$V9,62:26,63:$Va,64:$Vb,67:29,68:30,69:$Vc},o($Vk,[2,11]),o($V4,[2,15]),{13:$Vi,15:50,20:$Vj,26:76,31:77,32:$Vl,33:$Vm,34:$Vn,35:$Vo,36:82,37:83,38:$Vp,57:$V5},o($V4,[2,68]),o($V4,[2,64]),o($V4,[2,65]),o($V4,[2,66]),o($Vk,[2,72]),{6:[1,85],8:[1,86]},o($V4,[2,21]),o($V4,[2,23]),o($V4,[2,24]),o($V4,[2,25]),o($V4,[2,26]),o($V4,[2,27]),o($V4,[2,28]),{14:[1,87]},o($V4,[2,16]),{13:$Vi,15:50,20:$Vj,31:88,32:$Vl,33:$Vm,34:$Vn,35:$Vo,36:82,37:83,38:$Vp,57:$V5},{4:[1,89]},o($V4,[2,22]),{39:90,40:91,41:92,42:93,43:$Vq,44:$Vr},{6:[1,96],8:[1,97]},o($V4,[2,30]),o($V4,[2,32]),o($V4,[2,33]),{14:[1,98]},{14:[1,99]},o($V4,[2,29]),{40:100,41:92,42:93,43:$Vq,44:$Vr},{15:101,57:$V5},{17:[1,102]},o($V4,[2,31]),o($V4,[2,34]),{4:$Vs,45:103,46:104},{8:[1,107],19:[1,106]},o($Vk,[2,36]),{47:[1,108]},o($V4,[2,35]),{4:$Vs,46:109},{14:[1,110]},o($Vk,[2,37]),{15:111,57:$V5},{8:[1,112]},{22:[1,113]},{14:[1,114]},{48:[1,115]},{6:[1,116]},o($Vk,[2,38])],
 defaultActions: {13:[2,1],43:[2,17],44:[2,18],45:[2,19],46:[2,20]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
@@ -324,8 +334,8 @@ parse: function parse(input) {
     return true;
 }};
 
+    var R = require('ramda');
     var parserUtil = require('../parserUtil/operatorUtil');
-    var serviceMethods = [];
 /* generated by jison-lex 0.3.4 */
 var lexer = (function(){
 var lexer = ({
@@ -656,31 +666,31 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace */
 break;
-case 1:return 16
+case 1:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 48
 break;
-case 2:return 'VIEWMODELS'
+case 2:return 16
 break;
-case 3:return 'CONTENT'
+case 3:return 'VIEWMODELS'
 break;
-case 4:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'UNITS'
+case 4:return 'CONTENT'
 break;
-case 5:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'EVENT'
+case 5:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'UNITS'
 break;
-case 6:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'BIND'
+case 6:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'EVENT'
 break;
-case 7:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 20
+case 7:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'BIND'
 break;
-case 8:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 13
+case 8:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 20
 break;
-case 9:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'INIT'
+case 9:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 13
 break;
-case 10:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 58
+case 10:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 'INIT'
 break;
-case 11:return 'FUNCTION'
+case 11:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 69
 break;
-case 12:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 39
+case 12:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 50
 break;
-case 13:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 45
+case 13:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 56
 break;
 case 14:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 22
 break;
@@ -692,36 +702,44 @@ case 17:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 29
 break;
 case 18:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 30
 break;
-case 19:return 48
+case 19:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 38
 break;
-case 20:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 46
+case 20:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 43
 break;
-case 21:return 4
+case 21:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 44
 break;
-case 22:return 6
+case 22:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 47
 break;
-case 23:return 17
+case 23:return 59
 break;
-case 24:return 19
+case 24:yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 57
 break;
-case 25:return 8
+case 25:return 4
 break;
-case 26:return 14
+case 26:return 6
 break;
-case 27:return 52
+case 27:return 17
 break;
-case 28:return 53
+case 28:return 19
 break;
-case 29:return 50
+case 29:return 8
 break;
-case 30:return 55
+case 30:return 14
 break;
-case 31:return 'INVALID'
+case 31:return 63
+break;
+case 32:return 64
+break;
+case 33:return 61
+break;
+case 34:return 66
+break;
+case 35:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:"import")/,/^(?:"viewModels")/,/^(?:"content")/,/^(?:"units")/,/^(?:"event")/,/^(?:"bind")/,/^(?:"type")/,/^(?:"name")/,/^(?:"init")/,/^(?:"@\{.*\}")/,/^(?:function\s*\(\)\s*\{\s*.*?\s*\})/,/^(?:"properties")/,/^(?:"defaultValue")/,/^(?:"action")/,/^(?:"query")/,/^(?:"insert")/,/^(?:"update")/,/^(?:"delete")/,/^(?:(-?([0-9]|[1-9][0-9]+))(\.[0-9]+)?([eE][-+]?[0-9]+)?\b)/,/^(?:"(?:\\[\\"bfnrt\/]|\\u[a-fA-F0-9]{4}|[^\\\0-\x09\x0a-\x1f"])*")/,/^(?:\{)/,/^(?:\})/,/^(?:\[)/,/^(?:\])/,/^(?:,)/,/^(?::)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:null\b)/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:"function\s*\(\w*\)\s*\{\s*(.*\s*)*?\}")/,/^(?:"import")/,/^(?:"viewModels")/,/^(?:"content")/,/^(?:"units")/,/^(?:"event")/,/^(?:"bind")/,/^(?:"type")/,/^(?:"name")/,/^(?:"init")/,/^(?:"@\{.*\}")/,/^(?:"properties")/,/^(?:"defaultValue")/,/^(?:"action")/,/^(?:"query")/,/^(?:"insert")/,/^(?:"update")/,/^(?:"delete")/,/^(?:"responseConverter")/,/^(?:"convertedType")/,/^(?:"actions")/,/^(?:"op")/,/^(?:(-?([0-9]|[1-9][0-9]+))(\.[0-9]+)?([eE][-+]?[0-9]+)?\b)/,/^(?:"(?:\\[\\"bfnrt\/]|\\u[a-fA-F0-9]{4}|[^\\\0-\x09\x0a-\x1f"])*")/,/^(?:\{)/,/^(?:\})/,/^(?:\[)/,/^(?:\])/,/^(?:,)/,/^(?::)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:null\b)/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35],"inclusive":true}}
 });
 return lexer;
 })();

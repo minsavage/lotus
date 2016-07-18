@@ -177,7 +177,7 @@ var final = function(vcClass) {
 }
 
 var stringFuncToAST = function (code) {
-    var reg = /function\s*\(\)\s*\{\s*(.*)\s*\}/g;
+    var reg = /function\s*\(\w*\)\s*\{\s*((.*\s*)*)\}/g;
     if(reg.test(code)) {
         code = RegExp.$1;
     }

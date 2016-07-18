@@ -47,14 +47,29 @@ var pathParametersInitIfExist = R.ifElse(R.has('path'), pathParametersInit, R.al
 var initParameter = R.compose(pathParametersInitIfExist, parametersConfigGrouped);
 
 //build code for call query service
-var renderServiceCallingCode = function (args) {
-    var codeTpl =   'var service = RemoteOperatorServiceUtil.getService();' +
-                    'return service.querQueryPost({{args}})';
+var renderServiceCallingCode = function (args, responseConverter) {
+    /*
+        var service = RemoteOperatorServiceUtil.getService();
+        return service.querQueryPost(param).map(x=>x.content);
+    */
+    var tpl = 'native(\'{{code}}\', \'{{returnType}}\')\r';
+    var codeROSU = 'RemoteOperatorServiceUtil.getService()';
+    codeROSU = mustache.render(tpl, {code: codeROSU, returnType: 'RemoteOperatorService'});
 
-    return mustache.render(codeTpl, {args: args});
+    var code = 'var service = ' + codeROSU + 
+               'return service.querQueryPost({{args}})';
+    
+    if(!R.isNil(responseConverter)) {
+        code += '.' + responseConverter;
+    }                    
+
+    return mustache.render(code, {args: args});
 }
 
-var serviceCallingCode = R.compose(renderServiceCallingCode, makeMethodCallArguments);
+var serviceCallingCode = R.converge(
+    renderServiceCallingCode, 
+    [makeMethodCallArguments, R.path(['responseConverter', 'actions']) ]
+)
 
 //final make
 var makeBody = R.compose(

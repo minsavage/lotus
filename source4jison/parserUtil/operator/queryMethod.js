@@ -11,12 +11,9 @@ var queryMethodName = common.queryMethodName;
 var parametersConfigGrouped = common.parametersConfigGrouped;
 
 //build return type
-var returnTypeWithPath = R.pathOr(R.__, ['responseConverter', 'convertedType']);
-var returnType = R.converge(returnTypeWithPath, [R.prop('responseType'), R.always]);
+var returnType = R.pathOr(R.prop('responseType'), ['responseConverter', 'convertedType']);
 var observableReturnType = R.compose(
-    R.join(''),
-    R.map(x=>{return 'Observable<' + x + '>'}),
-    R.of,
+    x => 'Observable<' + x + '>',
     returnType
 );
 
