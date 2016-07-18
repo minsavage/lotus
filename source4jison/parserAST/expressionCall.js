@@ -46,7 +46,8 @@ var native = function (env, ast) {
     let code = ast.arguments[0].value;
     let returnType = null;
     if(!R.isNil(ast.arguments[1])) {
-        returnType = envExt.find(ast.arguments[1].value);
+        let ret = ast.arguments[1].value;
+        returnType = envExt.find(env, ret);
     }
     return [code, returnType];
 }

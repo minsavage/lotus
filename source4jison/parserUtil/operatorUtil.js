@@ -17,6 +17,7 @@ var createQueryMethod = function (aClass, model) {
     aClass.addMethod(queryMethod.make(model));
     aClass.import.push('system.rx.Observable');
     aClass.import.push('system.type.HashMap');
+    aClass.import.push('$.operator.RemoteOperatorService');
 }
 
 var createQueryMethodService = function (model) {

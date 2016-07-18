@@ -30,7 +30,7 @@ var pathParameters = R.compose(
 var bodyParameter = function() {
     var para = new Parameter();
     para.name = 'parameters';
-    para.type = 'Map<String, Object>';
+    para.type = 'HashMap<string, object>';
     para.annotations.push('@Body');
     return para;
 }
@@ -38,7 +38,7 @@ var bodyParameter = function() {
 var queryMapParameter = function() {
     var para = new Parameter();
     para.name = 'parameters';
-    para.type = 'Map<String, Object>';
+    para.type = 'HashMap<string, object>';
     para.annotations.push('@QueryMap');
     return para;
 }

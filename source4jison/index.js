@@ -78,6 +78,11 @@ var start = function (baseDir) {
         if(key == 'operator') {
             var methods = parser.yy.serviceMethods;
             var interface = util.createRemoteServiceInterface(methods);
+            var importList = R.map(R.prop('import'))(ret);
+            var r = R.flatten(importList);
+            r = R.sort((x,y)=>x>y, r);
+            r = R.dropRepeats(r);
+            interface.import = r;
             ret.push(interface);
         }
         return ret;
@@ -91,9 +96,7 @@ var start = function (baseDir) {
     x = R.zipObj(keys)(x);
 
     //m = x.viewModel[0];
-    m = x.operator[4];
-
-
+    m = x.operator[0];
 
 
     var classLoader = require('./type/classLoader');

@@ -3,7 +3,9 @@
  */
 module.exports = {
     name: 'Array',
-    fields: [
-
-    ]
+    generics: {
+        parameters:['T']
+    },
+    fields: [],
+    methods:[]
 }

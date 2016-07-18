@@ -7,7 +7,6 @@ var Parameter = require('../../type/parameter');
 var common = require('./common');
 var makeMethodBody = require('./methodBody').makeBody;
 var mergeThree = common.mergeThree;
-var queryMethodName = common.queryMethodName;
 var parametersConfigGrouped = common.parametersConfigGrouped;
 
 //build return type

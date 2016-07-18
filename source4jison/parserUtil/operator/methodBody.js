@@ -5,6 +5,7 @@ var R = require('ramda');
 var mustache = require('mustache');
 var common = require('./common');
 var parametersConfigGrouped = common.parametersConfigGrouped;
+var queryMethodName = common.queryMethodName;
 var mergeTwo = common.mergeTwo;
 var mergeThree = common.mergeThree;
 var trace = common.trace;
@@ -47,7 +48,7 @@ var pathParametersInitIfExist = R.ifElse(R.has('path'), pathParametersInit, R.al
 var initParameter = R.compose(pathParametersInitIfExist, parametersConfigGrouped);
 
 //build code for call query service
-var renderServiceCallingCode = function (args, responseConverter) {
+var renderServiceCallingCode = function (methodName, args, responseConverter) {
     /*
         var service = RemoteOperatorServiceUtil.getService();
         return service.querQueryPost(param).map(x=>x.content);
@@ -57,18 +58,22 @@ var renderServiceCallingCode = function (args, responseConverter) {
     codeROSU = mustache.render(tpl, {code: codeROSU, returnType: 'RemoteOperatorService'});
 
     var code = 'var service = ' + codeROSU + 
-               'return service.querQueryPost({{args}})';
+               'return service.{{methodName}}({{args}})';
     
     if(!R.isNil(responseConverter)) {
         code += '.' + responseConverter;
     }                    
 
-    return mustache.render(code, {args: args});
+    return mustache.render(code, {methodName: methodName, args: args});
 }
 
 var serviceCallingCode = R.converge(
     renderServiceCallingCode, 
-    [makeMethodCallArguments, R.path(['responseConverter', 'actions']) ]
+    [
+        queryMethodName,            
+        makeMethodCallArguments, 
+        R.path(['responseConverter', 'actions']) 
+    ]
 )
 
 //final make

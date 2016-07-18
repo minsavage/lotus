@@ -5,6 +5,8 @@ var Method = require('../type/method');
 var Class = require('../type/class');
 var FuncSignature = require('../type/funcSignature');
 
+let genericReg = '^(\\w+)<(.+(\\s*,\\s*.+)*)>$';
+
 let instantiate = function(aClass, instantiatedTypes) {
     let pairs = null;
     let type = R.type(instantiatedTypes);
@@ -40,7 +42,7 @@ let isGenericClass = function(aClass) {
 }
 
 let isParameterizedClassName = function(name) {
-    let reg = /^(\w+)<(\w+(\s*,\s*\w+)*)>$/g;
+    let reg = new RegExp(genericReg);
     return reg.test(name);
 }
 
@@ -67,7 +69,7 @@ var isGenericType = R.curry(function (genericType, type) {
         return true;
     }
 
-    let reg = /^\w+<(\w+(\s*,\s*\w+)*)>$/g;
+    let reg = new RegExp(genericReg);
     if(!reg.test(type)) {
         return false;
     }
@@ -80,7 +82,7 @@ var isGenericType = R.curry(function (genericType, type) {
         R.split(',')
     );
     let v = RegExp.$1;
-    let ret = testNested(RegExp.$1);
+    let ret = testNested(RegExp.$2);
     return ret;
 });
 
@@ -137,7 +139,7 @@ let instantiateType = R.curry(function(genericType, instantiatedType, type) {
         return instantiatedType;
     }
 
-    let reg = /^(\w+)<(\w+(\s*,\s*\w+)*)>$/g;
+    let reg = new RegExp(genericReg);
     if(!reg.test(type)) {
         throw 'can not found generic type: ' + type;
     }
@@ -175,7 +177,7 @@ let getParameterizedClassName = function (aClass, name) {
 }
 
 var parseClassName  = function(name) {
-    let reg = /^(\w+)<(\w+(\s*,\s*\w+)*)>$/g;
+    let reg = new RegExp(genericReg);
     if(!reg.test(name)) {
         throw 'can not found generic types: ' + name;
     }
@@ -191,7 +193,9 @@ let getValueOfTypeParameterFrom = function (typeParam, genericType, parameterize
         return parameterizedType;
     }
 
-    let reg = /^(\w+)<(\w+(\s*,\s*\w+)*)>$/;
+    //let reg = /^(\w+)<(\w+(\s*,\s*\w+)*)>$/;
+    //todo ：这里貌似有一些问题，如果嵌套更深的泛型会不会有问题？
+    let reg = new RegExp(genericReg);
     if(!reg.test(parameterizedType)) {
         return null;
     }
