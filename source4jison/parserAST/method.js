@@ -4,7 +4,9 @@
 'use strict'
 var R = require('ramda');
 var mustache = require('mustache');
-var translatorMgr = require('./parserMgr');
+var parserMgr = require('./parserMgr');
+var translatorMgr = require('../translator/translatorMgr');
+var envExt = require('./envExt');
 
 var render = function (annotations, returnType, name, parameters, content) {
     var tpl = '{{annotations}}\r {{returnType}} {{name}}({{parameters}}) {\r {{content}}\r}'
@@ -24,23 +26,37 @@ var render = function (annotations, returnType, name, parameters, content) {
 
 var buildAnnotations = R.compose(R.join('\r'), R.prop('annotations'));
 
-var buildParameter = function(param) {
-    let annos = '';
-    if(!R.isNil(param.annotations) && param.annotations.length > 0) {
-        annos = R.join(' ', param.annotations);
-        annos += ' ';
+var parsrParameter = R.curry(function(env, param) {
+    let javaTypeName = null;
+    try {
+        let type = envExt.find(env, param.type);
+        let translator = translatorMgr.find(type.fullName);
+        javaTypeName = translator.translateClassName(env, type);
     }
-    return annos + param.type + ' ' + param.name;
+    catch(err) {
+        javaTypeName = param.type;
+    }
+    
+    if(R.length(param.annotations) > 0) {
+        let annos = R.join(' ', param.annotations);
+        javaTypeName = annos + ' ' + javaTypeName;
+    }
+
+    return javaTypeName + ' ' + param.name;
+});
+
+var parseParams = function (method, env) {
+    let parsrParameterWithEnv = parsrParameter(env);
+    var start = R.compose(
+        R.join(', '),
+        R.map(parsrParameterWithEnv),
+        R.prop('parameters')
+    );
+    return start(method);
 }
 
-var buildParams = R.compose(
-    R.join(', '),
-    R.map(buildParameter),
-    R.prop('parameters')
-);
-
 var buildCodeBlock = function(env, body) {
-    return translatorMgr.find('codeBlock').translate(env, body)[0];
+    return parserMgr.find('codeBlock').translate(env, body)[0];
 }
 
 var buildBody = R.converge(
@@ -48,13 +64,19 @@ var buildBody = R.converge(
     [R.nthArg(1), R.prop('body')]
 );
 
+var parseReturnType = function (method, env) {
+    let type = envExt.find(env, method.returnType);
+    let translator = translatorMgr.find(type.fullName);
+    return translator.translateClassName(env, type);
+}
+
 var translate = R.converge(
     render,
     [
         buildAnnotations,
-        R.prop('returnType'),
+        parseReturnType,
         R.prop('name'),
-        buildParams,
+        parseParams,
         buildBody
     ]
 );
@@ -63,9 +85,9 @@ var translateInterface = R.converge(
     render,
     [
         buildAnnotations,
-        R.prop('returnType'),
+        parseReturnType,
         R.prop('name'),
-        buildParams,
+        parseParams,
         R.always(false)
     ]
 );

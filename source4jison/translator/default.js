@@ -74,12 +74,8 @@ let translateGenericClassName = function (env, name) {
     let getNewName = R.pipe(
         R.prop('types'),
         R.map(mapToJavaClassName),
-        R.tap(x=>console.log(x)),
         R.join(', '),
-        R.of,
-        R.map(x=>className + '<' + x + '>'),
-        
-        R.join('')
+        x => className + '<' + x + '>'
     );
 
     return getNewName(ret);
@@ -92,14 +88,6 @@ let translateImport = function (pkgName, importLine) {
     }
     else {
         throw 'can not support to translate import: ' + importLine;
-
-        // let transaltor = translatorMgr.find(importLine);
-        // if(transaltor == this) {
-            
-        // }
-        // else {
-        //     return transaltor.translateImport(pkgName, importLine);
-        // }
     }
 }
 
