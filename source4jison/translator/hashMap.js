@@ -55,5 +55,10 @@ let handleGetMethod = function (env, objClass, objName, methodName, args) {
     }
 }
 
+let translateImport = function (pkgName, importLine) {
+    return 'java.util.HashMap';
+}
+
 exports.translateMethod = translateMethod;
 exports.translateClassName = translateClassName;
+exports.translateImport = translateImport;

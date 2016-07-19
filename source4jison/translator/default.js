@@ -2,15 +2,15 @@
  * Created by danney on 16/7/8.
  */
 'use strict'
-var R = require('ramda');
-var mustache = require('mustache');
-var envExt = require('../parserAST/envExt');
-var codeGenUtil = require('../util/codeGenUtil');
-var classLoader = require('../type/classLoader');
-var classTranslatorMgr = require('./translatorMgr');
-var generics = require('./generics');
+let R = require('ramda');
+let mustache = require('mustache');
+let envExt = require('../parserAST/envExt');
+let codeGenUtil = require('../util/codeGenUtil');
+let classLoader = require('../type/classLoader');
+let translatorMgr = require('./translatorMgr');
+let generics = require('./generics');
 
-var translateClassName = function (env, objClass) {
+let translateClassName = function (env, objClass) {
     let name = objClass.name;
     if(classLoader.isBuiltInType(name)) {
         return translateBulitInClassName(name);
@@ -23,7 +23,7 @@ var translateClassName = function (env, objClass) {
     }
 }
 
-var translateFiled = function (objClass, objName, fieldName, isSetter) {
+let translateFiled = function (objClass, objName, fieldName, isSetter) {
     let field = objClass.findField(fieldName);
     if(field.isProperty == true) {
         return codeGenUtil.genGetterCall(objName, fieldName)
@@ -33,9 +33,9 @@ var translateFiled = function (objClass, objName, fieldName, isSetter) {
     }
 }
 
-var translateMethod = function (env, objClass, objName, methodName, args) {
+let translateMethod = function (env, objClass, objName, methodName, args) {
     let argsStr = R.join(', ')(R.map(R.nth(0), args))
-    var tpl = '{{name}}.{{method}}({{args}})'
+    let tpl = '{{name}}.{{method}}({{args}})'
     return mustache.render(tpl, {
         name: objName,
         method: methodName,
@@ -43,7 +43,7 @@ var translateMethod = function (env, objClass, objName, methodName, args) {
     })
 }
 
-var translateBulitInClassName = function (name) {
+let translateBulitInClassName = function (name) {
     switch (name) {
         case 'int':
             return 'Integer';
@@ -61,17 +61,17 @@ var translateBulitInClassName = function (name) {
     }
 }
 
-var translateGenericClassName = function (env, name) {
-    var ret = generics.parseClassName(name);
-    var className = ret.name;
+let translateGenericClassName = function (env, name) {
+    let ret = generics.parseClassName(name);
+    let className = ret.name;
 
-    var mapToJavaClassName = function (name) {
+    let mapToJavaClassName = function (name) {
         let aClass = envExt.find(env, name);
-        var translator = classTranslatorMgr.find(aClass.fullName);
+        let translator = translatorMgr.find(aClass.fullName);
         return translator.translateClassName(env, aClass);
     }
 
-    var getNewName = R.pipe(
+    let getNewName = R.pipe(
         R.prop('types'),
         R.map(mapToJavaClassName),
         R.tap(x=>console.log(x)),
@@ -85,7 +85,25 @@ var translateGenericClassName = function (env, name) {
     return getNewName(ret);
 }
 
+let translateImport = function (pkgName, importLine) {
+    var reg = /^\$(\..*)/g;
+    if(reg.test(importLine)) {
+        return pkgName + RegExp.$1;
+    }
+    else {
+        throw 'can not support to translate import: ' + importLine;
+
+        // let transaltor = translatorMgr.find(importLine);
+        // if(transaltor == this) {
+            
+        // }
+        // else {
+        //     return transaltor.translateImport(pkgName, importLine);
+        // }
+    }
+}
 
 exports.translateClassName = translateClassName;
 exports.translateFiled = translateFiled;
 exports.translateMethod = translateMethod;
+exports.translateImport = translateImport;

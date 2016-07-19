@@ -8,6 +8,7 @@ var getMap = function () {
     return {
         'system.type.HashMap': require('./hashMap'),
         'system.type.Array': require('./Array'),
+        'system.rx.Observable': require('./Observable')
     }
 }
 

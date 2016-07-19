@@ -27,6 +27,10 @@ var translateMethod = function (env, objClass, objName, methodName, args) {
     }
 }
 
+let translateImport = function (pkgName, importLine) {
+    return 'java.util.ArrayList';
+}
+
 // var handleNewMethod = function (env, objClass, objName, methodName, args) {
 //     if(args.length < 2) {
 //         throw 'HashMap constructor arguments error, the first and second type should be generics type';
@@ -63,3 +67,4 @@ var translateMethod = function (env, objClass, objName, methodName, args) {
 
 exports.translateMethod = translateMethod;
 exports.translateClassName = translateClassName;
+exports.translateImport = translateImport;

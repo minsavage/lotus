@@ -8,6 +8,7 @@ let parserMgr = require('./parserMgr');
 let strUtil = require('../util/strUtil');
 let createEnv = require('./envExt').createEnv;
 let addEnv = require('./envExt').add;
+let translatorMgr = require('../translator/translatorMgr');
 
 let render = function(name, fields, methods, superClass, type) {
     if(strUtil.isNotEmpty(superClass)) {
@@ -20,7 +21,7 @@ let render = function(name, fields, methods, superClass, type) {
 
     let content = R.trim(fields + '\r' + methods);
 
-    let tpl = 'public {{class}} {{name}}\r{\r {{content}} \r}'
+    let tpl = 'public {{class}} {{name}} {\r {{content}} \r}'
     return mustache.render(tpl, {
         class: type,
         name: name,
@@ -62,20 +63,29 @@ let parseMethods = function(aClass) {
     return ret;
 }
 
-let fieldParser = parserMgr.find('field');
-
 let parseFields = function (aClass) {
+    let fieldParser = parserMgr.find('field');
     let parseField = fieldParser.parse(createEnv(aClass));
     let start = R.compose(R.join('\r'), R.map(parseField), R.prop('fields'));
     return start(aClass);
 }
 
+let parseImport = function (importLines) {
+    let mapImport = function(line){
+        let translator = translatorMgr.find(line);
+        translator.translateImport(line);
+    }
+
+    let ret = R.map(mapImport, importLines);
+    return ret;
+}
+
 let parse = R.converge(
     render, 
     [
-        R.prop('name'), 
+        R.prop('name'),
         parseFields, 
-        parseMethods, 
+        parseMethods,
         R.prop('superClass'),
         R.prop('type')
     ]

@@ -6,7 +6,7 @@ let R = require('ramda');
 let fs = require('fs');
 let pathUtil = require('path');
 let stringify = require('./util/stringify');
-var mkdirp = require('mkdirp');
+let mkdirp = require('mkdirp');
 
 let keys = ['model', 'operator', 'viewModel', 'viewController'];
 
@@ -79,7 +79,7 @@ let parseModelsByKey = R.curry(function (modelsContainer, parsers, key) {
     return ret;
 });
 
-let start = function (baseDir, outputDir) {
+let start = function (baseDir, outputDir, pkgName) {
     let modelsContainer = loadModels(baseDir);
     let parsers = initParsers();
     let ret = R.map(parseModelsByKey(modelsContainer, parsers), keys);
@@ -90,7 +90,7 @@ let start = function (baseDir, outputDir) {
 
     ret = R.map(function(astList){
         let names = R.map(R.prop('name'), astList);
-        let codes = R.map(parseAST, astList)
+        let codes = R.map(parseAST(pkgName), astList);
         let ret = R.zip(names, codes);
         return ret;
     }, ret)
@@ -103,10 +103,15 @@ let start = function (baseDir, outputDir) {
     console.log('------------done--------------');
 }
 
-let parseAST = function(ast) {
+let parseAST = R.curry(function(pkgName, ast) {
     let parse = require('./parserAST/class').parse;
-    return parse(ast);
-}
+    let code = parse(ast);
+
+    let parseImport = require('./parserAST/import').parse;
+    let imports = parseImport(pkgName, ast.import);
+    
+    return R.trim(imports + '\r\r' + code);
+});
 
 let writeFiles = R.curry(function (baseDir, pair) {
     let key = pair[0];
@@ -134,4 +139,5 @@ let writeFile = R.curry(function (dir, pkgName, pair) {
 
 let projectDir = '../project/ich0521';
 let outputDir = '../output/ich0719/ich/app/src/main/java/com/y2go/ich';
-start(projectDir, outputDir);
+let pkgName = 'com.y2go.ich';
+start(projectDir, outputDir, pkgName);
