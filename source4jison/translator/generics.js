@@ -1,10 +1,10 @@
 'use strict'
-var R = require('ramda');
-var mustache = require('mustache');
-var Method = require('../type/method');
-var Class = require('../type/class');
-var FuncSignature = require('../type/funcSignature');
-
+let R = require('ramda');
+let mustache = require('mustache');
+let Method = require('../type/method');
+let Class = require('../type/class');
+let FuncSignature = require('../type/funcSignature');
+let strUtil = require('../util/strUtil');
 let genericReg = '^(\\w+)<(.+(\\s*,\\s*.+)*)>$';
 
 let instantiate = function(aClass, instantiatedTypes) {
@@ -78,10 +78,8 @@ var isGenericType = R.curry(function (genericType, type) {
         R.not,
         R.isNil,
         R.find(R.equals(genericType)),
-        R.map(R.trim), 
-        R.split(',')
+        strUtil.splitWithTrim(',')
     );
-    let v = RegExp.$1;
     let ret = testNested(RegExp.$2);
     return ret;
 });
@@ -145,8 +143,7 @@ let instantiateType = R.curry(function(genericType, instantiatedType, type) {
     }
 
     let getInNested = R.pipe(
-        R.split(','),
-        R.map(R.trim),
+        strUtil.splitWithTrim(','),
         R.map((x)=>x == genericType ? instantiatedType : x),
         getParameterizedName(RegExp.$1)
     );
@@ -184,7 +181,7 @@ var parseClassName  = function(name) {
 
     return {
         name: RegExp.$1,
-        types: R.map(R.trim, R.split(',', RegExp.$2))
+        types: strUtil.splitWithTrim(',', RegExp.$2)
     }
 }
 
@@ -193,28 +190,24 @@ let getValueOfTypeParameterFrom = function (typeParam, genericType, parameterize
         return parameterizedType;
     }
 
-    //let reg = /^(\w+)<(\w+(\s*,\s*\w+)*)>$/;
-    //todo ：这里貌似有一些问题，如果嵌套更深的泛型会不会有问题？
     let reg = new RegExp(genericReg);
     if(!reg.test(parameterizedType)) {
         return null;
     }
-    let types = R.split(',', RegExp.$2);
-    types = R.map(R.trim, types);
+
+    let types = strUtil.splitWithTrim(',', RegExp.$2)
 
     if(!reg.test(genericType)) {
         return null;
     }
 
     let getInNested = R.pipe(
-        R.split(','),
-        R.map(R.trim),
+        strUtil.splitWithTrim(','),
         R.findIndex(R.equals(typeParam)),
         R.nth(R.__, types)
     );
     return getInNested(RegExp.$2);
 }
-
 
 exports.instantiate = instantiate;
 exports.isGenericClass = isGenericClass;

@@ -2,6 +2,7 @@
  * Created by danney on 16/6/26.
  */
 var util = require('util');
+var R = require('ramda');
 
 var isNotEmpty = function(str) {
     if(util.isString(str) && str.length > 0) {
@@ -32,7 +33,10 @@ var firstCharToLowercase = function(str) {
     return str[0] >= 97 ? str: str[0].toLowerCase() + str.substr(1);
 }
 
+var splitWithTrim = R.curry(R.compose(R.map(R.trim), R.split));
+
 exports.isEmpty = isEmpty;
 exports.isNotEmpty = isNotEmpty;
 exports.firstCharToUppercase = firstCharToUppercase;
 exports.firstCharToLowercase = firstCharToLowercase;
+exports.splitWithTrim = splitWithTrim;
