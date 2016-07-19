@@ -28,7 +28,17 @@ var translate = function (env, ast) {
 
     let classTranslatorMgr = require('../translator/translatorMgr');
     let classTranslator = classTranslatorMgr.find(objType.fullName);
-    let code = classTranslator.translateMethod(env, objType, objName, calleeProp.name, argsRet);
+    let codeRet = classTranslator.translateMethod(env, objType, objName, calleeProp.name, argsRet);
+    let code = null;
+    if(codeRet instanceof Array) {
+        code = codeRet[0];
+        if(!R.isNil(codeRet[1])) {
+            methodReturnType = codeRet[1];
+        }
+    }
+    else {
+        code = codeRet;
+    }
 
     return [code, methodReturnType];
 }

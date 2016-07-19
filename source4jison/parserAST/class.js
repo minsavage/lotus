@@ -9,16 +9,24 @@ var strUtil = require('../util/strUtil');
 var createEnv = require('./envExt').createEnv;
 var addEnv = require('./envExt').add;
 
-var renderClass = function(name, fields, methods, superClass) {
+var renderClass = function(name, fields, methods, superClass, type) {
     if(strUtil.isNotEmpty(superClass)) {
         superClass = 'extends ' + superClass;
     }
 
-    var tpl = 'public class {{name}} {{superClass}}\r{\r {{fields}}\r{{methods}}\r}'
+    if(R.isNil(type)) {
+        type = 'class';
+    }
+
+    let cotent = [fields, methods];
+    let makeContent = R.compose(R.join('\r'), R.filter(x=>strUtil.isNotEmpty(x)));
+    let contentStr = makeContent([fields, methods]);
+
+    var tpl = 'public {{class}} {{name}} {{superClass}}\r{\r {{content}} \r}'
     return mustache.render(tpl, {
+        class: type,
         name: name,
-        fields: fields,
-        methods: methods,
+        content: contentStr,
         superClass: superClass
     })
 }
@@ -69,47 +77,43 @@ var buildMethods = function(aClass) {
     return ret;
 }
 
-var buildField = translatorMgr.find('field').translate;
+var fieldParser = translatorMgr.find('field');
 
-var buildFields = R.compose(R.join('\r'), R.map(buildField), R.prop('fields'));
-
-// var translate = R.converge(
-//     render, 
-//     [
-//         R.prop('name'), 
-//         buildFields, 
-//         buildMethods, 
-//         R.prop('superClass'),
-//         R.prop('type')
-//     ]
-// );
+let parseFields = function (aClass) {
+    let parseField = fieldParser.parse(createEnv(aClass));
+    let start = R.compose(R.join('\r'), R.map(parseField), R.prop('fields'));
+    return start(aClass);
+}
 
 var translateClass = R.converge(
     renderClass, 
     [
         R.prop('name'), 
-        buildFields, 
+        parseFields, 
         buildMethods, 
-        R.prop('superClass')
+        R.prop('superClass'),
+        R.prop('type')
     ]
 );
 
-var translateInterface = R.converge(
-    renderInterface, 
-    [
-        R.prop('name'), 
-        buildMethods, 
-        R.prop('superClass')
-    ]
-);
+// var translateInterface = R.converge(
+//     renderInterface, 
+//     [
+//         R.prop('name'), 
+//         buildMethods, 
+//         R.prop('superClass')
+//     ]
+// );
 
-var translate = function (model) {
-    if('interface' == model.type) {
-        return translateInterface(model);
-    }
-    else {
-        return translateClass(model);
-    }
-}
+// var translate = function (model) {
+//     if('interface' == model.type) {
+//         return translateInterface(model);
+//     }
+//     else {
+//         return translateClass(model);
+//     }
+// }
+
+let translate = translateClass;
 
 exports.translate = translate;

@@ -5,6 +5,7 @@ module.exports = {
     name: 'PostDetailViewModel',
     import: [
         //'$.viewModel.PostItemViewModel',
+        '$.operator.CommentsOperator',
         '$.model.QueryComments',
         '$.model.Comment',
         'system.type.Array'

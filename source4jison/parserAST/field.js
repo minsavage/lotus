@@ -1,18 +1,23 @@
 /**
  * Created by danney on 16/6/25.
  */
-var mustache = require('mustache');
-var translatorMgr = require('./parserMgr');
+'use strict'
+let R = require('ramda');
+let mustache = require('mustache');
+let envExt = require('./envExt');
+let translatorMgr = require('../translator/translatorMgr');
 
-var translate = function (field) {
-    var tpl = '{{modifier}} {{type}} {{name}};'
+let parse = R.curry(function (env, field) {
+    let tpl = '{{modifier}} {{type}} {{name}};'
+    let type = envExt.find(env, field.type);
+    let translator = translatorMgr.find(type.fullName);
+    let javaClassName = translator.translateClassName(env, type);
 
     return mustache.render(tpl, {
         modifier: 'private',
-        type: field.type,
+        type: javaClassName,
         name: field.name
     })
+})
 
-}
-
-exports.translate = translate;
+exports.parse = parse;

@@ -3,7 +3,9 @@
  */
 module.exports = {
     name: 'RevealSquareViewController',
-    import:['$.viewModel.RevealSquareViewModel'],
+    import:[
+        '$.viewModel.RevealSquareViewModel'
+    ],
     viewModels: [{
         type: 'RevealSquareViewModel',
         name: 'rsVM'

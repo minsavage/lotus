@@ -27,19 +27,26 @@ var findSystemFunction = function (name) {
     var map = {
         'showPage': showPage,
         'closePage': closePage,
+        'createViewModel': createViewModel,
         'native': native
     }
 
     return map[name];
 }
 
-var showPage = function () {
-    
-    
+var showPage = function (env, ast) {
+    let code = 'showPage()';
+    return [code, 'void'];
 }
 
-var closePage = function () {
+var closePage = function (env, ast) {
+    let code = 'closePage()';
+    return [code, 'void'];
+}
 
+var createViewModel = function (env, ast) {
+    let code = 'createViewModel()';
+    return [code, 'void'];
 }
 
 var native = function (env, ast) {

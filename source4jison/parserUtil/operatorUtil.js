@@ -24,12 +24,21 @@ var createQueryMethodService = function (model) {
     return queryMethodService.make(model);
 }
 
-var createRemoteServiceInterface = function (methods) {
+var createRemoteServiceInterface = function (methods, operators) {
     var aClass = new Class();
     aClass.name = 'RemoteOperatorService';
     aClass.type = 'interface';
     aClass.addMethods(methods);
-    return aClass;
+
+    var getImportList = R.compose(
+        R.dropRepeats,
+        R.sort((x,y)=>x>y),
+        R.flatten,
+        R.map(R.prop('import'))
+    )
+    
+    aClass.import = getImportList(operators);
+    operators.push(aClass);
 }
 
 var createClass = function() {

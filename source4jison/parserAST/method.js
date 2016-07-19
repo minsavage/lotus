@@ -19,7 +19,7 @@ var render = function (annotations, returnType, name, parameters, content) {
         name: name,
         parameters: parameters,
         content: content
-    })
+    }).trim();
 }
 
 var buildAnnotations = R.compose(R.join('\r'), R.prop('annotations'));

@@ -1,14 +1,16 @@
 /**
  * Created by danney on 16/6/25.
  */
-var R = require('ramda');
-var fs = require('fs');
-var pathUtil = require('path');
-var stringify = require('./util/stringify');
+'use strict'
+let R = require('ramda');
+let fs = require('fs');
+let pathUtil = require('path');
+let stringify = require('./util/stringify');
+var mkdirp = require('mkdirp');
 
-var keys = ['model', 'operator', 'viewModel', 'viewController'];
+let keys = ['model', 'operator', 'viewModel', 'viewController'];
 
-var loadParser = function () {
+let loadParser = function () {
     return [{
         parser: require("./parser/model").parser,
         util: require("./parserUtil/modelUtil")
@@ -24,36 +26,36 @@ var loadParser = function () {
     }]
 }
 
-var pathResolve = R.curry(function (modelPath, fileName) {
+let pathResolve = R.curry(function (modelPath, fileName) {
     return pathUtil.resolve(modelPath, fileName);
 });
 
-var filterJsFile = R.compose(R.equals('.js'), pathUtil.extname);
+let filterJsFile = R.compose(R.equals('.js'), pathUtil.extname);
 
-var fileNamesFromDir = R.compose(R.filter(filterJsFile), fs.readdirSync);
+let fileNamesFromDir = R.compose(R.filter(filterJsFile), fs.readdirSync);
 
-var filePathToModel = R.compose(stringify, require);
+let filePathToModel = R.compose(stringify, require);
 
-var mapModelDirNameToModels = function (baseDir, modelDirName) {
-    var dirPath = pathUtil.resolve(baseDir, modelDirName);
-    var fileNames = fileNamesFromDir(dirPath);
-    var filesPath = R.map(pathResolve(dirPath), fileNames);
-    var models = R.map(filePathToModel, filesPath);
+let mapModelDirNameToModels = function (baseDir, modelDirName) {
+    let dirPath = pathUtil.resolve(baseDir, modelDirName);
+    let fileNames = fileNamesFromDir(dirPath);
+    let filesPath = R.map(pathResolve(dirPath), fileNames);
+    let models = R.map(filePathToModel, filesPath);
     return models;
 };
 
-var loadModels = R.compose(
+let loadModels = R.compose(
     R.zipObj(keys),
     R.map(R.__, keys),
     R.curry(mapModelDirNameToModels)
 );
 
-var initParsers = R.compose(
+let initParsers = R.compose(
     R.zipObj(keys),
     loadParser
 );
 
-var startParse = R.curry(function (parser, util, model) {
+let startParse = R.curry(function (parser, util, model) {
     parser.yy.class = util.createClass();
     parser.yy.onCreate = '';
     parser.yy.onCreateView = '';
@@ -61,56 +63,75 @@ var startParse = R.curry(function (parser, util, model) {
     return parser.parse(model);
 });
 
-var start = function (baseDir) {
-    var modelsContainer = loadModels(baseDir);
-    var parsers = initParsers();
+let parseModelsByKey = R.curry(function (modelsContainer, parsers, key) {
+    let parser = parsers[key].parser;
+    parser.yy.serviceMethods = [];
+    let util = parsers[key].util;
+    let parseWithUtil = startParse(parser, util);
+    let models = modelsContainer[key];
+        
+    let ret = R.map(parseWithUtil, models);
 
-    var parseModelsByKey = function (key) {
-        var models = modelsContainer[key];
-        var parser = parsers[key].parser;
-        var util = parsers[key].util;
-
-        var parseWithUtil = startParse(parser, util);
-
-        parser.yy.serviceMethods = [];
-        var ret = R.map(parseWithUtil, models);
-
-        if(key == 'operator') {
-            var methods = parser.yy.serviceMethods;
-            var interface = util.createRemoteServiceInterface(methods);
-            var importList = R.map(R.prop('import'))(ret);
-            var r = R.flatten(importList);
-            r = R.sort((x,y)=>x>y, r);
-            r = R.dropRepeats(r);
-            interface.import = r;
-            ret.push(interface);
-        }
-        return ret;
+    if(key == 'operator') {
+        let methods = parser.yy.serviceMethods;
+        util.createRemoteServiceInterface(methods, ret);
     }
+    return ret;
+});
 
-    var x = R.map(parseModelsByKey, keys);
+let start = function (baseDir, outputDir) {
+    let modelsContainer = loadModels(baseDir);
+    let parsers = initParsers();
+    let ret = R.map(parseModelsByKey(modelsContainer, parsers), keys);
 
-    var m = x[3][1];
+    let astContainer = R.zipObj(keys)(ret);
+    let classLoader = require('./type/classLoader');
+    classLoader.init(astContainer);
 
+    ret = R.map(function(astList){
+        let names = R.map(R.prop('name'), astList);
+        let codes = R.map(parseAST, astList)
+        let ret = R.zip(names, codes);
+        return ret;
+    }, ret)
 
-    x = R.zipObj(keys)(x);
+    ret = R.zip(keys)(ret);
 
-    //m = x.viewModel[0];
-    m = x.operator[0];
-
-
-    var classLoader = require('./type/classLoader');
-    classLoader.init(x);
-
-    var translate = require('./parserAST/class').translate;
-    var ret = translate(m);
-
-    fs.writeFileSync('test.java', ret);
-
+    let write = R.map(writeFiles(outputDir));
+    write(ret);
 
     console.log('------------done--------------');
 }
 
+let parseAST = function(ast) {
+    let parse = require('./parserAST/class').translate;
+    return parse(ast);
+}
 
-var projectDir = '../project/ich0521';
-start(projectDir);
+let writeFiles = R.curry(function (baseDir, pair) {
+    let key = pair[0];
+    let dirPath = pathUtil.resolve(baseDir, key);
+    let contents = pair[1];
+
+    let pkgName = 'package com.y2go.ich.' + key + ';\r\r';
+
+    if(!fs.existsSync(dirPath)) {
+        mkdirp(dirPath, function(){
+            R.map(writeFile(dirPath, pkgName), contents);
+        })
+    }
+    else {
+        R.map(writeFile(dirPath, pkgName), contents);
+    }
+})
+
+let writeFile = R.curry(function (dir, pkgName, pair) {
+    let fileName = pair[0] + '.java';
+    let filePath = pathUtil.resolve(dir, fileName);
+    let content = pkgName + pair[1];
+    fs.writeFileSync(filePath, content);
+})
+
+let projectDir = '../project/ich0521';
+let outputDir = '../output/ich0719/ich/app/src/main/java/com/y2go/ich';
+start(projectDir, outputDir);

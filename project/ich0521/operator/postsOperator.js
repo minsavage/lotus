@@ -24,7 +24,7 @@ module.exports = {
                 convertedType: 'Array<Post>',
                 actions: [
                     {
-                        op: 'map',
+                        op: 'filter',
                         action: function(queryPosts) {
                             //if(queryPosts == null ||
                             //    queryPosts.content == null ||
@@ -32,12 +32,11 @@ module.exports = {
                             //    error();
                             //}
 
-                            return queryPosts.content.posts;
+                            return true;
                         }
                     },
-
                     {
-                        op: 'filter',
+                        op: 'map',
                         action: function(queryPosts) {
                             //if(queryPosts == null ||
                             //    queryPosts.content == null ||

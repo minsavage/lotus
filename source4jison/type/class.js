@@ -51,7 +51,7 @@ class Class {
         }
 
         if(R.isNil(fullName)) {
-            let msg = 'can not found [' + typeName + '] in import: ';
+            let msg = 'can not found [' + typeName + '] in import: ' + this.name;
             console.log(msg); 
             throw msg;
         }

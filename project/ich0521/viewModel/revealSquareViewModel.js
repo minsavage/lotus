@@ -4,6 +4,7 @@
 module.exports = {
     name: 'RevealSquareViewModel',
     import: [
+        '$.operator.ForumsOperator',
         '$.model.QueryForums',
         '$.model.Forum',
         'system.type.Array'

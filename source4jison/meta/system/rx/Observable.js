@@ -8,15 +8,17 @@ module.exports = {
         parameters:['T']
     },
     fields: [],
-    methods: [{
-        name: 'map',
-        generics:{
-            parameters:['R']
+    methods: [
+        {
+            name: 'map',
+            generics:{parameters:['R']},
+            returnType: 'Observable<R>',
+            parameters:[{type: 'MapFunc<T, R>', name: 'func'}]
         },
-        returnType: 'Observable<R>',
-        parameters:[{
-            type: 'MapFunc<T, R>',
-            name: 'func'
-        }]
-    }]
+        {
+            name: 'filter',
+            returnType: 'Observable<T>',
+            parameters:[{type: 'MapFunc<T, bool>', name: 'func'}]
+        }
+    ]
 }
