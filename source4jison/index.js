@@ -104,7 +104,7 @@ let start = function (baseDir, outputDir) {
 }
 
 let parseAST = function(ast) {
-    let parse = require('./parserAST/class').translate;
+    let parse = require('./parserAST/class').parse;
     return parse(ast);
 }
 
