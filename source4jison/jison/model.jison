@@ -46,6 +46,7 @@ function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
 
 %{
     var parserUtil = require('../parserUtil/modelUtil');
+    var commonUtil = require('../parserUtil/common');
 %}
 
 %start ConfigEntry
@@ -55,6 +56,7 @@ function\s*\(\)\s*\{\s*.*?\s*\}    return 'FUNCTION'
 ConfigEntry
     : '{' ConfigList '}'
         {
+            commonUtil.methodBodyToAST(yy.class);
             return yy.class;
         }
     ;

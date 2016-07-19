@@ -1,10 +1,23 @@
-var classLoader = require('../type/classLoader');
+'use strict';
+let R = require('ramda');
+let classLoader = require('../type/classLoader');
 
 var translate = function (env, ast) {
-    return [
-        ast.raw, 
-        classLoader.load('string')
-    ];
+    let type = R.type(ast.value);
+    let value = null;
+    if(type == 'Boolean') {
+        type = classLoader.load('bool'); 
+        value = ast.value;
+    }
+    else if(type == 'String') {
+        type = classLoader.load('string');
+        value = '"' + ast.value + '"'
+    }
+    else {
+        throw 'can not support literal type: ' + type;
+    }
+
+    return [value, type];
 }
 
 exports.translate = translate;

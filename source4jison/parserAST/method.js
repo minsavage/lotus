@@ -8,17 +8,18 @@ var parserMgr = require('./parserMgr');
 var translatorMgr = require('../translator/translatorMgr');
 var envExt = require('./envExt');
 
-var render = function (annotations, returnType, name, parameters, content) {
-    var tpl = '{{annotations}}\r {{returnType}} {{name}}({{parameters}}) {\r {{content}}\r}'
-    var tplInterface = '{{annotations}}\r {{returnType}} {{name}}({{parameters}});'
+var render = function (name, modifiers, annotations, returnType, parameters, content) {
+    let nameCombine = R.join(' ')([modifiers, returnType, name]).trim();
+    nameCombine = R.join('\r')([annotations, nameCombine]).trim();
+
+    var tpl = '{{name}}({{parameters}}) {\r {{content}}\r}'
+    var tplInterface = '{{name}}({{parameters}});'
     if(content == false) {
         tpl = tplInterface;
     }
 
     return mustache.render(tpl, {
-        annotations: annotations,
-        returnType: returnType,
-        name: name,
+        name: nameCombine,
         parameters: parameters,
         content: content
     }).trim();
@@ -70,12 +71,19 @@ var parseReturnType = function (method, env) {
     return translator.translateClassName(env, type);
 }
 
+var parseModifiers = R.compose(
+    R.trim,
+    R.join(' '),
+    R.prop('modifiers')
+)
+
 var translate = R.converge(
     render,
     [
+        R.prop('name'),
+        parseModifiers,
         buildAnnotations,
         parseReturnType,
-        R.prop('name'),
         parseParams,
         buildBody
     ]
@@ -84,9 +92,10 @@ var translate = R.converge(
 var translateInterface = R.converge(
     render,
     [
+        R.prop('name'),
+        parseModifiers,
         buildAnnotations,
         parseReturnType,
-        R.prop('name'),
         parseParams,
         R.always(false)
     ]

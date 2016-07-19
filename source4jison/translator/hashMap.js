@@ -43,7 +43,7 @@ let handleGetMethod = function (env, objClass, objName, methodName, args) {
     key = key.replace(/'/g, '"');
     if(args.length == 2) {
         let tpl = '({{type}}){{obj}}.get({{key}})';
-        let type = args[1][0].replace(/'/g, '');
+        let type = args[1][0].replace(/"/g, '');
         type = objClass.loadType(type);
         let typeJavaClassName = defaultTranslator.translateClassName(env, type)
         let code = mustache.render(tpl, {obj: objName, key: key, type: typeJavaClassName});

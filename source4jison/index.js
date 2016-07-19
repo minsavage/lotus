@@ -108,7 +108,7 @@ let parseAST = R.curry(function(pkgName, ast) {
     let code = parse(ast);
 
     let parseImport = require('./parserAST/import').parse;
-    let imports = parseImport(pkgName, ast.import);
+    let imports = parseImport(pkgName, ast.import, ast.importNative);
     
     return R.trim(imports + '\r\r' + code);
 });

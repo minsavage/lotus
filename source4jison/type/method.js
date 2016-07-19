@@ -10,6 +10,7 @@ class Method {
         this.parameters = [];
         this.annotations = [];
         this.body = '';
+        this.modifiers = [];
     }
 }
 

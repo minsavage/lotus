@@ -1,10 +1,12 @@
 /**
  * Created by danney on 16/6/25.
  */
+'use strict'
 var Class = require('../type/class');
 var Field = require('../type/field');
 var util = require('util');
 var R = require('ramda');
+var common = require('./common');
 
 var createClass = function() {
     var aClass = new Class();
@@ -12,7 +14,8 @@ var createClass = function() {
 }
 
 var createFields = function (aClass, props) {
-    aClass.addFields(R.map(createFiled, props));
+    let createProp = common.createProperty(aClass);
+    R.map(createProp, props);
 }
 
 var createFiled = function (prop) {

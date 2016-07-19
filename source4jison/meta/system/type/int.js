@@ -3,8 +3,6 @@
  */
 module.exports = {
     name: 'int',
-    fields: [
-
-    ],
+    fields: [],
     methods:[]
 }

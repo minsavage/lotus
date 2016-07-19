@@ -3,8 +3,6 @@
  */
 module.exports = {
     name: 'string',
-    fields: [
-
-    ],
+    fields: [],
     methods:[]
 }

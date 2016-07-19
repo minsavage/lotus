@@ -40,6 +40,16 @@ var createRemoteServiceInterface = function (methods, operators) {
     
     aClass.import = getImportList(operators);
     operators.push(aClass);
+
+    let nativeImports = [
+        'retrofit.http.Body',
+        'retrofit.http.GET',
+        'retrofit.http.POST',
+        'retrofit.http.Path',
+        'retrofit.http.QueryMap'
+    ]
+
+    aClass.addNativeImports(nativeImports);
 }
 
 var createClass = function() {

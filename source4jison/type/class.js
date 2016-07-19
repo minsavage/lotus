@@ -13,6 +13,7 @@ class Class {
         this.methods = [];
         this.superClass = '';
         this.import = [];
+        this.importNative = [];
     }
 
     addField(field) {
@@ -29,6 +30,14 @@ class Class {
 
     addMethods(methods) {
         this.methods = this.methods.concat(methods);
+    }
+
+    addNativeImport(nativeImport) {
+        this.importNative.push(nativeImport);
+    }
+
+    addNativeImports(nativeImports) {
+        this.importNative = this.importNative.concat(nativeImports);
     }
 
     findField(name) {

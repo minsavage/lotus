@@ -1,6 +1,7 @@
 /**
  * Created by danney on 16/7/3.
  */
+'use strict'
 var strUtil = require('./strUtil');
 
 var getOperatorMethodName = function(actionName, modelName) {
@@ -18,4 +19,15 @@ var getClassNameMayBeInGenerics = function(name) {
     }
 }
 
+let getGetterMethodName = function(type, propName) {
+    let pre = type != 'bool' ? 'get': 'is';
+    return pre + strUtil.firstCharToUppercase(propName);
+}
+
+let getSetterMethodName = function(propName) {
+    return 'set' + strUtil.firstCharToUppercase(propName);
+}
+
 exports.getOperatorMethodName = getOperatorMethodName;
+exports.getGetterMethodName = getGetterMethodName;
+exports.getSetterMethodName = getSetterMethodName;
