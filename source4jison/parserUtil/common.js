@@ -101,7 +101,12 @@ let initFields = R.compose(
     R.prop('fields')
 )
 
+var wrapNative = function (code) {
+    return 'native(\'' + code + '\');';
+}
+
 exports.createProperty = createProperty;
 exports.methodBodyToAST = methodBodyToAST;
 exports.initField = initField;
 exports.initFields = initFields;
+exports.wrapNative = wrapNative;

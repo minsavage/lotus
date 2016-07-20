@@ -10,8 +10,14 @@ let translatorMgr = require('../translator/translatorMgr');
 let parse = R.curry(function (env, field) {
     let tpl = '{{modifier}} {{type}} {{name}};'
     let type = envExt.find(env, field.type);
-    let translator = translatorMgr.find(type.fullName);
-    let javaClassName = translator.translateClassName(env, type);
+    let javaClassName = null;
+    if(R.isNil(type)) {
+        javaClassName = field.type;
+    }
+    else {
+        let translator = translatorMgr.find(type.fullName);
+        javaClassName = translator.translateClassName(env, type);
+    }
 
     return mustache.render(tpl, {
         modifier: 'private',

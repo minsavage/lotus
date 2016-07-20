@@ -38,10 +38,7 @@ let createConstructor = function(aClass) {
 
 let parameterToMap = function (x) {
     let tpl = 'map.put("{{key}}", {{value}});'
-    return mustache.render(tpl, {
-        key: x[0],
-        value: x[1]
-    });
+    return mustache.render(tpl, {key: x[0],value: x[1]});
 }
 
 let argument = R.compose(

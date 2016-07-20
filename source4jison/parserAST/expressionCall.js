@@ -3,6 +3,7 @@
  */
 'use strict'
 var R = require('ramda');
+let mustache = require('mustache');
 var translatorMgr = require('./parserMgr');
 var envExt = require('./envExt');
 var memberCallTranslator = require('./expressionMemberCall');
@@ -45,8 +46,13 @@ var closePage = function (env, ast) {
 }
 
 var createViewModel = function (env, ast) {
-    let code = 'createViewModel()';
-    return [code, 'void'];
+    // 'rsVM = (RevealSquareViewModel) ViewModelMgr.createViewModel(RevealSquareViewModel.class, getContext());'
+    let tpl = '{{name}} = ({{type}})ViewModelMgr.createViewModel({{type}}.class, getContext())'
+    let code = mustache.render(tpl, {
+        type: ast.arguments[0].name, 
+        name: ast.arguments[1].name}
+    )
+    return [code, null];
 }
 
 var native = function (env, ast) {

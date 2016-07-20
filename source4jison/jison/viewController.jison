@@ -45,6 +45,7 @@ frac  "."[0-9]+
 
 %{
     var parserUtil = require('../parserUtil/vcUtil');
+    var R = require('ramda');
 %}
 
 %start ConfigEntry
@@ -54,9 +55,17 @@ frac  "."[0-9]+
 ConfigEntry
     : '{' ConfigList '}'
         {
-            parserUtil.createEssentialMethod(yy.class, yy.onCreate, yy.onCreateView, yy.onDestroy);
+            if(yy.vc.layoutOnly == true) {yy.vc = {}; return null;}
+
+            R.map(function(vmInfo){
+                yy.vc.onCreate += vmInfo.init;
+                yy.vc.onDestroy += 'native(\'' + vmInfo.destroy + '\')';
+            }, yy.vc.viewModelsInfo);
+
+            parserUtil.createEssentialMethod(yy);
             parserUtil.final(yy.class);
-            return yy.class;
+
+            yy.vc = {}; return yy.class;
         }
     ;
 
@@ -95,8 +104,7 @@ ImportList
 ViewModels
     : VIEWMODELS ':' '[' ViewModelList ']'
         {
-            parserUtil.createViewModelsFiled(yy.class, $4)
-            yy.onCreate += parserUtil.createViewModelsInit($4);
+            yy.vc.viewModelsInfo = parserUtil.createViewModelsInfo(yy.class, $4)
         }
     ;
 
@@ -179,6 +187,11 @@ Bind
 
 VCConfig
     : VCCONFIG ':' JSONObject
+        {
+            if($3['layoutOnly'] == true) {
+                yy.vc.layoutOnly = true;
+            }
+        }
     ;
 
 JSONString

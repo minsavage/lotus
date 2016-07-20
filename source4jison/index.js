@@ -57,9 +57,7 @@ let initParsers = R.compose(
 
 let startParse = R.curry(function (parser, util, model) {
     parser.yy.class = util.createClass();
-    parser.yy.onCreate = '';
-    parser.yy.onCreateView = '';
-    parser.yy.onDestroy = '';
+    parser.yy.vc = {onCreate: '', onCreateView: '', onDestroy: ''};
     return parser.parse(model);
 });
 
@@ -71,6 +69,7 @@ let parseModelsByKey = R.curry(function (modelsContainer, parsers, key) {
     let models = modelsContainer[key];
         
     let ret = R.map(parseWithUtil, models);
+    ret = R.filter(x=>x!=null, ret);
 
     if(key == 'operator') {
         let methods = parser.yy.serviceMethods;
@@ -83,6 +82,14 @@ let start = function (baseDir, outputDir, pkgName) {
     let modelsContainer = loadModels(baseDir);
     let parsers = initParsers();
     let ret = R.map(parseModelsByKey(modelsContainer, parsers), keys);
+
+    // R.map(function(x){
+    //     R.map(function(y){
+    //         let outputDir = '../output/ich0719/tmp/';
+    //         let filePath = pathUtil.resolve(outputDir, y.name + '.js');
+    //         fs.writeFileSync(filePath, stringify(y));
+    //     }, x)
+    // }, ret)
 
     let astContainer = R.zipObj(keys)(ret);
     let classLoader = require('./type/classLoader');
