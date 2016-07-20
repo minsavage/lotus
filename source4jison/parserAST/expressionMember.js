@@ -7,7 +7,7 @@ var parserMgr = require('./parserMgr');
 var classTranslatorMgr = require('../translator/translatorMgr');
 var envExt = require('./envExt');
 
-var translate = function (env, ast, isSetter) {
+var translate = function (env, ast, isSetter, setValue) {
     let object = ast.object;
     let property = ast.property;
 
@@ -20,7 +20,7 @@ var translate = function (env, ast, isSetter) {
 
     let classTranslatorMgr = require('../translator/translatorMgr');
     let classTranslator = classTranslatorMgr.find(objType.fullName);
-    let code = classTranslator.translateFiled(objType, objName, property.name, isSetter);
+    let code = classTranslator.translateFiled(objType, objName, property.name, isSetter, setValue);
     
     return [code, fieldType];
 }

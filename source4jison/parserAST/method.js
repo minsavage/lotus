@@ -66,9 +66,20 @@ var buildBody = R.converge(
 );
 
 var parseReturnType = function (method, env) {
+    if(method.returnType == '') {
+        return ''; // constructor method have not return type
+    }
+    if(R.isNil(method.returnType)) {
+        throw 'method return type can not be null';
+    }
     let type = envExt.find(env, method.returnType);
-    let translator = translatorMgr.find(type.fullName);
-    return translator.translateClassName(env, type);
+    if(R.isNil(type)) {
+        return method.returnType;
+    }
+    else {
+        let translator = translatorMgr.find(type.fullName);
+        return translator.translateClassName(env, type);
+    }
 }
 
 var parseModifiers = R.compose(

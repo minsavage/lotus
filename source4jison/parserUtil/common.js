@@ -7,6 +7,7 @@ let util = require('util');
 let nameUtil = require('../util/nameUtil');
 let strUtil = require('../util/strUtil');
 let R = require('ramda');
+let classLoader = require('../type/classLoader');
 
 let createProperty = R.curry(function (aClass, prop) {
     aClass.addField(createFiled(prop));
@@ -53,26 +54,54 @@ let createSetter = function (prop) {
     return method;
 }
 
-var methodBodyToAST = function(aClass) {
-    for(var k in aClass.methods) {
-        var m = aClass.methods[k];
+let methodBodyToAST = function(aClass) {
+    for(let k in aClass.methods) {
+        let m = aClass.methods[k];
         if(strUtil.isNotEmpty(m.body)) {
             m.body = stringFuncToAST(m.body);
         }
     }
 }
 
-var stringFuncToAST = function (code) {
-    var reg = /function\s*\(\)\s*\{\s*(.*)\s*\}/g;
+let stringFuncToAST = function (code) {
+    let reg = /function\s*\(\)\s*\{\s*(.*)\s*\}/g;
     if(!reg.test(code)) {
         //code = RegExp.$1;
         code = 'function x(){' + code + '}';
     }
 
-    var esprima = require('esprima');
-    var ast = esprima.parse(code);
+    let esprima = require('esprima');
+    let ast = esprima.parse(code);
     return ast.body[0].body.body;
 }
 
+let initField = function (field) {
+    if(R.isNil(field.defaultValue)) {
+        return null;
+    }
+
+    let value = field.defaultValue;
+    if(value instanceof Array) {
+        value = '[' + value.toString() + ']';
+    }
+    else if(!classLoader.isBuiltInType(field.type)){
+        if(value != 'new') {
+            throw 'can not support default value in field: ' + field.name;
+        }
+        value = 'new ' + field.type + '()'
+    }
+
+    return field.name + ' = ' + value;
+}
+
+let initFields = R.compose(
+    R.join('\r'),
+    R.filter(x => x != null),
+    R.map(initField),
+    R.prop('fields')
+)
+
 exports.createProperty = createProperty;
 exports.methodBodyToAST = methodBodyToAST;
+exports.initField = initField;
+exports.initFields = initFields;

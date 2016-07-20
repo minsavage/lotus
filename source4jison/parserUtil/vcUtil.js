@@ -26,7 +26,7 @@ var createEssentialMethod = function(vcClass, onCreate, onCreateView, onDestroy)
 var createOnCreateMethod = function(code) {
     var method = new Method();
 
-    var body = 'native(\'super.onCreate(savedInstanceState);\')';
+    var body = 'native(\'super.onCreate(savedInstanceState)\')';
     body = body + '\r' + code;
 
     var parameter = new Parameter();
@@ -38,6 +38,7 @@ var createOnCreateMethod = function(code) {
     method.annotations.push('@Override');
     method.parameters.push(parameter);
     method.body = body;
+    method.modifiers.push('public');
     return method;
 }
 
@@ -47,11 +48,11 @@ var createOnCreateViewMethod = function(code) {
     var body =
         'binding = DataBindingUtil.inflate(inflater, R.layout.vc_post_detail_top, container, true);' +
         'binding.setPdtVM(pdtVM);' +
-        'View view = binding.getRoot();';
+        'View view = binding.getRoot()';
 
     body = wrapNative(body) +
             code +
-            wrapNative('return view;');
+            wrapNative('return view');
 
     var parameter;
     parameter = new Parameter();
@@ -70,8 +71,9 @@ var createOnCreateViewMethod = function(code) {
     method.parameters.push(parameter);
 
     method.name = 'onCreateView';
-    method.returnType = 'void';
+    method.returnType = 'View';
     method.annotations.push('@Override');
+    method.modifiers.push('public');
 
     method.body = body;
     return method;
@@ -80,12 +82,13 @@ var createOnCreateViewMethod = function(code) {
 var createOnDestroyMethod = function(code) {
     var method = new Method();
 
-    var body = wrapNative('super.onDestroy();');
+    var body = wrapNative('super.onDestroy()');
     body = body + '\r' + code;
 
     method.name = 'onDestroy';
     method.returnType = 'void';
     method.annotations.push('@Override');
+    method.modifiers.push('public');
     method.body = body.trim();
     return method;
 }
@@ -168,6 +171,17 @@ var wrapNative = function (code) {
 }
 
 var final = function(vcClass) {
+    vcClass.import.push('$.base.ViewController');
+    vcClass.import.push('$.R');
+
+    vcClass.addNativeImports([
+        'android.databinding.DataBindingUtil',
+        'android.os.Bundle',
+        'android.view.LayoutInflater',
+        'android.view.ViewGroup',
+        'android.view.View'
+    ])
+
     for(var k in vcClass.methods) {
         var m = vcClass.methods[k];
         if(strUtil.isNotEmpty(m.body)) {

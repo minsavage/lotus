@@ -30,6 +30,7 @@ var buildQueryMethod = (name, returnType, parameter, body) => {
     method.returnType = returnType;
     method.parameters.push(parameter);
     method.body = body;
+    method.modifiers.push('public');
     return method;
 }
 

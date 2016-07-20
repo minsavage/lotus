@@ -20,6 +20,8 @@ var getMap = function () {
         'ArrowFunctionExpression': require('./expressionFunction'),
         'FunctionExpression': require('./expressionFunction'),
         'ReturnStatement': require('./returnStatement'),
+        'AssignmentExpression': require('./expressionAssignment'),
+        'ArrayExpression': require('./expressionArray')
     }
 }
 
@@ -43,7 +45,7 @@ var findAndTranslate = function (env, ast) {
         return translator.translate(env, ast);
     }
     else {
-        return null;
+        throw 'can not found translator for ' + ast.type;
     }
 }
 

@@ -5,10 +5,11 @@
 
 class Field {
     constructor() {
-        var name = '';
-        var type = null;
-        var defaultValue = null;
-        var isProperty = false;
+        this.name = '';
+        this.type = null;
+        this.defaultValue = null;
+        this.isProperty = false;
+        this.modifiers = [];
     }
 }
 

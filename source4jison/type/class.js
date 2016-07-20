@@ -62,7 +62,7 @@ class Class {
         if(R.isNil(fullName)) {
             let msg = 'can not found [' + typeName + '] in import: ' + this.name;
             console.log(msg); 
-            throw msg;
+            return null;
         }
 
         let aClass = classLoader.load(fullName);

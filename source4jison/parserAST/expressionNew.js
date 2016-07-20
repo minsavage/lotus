@@ -15,7 +15,14 @@ var translate = function (env, ast) {
     let classTranslatorMgr = require('../translator/translatorMgr');
     let classTranslator = classTranslatorMgr.find(type.fullName);
     ret = classTranslator.translateMethod(env, type, null, 'new', args);
-    return ret;
+    if(ret instanceof Array) {
+        //these was return type in the ret
+        //because some translator will change the real type , ie: generics
+        return ret;
+    }
+    else {
+        return [ret, type];
+    }
 }
 
 exports.translate = translate;

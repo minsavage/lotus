@@ -13,6 +13,10 @@ var translate = function (env, ast) {
         type = classLoader.load('string');
         value = '"' + ast.value + '"'
     }
+    else if(type == 'Number') {
+        type = classLoader.load('int');
+        value = ast.value;
+    }
     else {
         throw 'can not support literal type: ' + type;
     }

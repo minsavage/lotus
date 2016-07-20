@@ -35,12 +35,18 @@ let translateFiled = function (objClass, objName, fieldName, isSetter) {
 
 let translateMethod = function (env, objClass, objName, methodName, args) {
     let argsStr = R.join(', ')(R.map(R.nth(0), args))
-    let tpl = '{{name}}.{{method}}({{args}})'
-    return mustache.render(tpl, {
-        name: objName,
-        method: methodName,
-        args: argsStr
-    })
+    if(methodName == 'new') {
+        let tpl = 'new {{name}}({{args}})'
+        return mustache.render(tpl, {name: objClass.name, args: argsStr})
+    }
+    else {
+        let tpl = '{{name}}.{{method}}({{args}})'
+        return mustache.render(tpl, {
+            name: objName,
+            method: methodName,
+            args: argsStr
+        })
+    }
 }
 
 let translateBulitInClassName = function (name) {

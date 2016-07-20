@@ -50,7 +50,13 @@ var load = function (fullName) {
         if(isBuiltInType(fullName)) {
             fullName = 'system.type.' + fullName;
         }
-        aClass = loadInFile(fullName);
+        try {
+            aClass = loadInFile(fullName);
+        }
+        catch(err) {
+            console.log(err);
+            return null;
+        }
     }
 
     if(aClass != null) {
