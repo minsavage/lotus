@@ -54,7 +54,7 @@ frac  "."[0-9]+
 
 %{
     var R = require('ramda');
-    var parserUtil = require('../parserUtil/operatorUtil');
+    var parserUtil = require('../parserUtilRN/operatorUtil');
 %}
 
 %start ConfigEntry
@@ -64,8 +64,7 @@ frac  "."[0-9]+
 ConfigEntry
     : '{' ConfigList '}'
         {
-            parserUtil.final(yy.class);
-            return yy.class;
+            return parserUtil.createClass(yy.model);
         }
     ;
 
@@ -84,15 +83,16 @@ Config
 ClassName
     : NAME ':' JSONString
         {
-            yy.class.name = $3;
+            yy.model.name = $3;
         }
     ;
 
 Import
     : IMPORT ':' '[' ImportList ']'
         {
-            yy.class.import = $4;
+            yy.model.import = yy.model.import.concat($4);
         }
+    | IMPORT ':' '[' ']'
     ;
 
 ImportList
@@ -120,9 +120,9 @@ ActionList
 Action
     : ActionKey ':' '{' ActionConfigList'}'
         {
-            parserUtil.createQueryMethod(yy.class, $4);
-            var method = parserUtil.createQueryMethodService($4);
-            yy.serviceMethods.push(method);
+            var ret = parserUtil.createQueryMethod($4)
+            yy.model.methods.push(ret.method);
+            yy.model.import = yy.model.import.concat(ret.import);
         }
     ;
 

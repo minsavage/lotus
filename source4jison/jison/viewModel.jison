@@ -26,8 +26,8 @@ frac  "."[0-9]+
 \"parameters\"      yytext = yytext.substr(1,yyleng-2); return 'PARAMETERS'
 \"responsePipe\"    yytext = yytext.substr(1,yyleng-2); return 'RESPONSE'
 \"op\"              yytext = yytext.substr(1,yyleng-2); return 'OP'
-\"onSuccess\"              yytext = yytext.substr(1,yyleng-2); return 'ONSUCCESS'
-\"onFailure\"              yytext = yytext.substr(1,yyleng-2); return 'ONFAILURE'
+\"success\"              yytext = yytext.substr(1,yyleng-2); return 'ONSUCCESS'
+\"error\"              yytext = yytext.substr(1,yyleng-2); return 'ONFAILURE'
 
 
 
@@ -61,8 +61,7 @@ frac  "."[0-9]+
 ConfigEntry
     : '{' ConfigList '}'
         {
-            parserUtil.final(yy.class);
-            return yy.class;
+            return parserUtil.createClass(yy.model);
         }
     ;
 
@@ -81,14 +80,14 @@ Config
 ClassName
     : NAME ':' JSONString
         {
-            yy.class.name = $3;
+            yy.model.name = $3;
         }
     ;
 
 Import
     : IMPORT ':' '[' ImportList ']'
         {
-            yy.class.import = $4;
+            yy.model.import = yy.model.import.concat($4);
         }
     ;
 
@@ -102,7 +101,7 @@ ImportList
 Properties
     : PROPS ':' '[' PropertyList ']'
         {
-            parserUtil.createFields(yy.class, $4);
+            yy.model.fields = parserUtil.createFields($4);
         }
     ;
 
@@ -150,7 +149,9 @@ MethodList
 Method
     : JSONString ':' '{' MethodConfigList '}'
         {
-            parserUtil.createOperatorMethod(yy.class, $1, $4);
+            var operator = parserUtil.createOperator($1, $4);
+            yy.model.fields.push(operator.field);
+            yy.model.methods.push(operator.method);
         }
     ;
 

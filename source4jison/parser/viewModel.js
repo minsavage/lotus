@@ -85,18 +85,17 @@ var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
 
-            parserUtil.final(yy.class);
-            return yy.class;
+            return parserUtil.createClass(yy.model);
         
 break;
 case 8:
 
-            yy.class.name = $$[$0];
+            yy.model.name = $$[$0];
         
 break;
 case 9:
 
-            yy.class.import = $$[$0-1];
+            yy.model.import = yy.model.import.concat($$[$0-1]);
         
 break;
 case 10: case 13: case 62:
@@ -107,7 +106,7 @@ this.$=$$[$0-2];this.$.push($$[$0])
 break;
 case 12:
 
-            parserUtil.createFields(yy.class, $$[$0-1]);
+            yy.model.fields = parserUtil.createFields($$[$0-1]);
         
 break;
 case 14:
@@ -127,7 +126,9 @@ this.$ = [$$[$0-2], $$[$0]];
 break;
 case 25:
 
-            parserUtil.createOperatorMethod(yy.class, $$[$0-4], $$[$0-1]);
+            var operator = parserUtil.createOperator($$[$0-4], $$[$0-1]);
+            yy.model.fields.push(operator.field);
+            yy.model.methods.push(operator.method);
         
 break;
 case 31:
@@ -740,7 +741,7 @@ case 33:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:"function\s*\(\w*\)\s*\{\s*(.*\s*)*?\}")/,/^(?:"import")/,/^(?:"viewModels")/,/^(?:"content")/,/^(?:"units")/,/^(?:"event")/,/^(?:"bind")/,/^(?:"type")/,/^(?:"name")/,/^(?:"init")/,/^(?:"@\{.*\}")/,/^(?:"properties")/,/^(?:"defaultValue")/,/^(?:"methods")/,/^(?:"action")/,/^(?:"parameters")/,/^(?:"responsePipe")/,/^(?:"op")/,/^(?:"onSuccess")/,/^(?:"onFailure")/,/^(?:(-?([0-9]|[1-9][0-9]+))(\.[0-9]+)?([eE][-+]?[0-9]+)?\b)/,/^(?:"(?:\\[\\"bfnrt\/]|\\u[a-fA-F0-9]{4}|[^\\\0-\x09\x0a-\x1f"])*")/,/^(?:\{)/,/^(?:\})/,/^(?:\[)/,/^(?:\])/,/^(?:,)/,/^(?::)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:null\b)/,/^(?:$)/,/^(?:.)/],
+rules: [/^(?:\s+)/,/^(?:"function\s*\(\w*\)\s*\{\s*(.*\s*)*?\}")/,/^(?:"import")/,/^(?:"viewModels")/,/^(?:"content")/,/^(?:"units")/,/^(?:"event")/,/^(?:"bind")/,/^(?:"type")/,/^(?:"name")/,/^(?:"init")/,/^(?:"@\{.*\}")/,/^(?:"properties")/,/^(?:"defaultValue")/,/^(?:"methods")/,/^(?:"action")/,/^(?:"parameters")/,/^(?:"responsePipe")/,/^(?:"op")/,/^(?:"success")/,/^(?:"error")/,/^(?:(-?([0-9]|[1-9][0-9]+))(\.[0-9]+)?([eE][-+]?[0-9]+)?\b)/,/^(?:"(?:\\[\\"bfnrt\/]|\\u[a-fA-F0-9]{4}|[^\\\0-\x09\x0a-\x1f"])*")/,/^(?:\{)/,/^(?:\})/,/^(?:\[)/,/^(?:\])/,/^(?:,)/,/^(?::)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:null\b)/,/^(?:$)/,/^(?:.)/],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33],"inclusive":true}}
 });
 return lexer;

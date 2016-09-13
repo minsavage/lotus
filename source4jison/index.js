@@ -16,7 +16,7 @@ let loadParser = function () {
         util: require("./parserUtil/modelUtil")
     }, {
         parser: require("./parser/operator").parser,
-        util: require("./parserUtil/operatorUtil")
+        util: require("./parserUtilRN/operatorUtil")
     }, {
         parser: require("./parser/viewModel").parser,
         util: require("./parserUtil/vmUtil")
@@ -56,8 +56,18 @@ let initParsers = R.compose(
 );
 
 let startParse = R.curry(function (parser, util, model) {
-    parser.yy.class = util.createClass();
     parser.yy.vc = {onCreate: '', onCreateView: '', onDestroy: ''};
+
+    parser.yy.model = { 
+        fields:[], 
+        methods:[], 
+        import:[], 
+        importNative: [],
+        innerClasses: []
+    };
+    
+    parser.yy.operator = {};
+    parser.yy.vm = {};
     return parser.parse(model);
 });
 
@@ -144,7 +154,7 @@ let writeFile = R.curry(function (dir, pkgName, pair) {
     fs.writeFileSync(filePath, content);
 })
 
-let projectDir = '../project/ich0521';
+let projectDir = '../project/maoyan';
 let outputDir = '../output/ich0719/ich/app/src/main/java/com/y2go/ich';
 let pkgName = 'com.y2go.ich';
 start(projectDir, outputDir, pkgName);
