@@ -11,7 +11,7 @@ frac  "."[0-9]+
 \"function\s*\(\w*\)\s*\{\s*(.*\s*)*?\}\"    yytext = yytext.substr(1,yyleng-2); return 'FUNCTION'
 \"import\"      return 'IMPORT'
 \"viewModels\"  return 'VIEWMODELS'
-\"content\"     return 'CONTENT'
+\"content\"     yytext = yytext.substr(1,yyleng-2); return 'CONTENT'
 \"units\"       yytext = yytext.substr(1,yyleng-2); return 'UNITS'
 \"event\"       yytext = yytext.substr(1,yyleng-2); return 'EVENT'
 \"bind\"        yytext = yytext.substr(1,yyleng-2); return 'BIND'

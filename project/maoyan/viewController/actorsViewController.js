@@ -1,11 +1,21 @@
 module.exports = {
     name: 'ActorsViewController',
-    import: [],
+    import: [
+        'sys.view.View',
+        'sys.view.Text',
+        'sys.view.Image',
+        'sys.view.TouchableOpacity',
+        'sys.view.LayoutAnimation',
+        'sys.view.ListView',
+        '$.viewModel.ActorsViewModel'
+    ],
     viewModels: [{
         type: 'ActorsViewModel',
         name: 'actorsVM',
         init: {
-            mid: '@{props.mid}'
+            mid: '@{props.mid}',
+            m2: '123',
+            m3: 12
         }
     }],
     event: {
@@ -17,22 +27,31 @@ module.exports = {
         type: 'View',
         id: 'root',
         style: {},
-        units:[{
+        units: [{
             type: 'View',
             id: 'top',
-            style:{},
-            units:[{
+            style: {},
+            units: [{
                 type: 'Text',
-                id: '',
-                content: '全部'
+                id: 'text',
+                test: 123,
+                style: {
+                    flex: 1,
+                    padding: '@{audioVM.padding}'
+                },
+                units: [{
+                    type: 'Plain',
+                    content: '全部'
+                }]
             }]
         }, {
-            type: 'ListView',
-            horizontal: true,
-            enableEmptySections: true,
-            style: {},
-            dataSource: '@{actorsVM.actors}',
-            renderRow: ''
-        }]
+                type: 'ListView',
+                id: 'listView',
+                horizontal: true,
+                enableEmptySections: true,
+                style: {},
+                dataSource: '@{actorsVM.actors}',
+                renderRow: ''
+            }]
     }
 }

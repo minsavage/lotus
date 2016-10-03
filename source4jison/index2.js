@@ -22,6 +22,7 @@ let model = require('../project/maoyan/operator/actorsOperator');
 let parser = require('./parser/operator').parser;
 let operatorUtil = require('./parserUtilRN/operatorUtil');
 let translateClass = require('./translatorRN/translateClass');
+let translateBlocks = require('./translatorRN/translateBlocks');
 
 model = stringify(model);
 resetParser(parser);
@@ -44,5 +45,15 @@ ret = translateClass(ret);
 filePath = './actorsViewModel.js';
 fs.writeFileSync(filePath, ret);
 
+//ViewController
+model = require('../project/maoyan/viewController/actorsViewController');
+parser = require('./parser/viewController').parser;
+let vcUtil = require('./parserUtilRN/vcUtil');
+model = stringify(model);
+resetParser(parser);
+ret = parser.parse(model);
+ret = translateBlocks(ret);
+filePath = './actorsViewContoller.js';
+fs.writeFileSync(filePath, ret);
 
 console.log(ret);

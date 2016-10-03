@@ -9,7 +9,7 @@ let translateMethod = (method)=>{
     return mustache.render(tpl, {
         name: method.name,
         params: params,
-        body: method.body
+        body: method.body.trim()
     });
 }
 

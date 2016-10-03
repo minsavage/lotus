@@ -10,8 +10,9 @@ frac  "."[0-9]+
 \"function\s*\(\w*\)\s*\{\s*(.*\s*)*?\}\"    yytext = yytext.substr(1,yyleng-2); return 'FUNCTION'
 \"import\"      return 'IMPORT'
 \"viewModels\"  return 'VIEWMODELS'
-\"content\"     return 'CONTENT'
+\"content\"     yytext = yytext.substr(1,yyleng-2); return 'CONTENT'
 \"units\"       yytext = yytext.substr(1,yyleng-2); return 'UNITS'
+\"style\"       yytext = yytext.substr(1,yyleng-2); return 'STYLE'
 \"event\"       yytext = yytext.substr(1,yyleng-2); return 'EVENT'
 \"bind\"        yytext = yytext.substr(1,yyleng-2); return 'BIND'
 \"type\"        yytext = yytext.substr(1,yyleng-2); return 'TYPE'
@@ -44,8 +45,8 @@ frac  "."[0-9]+
 /lex
 
 %{
-    var parserUtil = require('../parserUtil/vcUtil');
-    var R = require('ramda');
+    var parserUtil = require('../parserUtilRN/vcUtil');
+    
 %}
 
 %start ConfigEntry
@@ -53,19 +54,19 @@ frac  "."[0-9]+
 %%
 
 ConfigEntry
-    : '{' ConfigList '}'
+    : '{' ConfigList '}' EOF
         {
-            if(yy.vc.layoutOnly == true) {yy.vc = {}; return null;}
-
+            return parserUtil.createClass(yy.model);
+            
+            /*if(yy.vc.layoutOnly == true) {yy.vc = {}; return null;}
+            var R = require('ramda');
             R.map(function(vmInfo){
                 yy.vc.onCreate += vmInfo.init;
                 yy.vc.onDestroy += 'native(\'' + vmInfo.destroy + '\')';
             }, yy.vc.viewModelsInfo);
 
             parserUtil.createEssentialMethod(yy);
-            parserUtil.final(yy.class);
-
-            yy.vc = {}; return yy.class;
+            return parserUtil.createClass(yy.model);*/
         }
     ;
 
@@ -86,12 +87,14 @@ Config
 
 ClassName
     : NAME ':' JSONString
-        { yy.class.name = $3; }
+        { yy.model.name = $3; }
     ;
 
 Import
     : IMPORT ':' '[' ImportList ']'
-        { yy.class.import = $4;}
+        { 
+            //yy.model.import = yy.model.import.concat($4);
+        }
     ;
 
 ImportList
@@ -104,7 +107,9 @@ ImportList
 ViewModels
     : VIEWMODELS ':' '[' ViewModelList ']'
         {
-            yy.vc.viewModelsInfo = parserUtil.createViewModelsInfo(yy.class, $4)
+            yy.model.viewModels = parserUtil.parseViewModels($4);
+            //$$ = parserUtil.createWidget($2);
+            //yy.vc.viewModelsInfo = parserUtil.createViewModelsInfo(yy.model, $4)
         }
     ;
 
@@ -117,20 +122,20 @@ ViewModelList
 
 ViewModel
     : '{' TYPE ':' JSONString ',' NAME ':' JSONString '}'
-        {$$ = {};$$['type'] = $4; $$['name'] = $8; $$['defaultValue'] = null;}
+        { $$ = {type: $4, name: $8, init: null}; }
     | '{' TYPE ':' JSONString ',' NAME ':' JSONString ',' INIT ':' JSONObject '}'
-        {$$ = {};$$['type'] = $4; $$['name'] = $8; $$['defaultValue'] = null;}
+        { $$ = {type: $4, name: $8, init: $12}; }
     ;
 
 Content
     : CONTENT ':' Widget
+        { yy.model.content = $3 }
     ;
 
 Widget
     : '{' WidgetProperties '}'
         {
-            $$=$2;
-            parserUtil.createEvents(yy.class, $$);
+            $$ = parserUtil.createWidget($2);
         }
     ;
 
@@ -143,6 +148,7 @@ WidgetProperties
 
 WidgetProperty
     : JSONMember
+    | Styles
     | Units
     | Events
     ;
@@ -159,10 +165,38 @@ Units
 
 WidgetList
     : Widget
-        {$$=[$1]}
+        { $$=$1 }
     | WidgetList ',' Widget
-        {$$ = $1; $$.push($3)}
+        {
+            $$ = parserUtil.combineCodeRecorder($1, $3); 
+            //$$ = $1; $$.push($3) 
+        }
     ;
+
+Styles
+    : STYLE ':' '{' StyleList  '}'
+        {$$ = [$1, $4]}
+    | STYLE ':' '{' '}'
+        {$$ = [$1, {}]}
+    ;
+
+StyleList
+    : Style
+        {{$$ = {}; $$[$1[0]] = $1[1];}}
+    | StyleList ',' Style
+        {$$ = $1; $1[$3[0]] = $3[1];}
+    ;
+
+Style
+    : JSONString ':' JSONString
+        {
+            $$ = [$1, $3];
+        }
+    | JSONString ':' JSONNumber
+        {$$ = [$1, $3];}
+    | JSONString ':' BINDINGPROP
+        {$$ = [$1, $3];}
+    ;    
 
 Events
     : EVENT ':' '{' EventList '}'
